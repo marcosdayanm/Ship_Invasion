@@ -12,33 +12,35 @@ Equipo: REM Cycle
 
 ## _Índice_
 
-1. [Índice](#index)
-2. [Diseño de Videojuego](#game-design)
-   1. [Resumen](#summary)
+1. [Índice](#índice)
+2. [Diseño de Videojuego](#diseño-de-videojuego)
+   1. [Resumen](#resumen)
    2. [Gameplay](#gameplay)
    3. [Mindset](#mindset)
-3. [Técnico](#technical)
-   1. [Pantallas](#screens)
-   2. [Controles](#controls)
-   3. [Mecánicas](#mechanics)
-4. [Diseño de Nivel](#level-design)
-   1. [Ambientación](#themes)
-      1. [Mar Abierto](#open-sea)
-      2. [Tormenta Eléctrica](#electric-storm)
-      3. [Río de Fuego](#fire-river)
-      4. [Pantano Tóxico](#toxic-swamp)
-5. [Hilo del Juego](#game-flow)
-6. [Desarrollo](#development)
-   1. [Clases Abstractas / Funciones](#abstract-classes--components)
-   2. [Clases Derivadas / Composición de Componentes](#derived-classes--component-compositions)
-7. [Grafiicacas](#graphics)
-   1. [Atributos de Estilo](#style-attributes)
-   2. [Gráficas y Diseño](#graphics-needed)
-8. [Sonido / Música](#soundsmusic)
-   1. [Atributos de Estilo](#style-attributes)
-   2. [Sonido](#sounds-needed)
-   3. [Música](#music-needed)
-9. [Agenda](#schedule)
+3. [Técnico](#técnico)
+   1. [Pantallas](#pantallas)
+   2. [Controles](#controles)
+   3. [Mecánicas](#mecánicas)
+      1. [Cartas Ataque](#cartas-ataque)
+      2. [Cartas Defensa](#cartas-defensa)
+      3. [Mecánicas de Partida](#mecánicas-de-partida)
+4. [Diseño de Nivel](#diseño-de-nivel)
+   1. [Ambientación](#ambientación)
+      1. [Mar Abierto](#mar-abierto)
+      2. [Tormenta Eléctrica](#tormenta-eléctrica)
+      3. [Río de Fuego](#río-de-fuego)
+      4. [Pantano Tóxico](#pantano-tóxico)
+5. [Hilo del Juego](#hilo-del-juego)
+6. [Desarrollo](#desarrollo)
+   1. [Clases](#clases)
+7. [Gráficas](#gráficas)
+   1. [Atributos de Estilo](#atributos-de-estilo)
+   2. [Gráficas y Diseño](#gráficas-y-diseño)
+8. [Sonido / Música](#sonido/música)
+   1. [Atributos de Estilo](#atributos-de-estilo)
+   2. [Sonido](#sonido)
+   3. [Música](#música)
+9. [Agenda](#agenda)
 
 ## _Diseño de Videojuego_
 
@@ -93,7 +95,7 @@ El jugador va a poder interactuar con el juego principalmente con el cursor del 
 
 El juego cuenta con 10 cartas de ataque y 10 de defensa:
 
-**Cartas ataque:**
+#### **Cartas ataque:**
 
 1. BRONZE, 1 cuadrado
 2. ⁠BRONZE, 2 horizontal
@@ -106,7 +108,7 @@ El juego cuenta con 10 cartas de ataque y 10 de defensa:
 9. ⁠GOLD, una L de 3x3
 10. ⁠GOLD, 10 vertical
 
-**Cartas defensa:**
+#### **Cartas defensa:**
 
 1. BRONZE, 1 cuadrado
 2. ⁠BRONZE, 1 cuadrado
@@ -118,6 +120,8 @@ El juego cuenta con 10 cartas de ataque y 10 de defensa:
 8. ⁠SILVER, 5 cuadrados
 9. ⁠GOLD, una L de 3x3
 10. ⁠GOLD, una X en un área de 3x3
+
+#### Mecánicas de Partida
 
 Una partida juego se desarrolla en dos fases principales: Despliegue y Combate.
 
