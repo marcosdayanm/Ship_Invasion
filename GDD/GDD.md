@@ -15,32 +15,35 @@ Equipo: REM Cycle
 1. [Índice](#índice)
 2. [Diseño de Videojuego](#diseño-de-videojuego)
    1. [Resumen](#resumen)
+3. [Índice](#índice)
+4. [Diseño de Videojuego](#diseño-de-videojuego)
+   1. [Resumen](#resumen)
    2. [Gameplay](#gameplay)
    3. [Mindset](#mindset)
-3. [Técnico](#técnico)
+5. [Técnico](#técnico)
    1. [Pantallas](#pantallas)
    2. [Controles](#controles)
    3. [Mecánicas](#mecánicas)
       1. [Cartas Ataque](#cartas-ataque)
       2. [Cartas Defensa](#cartas-defensa)
       3. [Mecánicas de Partida](#mecánicas-de-partida)
-4. [Diseño de Nivel](#diseño-de-nivel)
+6. [Diseño de Nivel](#diseño-de-nivel)
    1. [Ambientación](#ambientación)
       1. [Mar Abierto](#mar-abierto)
       2. [Tormenta Eléctrica](#tormenta-eléctrica)
       3. [Río de Fuego](#río-de-fuego)
       4. [Pantano Tóxico](#pantano-tóxico)
-5. [Hilo del Juego](#hilo-del-juego)
-6. [Desarrollo](#desarrollo)
+7. [Hilo del Juego](#hilo-del-juego)
+8. [Desarrollo](#desarrollo)
    1. [Clases](#clases)
-7. [Gráficas](#gráficas)
+9. [Gráficas](#gráficas)
    1. [Atributos de Estilo](#atributos-de-estilo)
    2. [Gráficas y Diseño](#gráficas-y-diseño)
-8. [Sonido / Música](#sonido/música)
-   1. [Atributos de Estilo](#atributos-de-estilo)
-   2. [Sonido](#sonido)
-   3. [Música](#música)
-9. [Agenda](#agenda)
+10. [Sonido / Música](#sonido/música)
+    1. [Atributos de Estilo](#atributos-de-estilo)
+    2. [Sonido](#sonido)
+    3. [Música](#música)
+11. [Agenda](#agenda)
 
 ## _Diseño de Videojuego_
 
@@ -141,38 +144,39 @@ Uso de las monedas: El jugador podrá bien acceder a arenas que tengan un costo 
 
 ### **Ambientación**
 
-1. Mar Abierto
+#### 1. Mar Abierto
 
-   1. Ambiente
-      1. Caribeño, Soleado
-   2. Objetos
-      1. Mar Abierto
-      2. Islas con Palmeras
+1.  Ambiente
+    1. Caribeño, Soleado
+2.  Objetos
+    1. Mar Abierto
+    2. Islas con Palmeras
 
-2. Tormenta Eléctrica
+#### 2. Tormenta Eléctrica
 
-   1. Ambiente
-      1. Tormenta, Peligroso, Truenos, Relámpagos
-   2. Objetos
-      1. Lluvia, Truenos, Relámpagos
-      2. Hojas volando
+1.  Ambiente
+    1. Tormenta, Peligroso, Truenos, Relámpagos
+2.  Objetos
+    1. Lluvia, Truenos, Relámpagos
+    2. Hojas volando
 
-3. Río de Fuego
+#### 3. Río de Fuego
 
-   1. Ambiente
-      1. Peligro, Calor, Volcanes, fuego por doquier
-   2. Objetos
-      1. Meteoritos de fuego
-      2. Erupciones volcánicas
-      3. Mar de Lava
+1.  Ambiente
+    1. Peligro, Calor, Volcanes, fuego por doquier
+2.  Objetos
+    1. Meteoritos de fuego
+    2. Erupciones volcánicas
+    3. Mar de Lava
 
-4. Pantano Tóxico
-   1. Ambiente
-      1. Veneno, lago tóxico, corrosión
-   2. Objetos
-      1. Barriles tóxicos
-      2. Animales mutantes
-      3. Árboles corroidos
+#### 4. Pantano Tóxico
+
+1.  Ambiente
+    1. Veneno, lago tóxico, corrosión
+2.  Objetos
+    1. Barriles tóxicos
+    2. Animales mutantes
+    3. Árboles corroidos
 
 ### **Hilo del Juego**
 
@@ -246,9 +250,9 @@ Así se ven algunas de las cartas y de los diseños de las arenas que conforman 
       1. Estilo visual estará marcado por tonos verdes y amarillos, con una atmósfera tóxica y corrosiva que se reflejará en el diseño de la arena.
       2. Los fondos mostrarán un pantano tóxico con barriles de desechos y árboles corroidos, creando una atmósfera inquietante y peligrosa en la arena.
 
-## _Sonido/Música_
+## _Sonido / Música_
 
-### **Atributos de Estilo**
+### **Atributos de Estilo de Sonido**
 
 El estilo de sonido es de una banda sonora de inspiración marítima y pirata con efectos de sonido realistas y estilizados, creando una atmósfera inmersiva de aventura y batalla naval. La música, estpa compuesta de instrumentos tradicionales como acordeones, tambores de guerra, flautas y violines. Los efectos de sonido, desde la explosión de cañones y proyectiles y el ambiente marino hasta señales audibles de eventos clave del juego, van a estar añadiendole emoción al juego y destacando todos los eventos importantes que sucedan. Desde el hundimiento de un barco, el lanzamiento de un proyectil, hasta la Victoria, asegurando que cada acción y reacción sean claras y contribuyan a la tensión y emoción del juego.
 
