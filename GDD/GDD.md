@@ -85,7 +85,9 @@ Por otro lado, las mismas monedas podrán ser utilizadas para comprar privilegio
    3. Créditos
 2. Menú
    1. Perfil del Jugador, stats, descripción
-   2. Selección de diferentes batallas y arenas (dificultad)
+   2. Inventario de todas las cartas, sus estadísticas, descripción, entre otras características
+   3. Selección de diferentes batallas y arenas (dificultad)
+   4. Historia de partidas, estadísticas y datos de todas las partidas pasadas
 3. Juego
    1. Tablero del Jugador con tablero del enemigo cerrado y cartas, en el que suceden todas las fases de la batalla
    2. Pantalla de resultados, en donde se anuncia el Ganador/Perdedor
@@ -95,6 +97,12 @@ Por otro lado, las mismas monedas podrán ser utilizadas para comprar privilegio
 El jugador va a poder interactuar con el juego principalmente con el cursor del ratón y con el click izquierdo, seleccionando las diferentes cartas y ejecutando las acciones a través del cursor, y se puede aceptar diferentes opciones y botones presionando la tecla "Enter".
 
 ### **Mecánicas**
+
+En Ship Invasion, hay dos tipos de cartas
+
+1. Cartas de Ataque: Estas cartas se utilizan para lanzar ataques en ccordenadas específicas y patrones en el tablero enemigo, intentando golpear y hundir las flotas navales del oponente. Hay 3 tipos de cartas, las bronze, las silver y las gold, previamente descritas, entre mayor calidad, mayor su área de blanco
+
+2. Cartas de Defensa: Estas cartas permiten a los jugadores colocar naves adicionales para reforzar la flota. Estas cartas juegan un rol crucial ya que la cantidad de espacios cubiertos por la flota naval van a determinar el vencedor de la partida, solo que hay que administrar bien los turnos ya que decidir jugar una carta de Defensa ocupará el turno de poder mandar un poryectil a alguna unbicación enemiga. De igual manera las cartas de defensa se dividen en calidades, en donde ewntre mejor calidad, mayor área del grid cubren.
 
 El juego cuenta con 10 cartas de ataque y 10 de defensa:
 
@@ -126,7 +134,7 @@ El juego cuenta con 10 cartas de ataque y 10 de defensa:
 
 #### Mecánicas de Partida
 
-Una partida juego se desarrolla en dos fases principales: Despliegue y Combate.
+Una partida juego se desarrolla en dos fases principales: Despliegue y Combate, en donde en el despliegue el objetivo principal es ubicar las cartas de defensa en posiciones estratégicas para evitar a toda costa los ataques de los proyectiles enemigos en la fase de Destrucción.
 
 Fase de Despliegue: La partida arranca en esta etapa, donde se presenta el mapa de batalla naval en forma de cuadrícula. A cada jugador se le otorgan aleatoriamente 5 cartas de flota para posicionar en el mapa durante un periodo inicial de 30 segundos. Finalizado este tiempo, se realiza un sorteo digital para determinar quién será el primero en jugar, si el jugador o el oponente controlado por el juego.
 
@@ -136,7 +144,7 @@ Condiciones de Victoria: El vencedor es aquel que logre eliminar las unidades na
 
 Arenas: Dadas las siguientes condiciones, habrán diferentes arenas de juego, en las que para algunas arenas será necesario un nivel mayor de experiencia, en las que el ambiente irá tomando mejores desiciones, administrando mejor sus cartas de ataque y desplegando con mayor inteligancia su flota, en cada etapa el oponente será un rival más sifisticado a vencer!
 
-Sistema de monedas: Las arenas iniciales otorgarán una pequeña cantidad de monedas al conseguir una victoria, al ir obteniendo experiencia para poder jugar en las siguientes arenas, las partidas tendrán un costo inicial, pero en caso de salir victorioso, las recompensas monetarias serán mucho mayores!
+Sistema de monedas: Las arenas iniciales otorgarán una pequeña cantidad de monedas al conseguir una victoria, al ir obteniendo experiencia para poder jugar en las siguientes arenas, las partidas tendrán un costo inicial, pero en caso de salir victorioso, las recompensas monetarias serán mucho mayores! Se detalla la descripción de las diferentes arenas enseguida.
 
 Uso de las monedas: El jugador podrá bien acceder a arenas que tengan un costo más elevado de entrada y una mayor recompensa al ganar, o comprar estilo para su tablero de juego, su flota naval, y su flota de misiles y proyectiles.
 
@@ -146,6 +154,9 @@ Uso de las monedas: El jugador podrá bien acceder a arenas que tengan un costo 
 
 #### 1. Mar Abierto
 
+Costo de partida: 0 Monedas
+Recompensa de victoria: 20 Monedas
+
 1.  Ambiente
     1. Caribeño, Soleado
 2.  Objetos
@@ -153,6 +164,9 @@ Uso de las monedas: El jugador podrá bien acceder a arenas que tengan un costo 
     2. Islas con Palmeras
 
 #### 2. Tormenta Eléctrica
+
+Costo de partida: 30 Monedas
+Recompensa de victoria: 60 Monedas
 
 1.  Ambiente
     1. Tormenta, Peligroso, Truenos, Relámpagos
@@ -162,6 +176,9 @@ Uso de las monedas: El jugador podrá bien acceder a arenas que tengan un costo 
 
 #### 3. Río de Fuego
 
+Costo de partida: 50 Monedas
+Recompensa de victoria: 120 Monedas
+
 1.  Ambiente
     1. Peligro, Calor, Volcanes, fuego por doquier
 2.  Objetos
@@ -170,6 +187,9 @@ Uso de las monedas: El jugador podrá bien acceder a arenas que tengan un costo 
     3. Mar de Lava
 
 #### 4. Pantano Tóxico
+
+Costo de partida: 100 Monedas
+Recompensa de victoria: 250 Monedas
 
 1.  Ambiente
     1. Veneno, lago tóxico, corrosión
@@ -236,19 +256,27 @@ Así se ven algunas de las cartas y de los diseños de las arenas que conforman 
       1. Estilo visual vibrante y colorido, con una paleta que refleje el ambiente caribeño y soleado de la arena.
       2. Los fondos mostrarán el mar abierto y las islas con palmeras de manera detallada y atractiva, añadiendo vida al escenario.
 
-   2. Tormenta Eléctrica
+![alt text](Fotos/ocean.png)
 
-      1. Estilo visual estará marcado por colores oscuros y contrastes intensos para reflejar el ambiente de tormenta y peligro.
-      2. Los fondos mostrarán una atmósfera tensa con nubes oscuras y relámpagos, creando una sensación de urgencia y emoción en la arena.
+2.  Tormenta Eléctrica
 
-   3. Río de Fuego
+    1. Estilo visual estará marcado por colores oscuros y contrastes intensos para reflejar el ambiente de tormenta y peligro.
+    2. Los fondos mostrarán una atmósfera tensa con nubes oscuras y relámpagos, creando una sensación de urgencia y emoción en la arena.
 
-      1. El juego adoptará un estilo visual oscuro y amenazante, con una paleta de colores rojos, naranjas y negros para representar el peligro y la intensidad del ambiente de fuego.
-      2. Los fondos mostrarán un río de lava y volcanes en erupción, creando una atmósfera desafiante y peligrosa en la arena.
+![alt text](Fotos/storm.png)
 
-   4. Pantano Tóxico
-      1. Estilo visual estará marcado por tonos verdes y amarillos, con una atmósfera tóxica y corrosiva que se reflejará en el diseño de la arena.
-      2. Los fondos mostrarán un pantano tóxico con barriles de desechos y árboles corroidos, creando una atmósfera inquietante y peligrosa en la arena.
+3.  Río de Fuego
+
+    1. El juego adoptará un estilo visual oscuro y amenazante, con una paleta de colores rojos, naranjas y negros para representar el peligro y la intensidad del ambiente de fuego.
+    2. Los fondos mostrarán un río de lava y volcanes en erupción, creando una atmósfera desafiante y peligrosa en la arena.
+
+![alt text](Fotos/fire.png)
+
+4.  Pantano Tóxico
+    1. Estilo visual estará marcado por tonos verdes y amarillos, con una atmósfera tóxica y corrosiva que se reflejará en el diseño de la arena.
+    2. Los fondos mostrarán un pantano tóxico con barriles de desechos y árboles corroidos, creando una atmósfera inquietante y peligrosa en la arena.
+
+![alt text](Fotos/swamp.png)
 
 ## _Sonido / Música_
 
