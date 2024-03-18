@@ -150,6 +150,7 @@ CREATE TABLE Play(
     YCoordBottomLeft TINYINT NOT NULL,
 	XCoordTopRight TINYINT NOT NULL,
     YCoordTopRight TINYINT NOT NULL,
+    IsPlayerPlay BOOL NOT NULL,
     IsAttackCardPlayed BOOL NOT NULL,
     NumFieldsCovered TINYINT NOT NULL,
 
