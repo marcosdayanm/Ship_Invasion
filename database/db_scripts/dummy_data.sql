@@ -29,6 +29,23 @@ INSERT INTO Area (LengthX, LengthY) VALUES
 (3, 3);
 SELECT * FROM Area;
 
+-- Sprite
+INSERT INTO Sprite (Name, IsAddOn, Price) VALUES
+("ElectroShips", true, 100),
+("SpaceShips", true, 200),
+("PirateShips", false, 0),
+("AlienShips", true, 150),
+("OpenSea", false, 0),
+("ElectricStorm", false, 0),
+("RiverOfFire", false, 0),
+("ToxicSwamp", false, 0);
+
+-- PurchasedSprite
+INSERT INTO PurchasedSprite (PlayerId, SpriteId) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
 
 -- Quality
 INSERT INTO Quality (Quality) VALUES 
@@ -36,8 +53,6 @@ INSERT INTO Quality (Quality) VALUES
 ("Silver"),
 ("Gold");
 SELECT * FROM Quality;
-
-
 
 -- Card
 INSERT INTO Card (Name, QualityId, CardTypeId, AreaId) VALUES 
@@ -58,7 +73,33 @@ INSERT INTO Arena (Name, Level, MatchesRequired) VALUES
 ("Pantano tóxico", 4, 50);
 SELECT * FROM Arena;
 
+-- Game
+INSERT INTO Game (PlayerId, ArenaId, IsPlayerWon) VALUES
+(1, 1, True),
+(2, 1, false),
+(3, 1, True),
+(1, 2, True),
+(2, 2, false),
+(3, 2, True),
+(1, 3, True),
+(2, 3, false),
+(3, 3, True),
+(1, 4, True),
+(2, 4, false),
+(3, 4, True);
 
 
-
-
+-- Play
+INSERT INTO Play (PlayNumber, IsPlayerPlay, IsAttackCardPlayed, NumFieldsCovered, GameId, CardPlayedId) VALUES 
+(1, true, true, 5, 1, 1), 
+(2, false, false, 0, 1, 2), 
+(3, true, true, 3, 1, 3), 
+(4, true, true, 2, 2, 4), 
+(5, false, false, 0, 2, 5), 
+(6, true, true, 4, 2, 4), 
+(7, true, true, 1, 3, 2), 
+(2, false, false, 0, 3, 3), 
+(3, true, true, 3, 3, 1), 
+(6, true, true, 2, 4, 4), 
+(11, false, false, 0, 4, 5), 
+(12, true, true, 4, 4, 1);

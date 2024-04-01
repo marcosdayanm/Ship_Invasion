@@ -9,9 +9,7 @@ SELECT
     ct.TypeName AS CardType,
     q.Quality AS CardQuality,
     a.LengthX AS LengthX,
-    a.LengthY AS LengthY,
-    s1.SpriteUrlPath AS SkinSpriteUrlPath,
-    s2.SpriteUrlPath AS EffectSpriteUrlPath
+    a.LengthY AS LengthY
 FROM Card c
 JOIN CardType ct ON c.CardTypeId = ct.Id
 JOIN Quality q ON c.QualityId = q.Id
@@ -37,7 +35,6 @@ SELECT
     ps.PlayerId AS PurchasedSpritePlayerId,
     ps.SpriteId AS PurchasedSpriteSpriteId,
     s.Id AS SpriteId,
-    s.SpriteUrlPath AS SpriteUrlPath,
     s.IsAddOn AS SpriteIsAddOn,
     s.Price AS SpritePrice
 FROM Player u
@@ -65,10 +62,6 @@ SELECT
     
     p.Id AS PlayId,
     p.PlayNumber AS PlayNumber,
-    p.XCoordBottomLeft AS PlayXCoordBottomLeft,
-    p.YCoordBottomLeft AS PlayYCoordBottomLeft,
-    p.XCoordTopRight AS PlayXCoordTopRight,
-    p.YCoordTopRight AS PlayYCoordTopRight,
     p.IsPlayerPlay AS PlayIsPlayerPlay,
     p.IsAttackCardPlayed AS PlayIsAttackCardPlayed,
     p.NumFieldsCovered AS PlayNumFieldsCovered,
@@ -76,16 +69,13 @@ SELECT
     a.Id AS ArenaId,
     a.Name AS ArenaName,
     a.Level AS ArenaLevel,
-    a.MatchesRequired AS ArenaMatchesRequired,
-    
-    m.Id AS MusicId,
-    m.MusicUrlPath AS MusicUrlPath
+    a.MatchesRequired AS ArenaMatchesRequired
     
     FROM Game g
     LEFT JOIN Player u ON g.PlayerId = u.Id
     LEFT JOIN Play p ON g.Id = p.GameId
-    LEFT JOIN Arena a ON a.Id = g.ArenaId
-    LEFT JOIN Music m ON m.Id = a.MusicId;
+    LEFT JOIN Arena a ON a.Id = g.ArenaId;
+
 
 -- Validación
 SELECT * FROM view_gamedetails;
