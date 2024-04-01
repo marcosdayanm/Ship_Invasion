@@ -47,20 +47,11 @@ CREATE TABLE Area(
 -- Creating Sprite table
 CREATE TABLE Sprite(
 	Id SMALLINT NOT NULL AUTO_INCREMENT,
-    SpriteUrlPath VARCHAR(10000) NOT NULL,
+    Name VARCHAR(50) NOT NULL,
     IsAddOn BOOL NOT NULL,
     Price SMALLINT NOT NULL,
     PRIMARY KEY (Id),
     CONSTRAINT chk_Price CHECK (Price >= 0)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-
--- Creating Music table
-CREATE TABLE Music(
-	Id SMALLINT NOT NULL AUTO_INCREMENT,
-    MusicUrlPath VARCHAR(10000) NOT NULL,
-    PRIMARY KEY (Id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -113,11 +104,10 @@ CREATE TABLE Arena(
     Name VARCHAR(50) NOT NULL,
     Level TINYINT NOT NULL,
     MatchesRequired SMALLINT NOT NULL,
-    MusicId SMALLINT,
+    MusicIdUnity SMALLINT,
     SpriteId SMALLINT,
     
     PRIMARY KEY (Id),
-    CONSTRAINT fk_Arena_Music FOREIGN KEY (MusicId) REFERENCES Music(Id),
     CONSTRAINT fk_Arena_Sprite FOREIGN KEY (SpriteId) REFERENCES Sprite(Id),
     CONSTRAINT chk_Level CHECK (Level >= 1),
     CONSTRAINT chk_MatchesRequired CHECK (MatchesRequired >= 0)
@@ -135,8 +125,7 @@ CREATE TABLE Game(
     ArenaId SMALLINT NOT NULL,
     
     PRIMARY KEY (Id),
-    CONSTRAINT fk_Game_Player FOREIGN KEY (PlayerId) REFERENCES Player(Id),
-    CONSTRAINT fk_Game_Arena FOREIGN KEY (ArenaId) REFERENCES Arena(Id)
+    CONSTRAINT fk_Game_Player FOREIGN KEY (PlayerId) REFERENCES Player(Id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -146,10 +135,6 @@ CREATE TABLE Play(
 	Id SMALLINT NOT NULL AUTO_INCREMENT,
     
     PlayNumber MEDIUMINT NOT NULL,
-    XCoordBottomLeft TINYINT NOT NULL,
-    YCoordBottomLeft TINYINT NOT NULL,
-	XCoordTopRight TINYINT NOT NULL,
-    YCoordTopRight TINYINT NOT NULL,
     IsPlayerPlay BOOL NOT NULL,
     IsAttackCardPlayed BOOL NOT NULL,
     NumFieldsCovered TINYINT NOT NULL,
@@ -161,11 +146,7 @@ CREATE TABLE Play(
     CONSTRAINT fk_Play_Game FOREIGN KEY (GameId) REFERENCES Game(Id),
     CONSTRAINT fk_Play_Card FOREIGN KEY (CardPlayedId) REFERENCES Card(Id),
     CONSTRAINT chk_PlayNumber CHECK (PlayNumber >= 1),
-    CONSTRAINT chk_XCoordBottomLeft CHECK (XCoordBottomLeft >= 0 AND XCoordBottomLeft <= 12),
-    CONSTRAINT chk_YCoordBottomLeft CHECK (YCoordBottomLeft >= 0 AND YCoordBottomLeft <= 12),
-    CONSTRAINT chk_XCoordTopRight CHECK (XCoordTopRight >= 0 AND XCoordTopRight <= 12),
-    CONSTRAINT chk_YCoordTopRight CHECK (YCoordTopRight >= 0 AND YCoordTopRight <= 12),
-    CONSTRAINT chk_NumFieldsCovered CHECK (NumFieldsCovered >= 1)
+    CONSTRAINT chk_NumFieldsCovered CHECK (NumFieldsCovered >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
