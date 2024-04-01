@@ -63,7 +63,6 @@ SELECT
     p.Id AS PlayId,
     p.PlayNumber AS PlayNumber,
     p.IsPlayerPlay AS PlayIsPlayerPlay,
-    p.IsAttackCardPlayed AS PlayIsAttackCardPlayed,
     p.NumFieldsCovered AS PlayNumFieldsCovered,
     
     a.Id AS ArenaId,
