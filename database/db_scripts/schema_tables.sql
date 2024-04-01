@@ -136,7 +136,6 @@ CREATE TABLE Play(
     
     PlayNumber MEDIUMINT NOT NULL,
     IsPlayerPlay BOOL NOT NULL,
-    IsAttackCardPlayed BOOL NOT NULL,
     NumFieldsCovered TINYINT NOT NULL,
 
     GameId SMALLINT NOT NULL,

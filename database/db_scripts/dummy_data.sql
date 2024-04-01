@@ -90,16 +90,16 @@ INSERT INTO Game (PlayerId, ArenaId, IsPlayerWon) VALUES
 
 
 -- Play
-INSERT INTO Play (PlayNumber, IsPlayerPlay, IsAttackCardPlayed, NumFieldsCovered, GameId, CardPlayedId) VALUES 
-(1, true, true, 5, 1, 1), 
-(2, false, false, 0, 1, 2), 
-(3, true, true, 3, 1, 3), 
-(4, true, true, 2, 2, 4), 
-(5, false, false, 0, 2, 5), 
-(6, true, true, 4, 2, 4), 
-(7, true, true, 1, 3, 2), 
-(2, false, false, 0, 3, 3), 
-(3, true, true, 3, 3, 1), 
-(6, true, true, 2, 4, 4), 
-(11, false, false, 0, 4, 5), 
-(12, true, true, 4, 4, 1);
+INSERT INTO Play (PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId) VALUES 
+(1, true, 5, 1, 1), 
+(2, false, 0, 1, 2), 
+(3, true, 3, 1, 3), 
+(4, true, 2, 2, 4), 
+(5, false, 0, 2, 5), 
+(6, true, 4, 2, 4), 
+(7, true, 1, 3, 2), 
+(2, false, 0, 3, 3), 
+(3, true, 3, 3, 1), 
+(6, true, 2, 4, 4), 
+(11, false, 0, 4, 5), 
+(12, true, 4, 4, 1);
