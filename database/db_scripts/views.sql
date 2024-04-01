@@ -7,7 +7,7 @@ SELECT
     c.Id AS CardId,
     c.Name AS CardName,
     ct.TypeName AS CardType,
-    q.Quality AS CardQuality,
+    q.QualityName AS CardQuality,
     a.LengthX AS LengthX,
     a.LengthY AS LengthY
 FROM Card c

@@ -48,7 +48,7 @@ INSERT INTO PurchasedSprite (PlayerId, SpriteId) VALUES
 
 
 -- Quality
-INSERT INTO Quality (Quality) VALUES 
+INSERT INTO Quality (QualityName) VALUES 
 ("Bronze"),
 ("Silver"),
 ("Gold");

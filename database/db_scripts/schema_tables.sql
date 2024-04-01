@@ -72,7 +72,7 @@ CREATE TABLE PurchasedSprite(
 -- Creating Quality table
 CREATE TABLE Quality(
 	Id TINYINT NOT NULL AUTO_INCREMENT,
-    Quality VARCHAR(20) NOT NULL,
+    QualityName VARCHAR(20) NOT NULL,
     PRIMARY KEY (Id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
