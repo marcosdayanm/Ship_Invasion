@@ -76,3 +76,7 @@ crashlytics-build.properties
 
 .DS_Store
 
+
+# Express JS
+/api/node_modules
+/api/.env
