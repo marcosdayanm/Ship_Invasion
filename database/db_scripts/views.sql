@@ -13,9 +13,7 @@ SELECT
 FROM Card c
 JOIN CardType ct ON c.CardTypeId = ct.Id
 JOIN Quality q ON c.QualityId = q.Id
-JOIN Area a ON c.AreaId = a.Id
-LEFT JOIN Sprite s1 ON c.SkinId = s1.Id
-LEFT JOIN Sprite s2 ON c.EffectId = s2.Id;
+JOIN Area a ON c.AreaId = a.Id;
 
 -- Validación
 SELECT * FROM view_carddetails;
@@ -31,15 +29,8 @@ SELECT
     u.CreationDate AS PlayerCreationDate,
     u.Wins AS PlayerWins,
     u.Losses AS PlayerLosses,
-    u.Coins AS PlayerCoins,
-    ps.PlayerId AS PurchasedSpritePlayerId,
-    ps.SpriteId AS PurchasedSpriteSpriteId,
-    s.Id AS SpriteId,
-    s.IsAddOn AS SpriteIsAddOn,
-    s.Price AS SpritePrice
-FROM Player u
-LEFT JOIN PurchasedSprite ps ON u.Id = ps.PlayerId
-LEFT JOIN Sprite s ON s.Id = ps.SpriteId;
+    u.Coins AS PlayerCoins
+FROM Player u;
 
 -- Validación
 SELECT * FROM view_playerdetails;
@@ -60,11 +51,6 @@ SELECT
     u.Losses AS PlayerLosses,
     u.Coins AS PlayerCoins,
     
-    p.Id AS PlayId,
-    p.PlayNumber AS PlayNumber,
-    p.IsPlayerPlay AS PlayIsPlayerPlay,
-    p.NumFieldsCovered AS PlayNumFieldsCovered,
-    
     a.Id AS ArenaId,
     a.Name AS ArenaName,
     a.Level AS ArenaLevel,
@@ -72,7 +58,6 @@ SELECT
     
     FROM Game g
     LEFT JOIN Player u ON g.PlayerId = u.Id
-    LEFT JOIN Play p ON g.Id = p.GameId
     LEFT JOIN Arena a ON a.Id = g.ArenaId;
 
 
@@ -80,3 +65,31 @@ SELECT
 SELECT * FROM view_gamedetails;
 
 
+
+-- View for all the player details
+CREATE OR REPLACE VIEW view_playdetails AS
+SELECT 
+    p.Id AS PlayId,
+    p.PlayNumber AS PlayNumber,
+    p.IsPlayerPlay AS IsPlayerPlay,
+    p.NumFieldsCovered AS NumFieldsCovered,
+    p.GameId AS GameId,
+
+    c.Id AS CardId,
+    c.Name AS CardName,
+    ct.TypeName AS CardType,
+    q.QualityName AS CardQuality,
+    a.LengthX AS LengthX,
+    a.LengthY AS LengthY,
+
+    g.Date AS GameDate,
+    g.IsPlayerWon AS GameIsPlayerWonGame
+FROM Play p
+JOIN Card c ON p.CardPlayedId = c.Id
+JOIN CardType ct ON c.CardTypeId = ct.Id
+JOIN Quality q ON c.QualityId = q.Id
+JOIN Area a ON c.AreaId = a.Id
+JOIN Game g ON p.GameId = g.Id;
+
+-- Validación
+SELECT * FROM view_playdetails;
