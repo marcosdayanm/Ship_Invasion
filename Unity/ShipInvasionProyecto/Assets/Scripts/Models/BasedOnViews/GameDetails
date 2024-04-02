@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class GameDetails
+{
+    public int GameId;
+    public DateTime GameDate;
+    public bool GameIsPlayerWonGame;
+    public int PlayerId;
+    public string PlayerUsername;
+    public int PlayerWins;
+    public int PlayerLosses;
+    public int PlayerCoins;
+    public int ArenaId;
+    public string ArenaName;
+    public int ArenaLevel;
+    public int ArenaMatchesRequired;
+}
+
+
+[System.Serializable]
+public class Games
+{
+public List<GameDetails> Items;
+}
