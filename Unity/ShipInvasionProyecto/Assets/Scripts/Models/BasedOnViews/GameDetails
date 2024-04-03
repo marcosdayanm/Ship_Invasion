@@ -20,7 +20,15 @@ public class GameDetails
 
 
 [System.Serializable]
-public class Games
+public class Games // Éste para todos los games
 {
 public List<GameDetails> Items;
+}
+
+
+[System.Serializable] 
+public class GameWithPlays // Éste es el que se va a usar para matchear
+{
+    public GameDetails Game;
+    public List<Play> Plays;
 }
