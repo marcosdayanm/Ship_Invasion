@@ -27,7 +27,7 @@ public class APIConnection : MonoBehaviour
     // This class is used to store the card data
     // Card card;
 
-    CardDetails card
+    CardDetails card;
 
     public void Start()
     {
@@ -67,8 +67,8 @@ public class APIConnection : MonoBehaviour
             // Debug.Log($"Name: {card.card_name} Description: {card.card_description} Cost: {card.card_cost}");
           
 
-            cardName.text = card.Name;
-            Debug.Log($"Name: {card.Name}");
+            cardName.text = card.CardName;
+            Debug.Log($"Name: {card.CardName}");
         }
     }
 }
