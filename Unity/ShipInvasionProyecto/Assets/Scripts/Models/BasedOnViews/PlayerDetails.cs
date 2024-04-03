@@ -16,8 +16,8 @@ namespace Unity.ShipInvasionProyecto.Assets.Scripts.Models.BasedOnViews
         public int PlayerLosses;
         public int PlayerCoins;
 
-        public PurchasedSprite? PurchasedSpritePlayerId;
-        public PurchasedSprite? PurchasedSpriteSpriteId;
+        public PurchasedSprite PurchasedSpritePlayerId; 
+        public PurchasedSprite PurchasedSpriteSpriteId;
 
 
         // public List<PurchasedSpriteDetails> PurchasedSprites { get; set; }
