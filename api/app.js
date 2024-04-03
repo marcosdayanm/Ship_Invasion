@@ -74,8 +74,34 @@ app
       if (connection) connection.end();
     }
   })
-  // TODO: Update one player information (conins, wins, looses, etc)
-  .put(async (req, res) => {})
+  .put(async (req, res) => {
+        let connection = null;
+        const { playerId } = req.params;
+        const keys = Object.keys(req.body);
+        const changableFields = ["coins", "wins", "losses"];
+        if(keys.some(key => !changableFields.includes(key))){
+            return res.status(400).json({ error: "Invalid request" });
+        }
+        let query = "UPDATE Player SET";
+        const values = [];
+        keys.forEach((key, index) => {
+            query += ` ${key} = ?`;
+            values.push(req.body[key]);
+            if(index < keys.length - 1){
+                query += ",";
+            }
+        });
+        query += " WHERE id = ?";
+        try {
+            connection = await connectToDB();
+            await connection.execute(query, [...values, playerId]);
+            res.status(200).json({ msg: "Player updated successfully" });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        } finally {
+            if (connection) connection.end();
+        }
+  })
   // TODO: Delete one player (and all its games, plays, etc)
   .delete(async (req, res) => {
     let connection = null;
@@ -144,8 +170,7 @@ app
 // Route to manage all games of a player
 app
   .route("/api/games")
-  // Get all games of a player
-  // TODO: Take the player id from request player info set in the header
+  // Get all games of a player with their details
   .get(async (req, res) => {
     let connection = null;
     const { playerId } = req.query;
@@ -251,17 +276,16 @@ app
   });
 
 // TODO:
-// - Add a new endpoint to get one game of a player (with all plays)
-// - Add a new endpoint to save a new play
+// - Add a new endpoint to authenticate a player (login)
+
 // - Add a new endpoint to save a new sprite purchase of a player
 // - Add a new endpoint to get all sprites of a player
-// - Add a new endpoint to authenticate a player (login)
 
 // Endpoints overview
 // GET /api/cards -> Get all cards with their details
 // GET /api/cards/:id -> Get one card with its details
 // GET /api/players/:id -> Get one player with its details
-// PUT /api/players/:id ->
+// PUT /api/players/:id -> Update one player info
 // DELETE /api/players/:id -> Delete one player
 // GET /api/players -> Get all players
 // POST /api/players -> Save new player
