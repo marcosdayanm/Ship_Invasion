@@ -75,32 +75,32 @@ app
     }
   })
   .put(async (req, res) => {
-        let connection = null;
-        const { playerId } = req.params;
-        const keys = Object.keys(req.body);
-        const changableFields = ["coins", "wins", "losses"];
-        if(keys.some(key => !changableFields.includes(key))){
-            return res.status(400).json({ error: "Invalid request" });
-        }
-        let query = "UPDATE Player SET";
-        const values = [];
-        keys.forEach((key, index) => {
-            query += ` ${key} = ?`;
-            values.push(req.body[key]);
-            if(index < keys.length - 1){
-                query += ",";
-            }
-        });
-        query += " WHERE id = ?";
-        try {
-            connection = await connectToDB();
-            await connection.execute(query, [...values, playerId]);
-            res.status(200).json({ msg: "Player updated successfully" });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        } finally {
-            if (connection) connection.end();
-        }
+    let connection = null;
+    const { playerId } = req.params;
+    const keys = Object.keys(req.body);
+    const changableFields = ["coins", "wins", "losses"];
+    if (keys.some((key) => !changableFields.includes(key))) {
+      return res.status(400).json({ error: "Invalid request" });
+    }
+    let query = "UPDATE Player SET";
+    const values = [];
+    keys.forEach((key, index) => {
+      query += ` ${key} = ?`;
+      values.push(req.body[key]);
+      if (index < keys.length - 1) {
+        query += ",";
+      }
+    });
+    query += " WHERE id = ?";
+    try {
+      connection = await connectToDB();
+      await connection.execute(query, [...values, playerId]);
+      res.status(200).json({ msg: "Player updated successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    } finally {
+      if (connection) connection.end();
+    }
   })
   // TODO: Delete one player (and all its games, plays, etc)
   .delete(async (req, res) => {
@@ -228,12 +228,12 @@ app
         "SELECT * FROM view_gamedetails WHERE GameId = ?",
         [gameId]
       );
-      const [plays] = await connection.execute(
+      const [Plays] = await connection.execute(
         "SELECT * FROM view_playdetails WHERE GameId = ?",
         [gameId]
       );
-      let game = currgame[0];
-      res.status(200).json({ game, plays });
+      let Game = currgame[0];
+      res.status(200).json({ Game, Plays });
     } catch (error) {
       res.status(500).json({ error: error.message });
     } finally {
