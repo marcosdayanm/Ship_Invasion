@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class Card
@@ -15,7 +16,7 @@ public class Card
     public Quality Quality;
     public CardType CardType;
     public Area Area;
-    public Sprite? Skin;
-    public Sprite? Effect;
-    public List<Play>? Plays;
+    public Sprite Skin;
+    public Sprite Effect;
+    public List<Play> Plays;
 }
