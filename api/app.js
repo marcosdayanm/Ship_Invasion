@@ -28,7 +28,7 @@ app.get("/api/cards", async (req, res) => {
   try {
     connection = await connectToDB();
     const [cards] = await connection.execute("SELECT * FROM view_carddetails");
-    res.status(200).json({Items: cards});
+    res.status(200).json({ Items: cards });
   } catch (error) {
     res.status(500).json({ error: error.message });
   } finally {
@@ -116,6 +116,32 @@ app
       if (connection) connection.end();
     }
   });
+
+// route to get a player by is id and password by a post, for login purposes
+app.route("/api/players/login").post(async (req, res) => {
+  let connection = null;
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: "Invalid request" });
+  }
+  try {
+    connection = await connectToDB();
+    const [rows] = await connection.execute(
+      "SELECT * FROM view_playerdetails WHERE Username = ? AND Password = ?",
+      [username, password]
+    );
+    if (rows.length === 0) {
+      return res
+        .status(400)
+        .json({ error: "Username or/and password incorrect" });
+    }
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (connection) connection.end();
+  }
+});
 
 // Route to manage players (add new player or get all players)
 app
