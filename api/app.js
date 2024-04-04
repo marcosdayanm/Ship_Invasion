@@ -27,8 +27,8 @@ app.get("/api/cards", async (req, res) => {
   let connection = null;
   try {
     connection = await connectToDB();
-    const [rows] = await connection.execute("SELECT * FROM view_carddetails");
-    res.status(200).json(rows);
+    const [cards] = await connection.execute("SELECT * FROM view_carddetails");
+    res.status(200).json({Items: cards});
   } catch (error) {
     res.status(500).json({ error: error.message });
   } finally {
