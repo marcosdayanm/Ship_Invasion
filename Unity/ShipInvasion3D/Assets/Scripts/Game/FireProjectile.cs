@@ -6,17 +6,17 @@ public class FireProjectile : MonoBehaviour
 {
     [SerializeField] Rigidbody projectilePrefab;
     [SerializeField] float speed = 4;
-    [SerializeField] Transform target;
+    // [SerializeField] Transform target;
     
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            LaunchProjectile();
-        }
+        // if (Input.GetButtonDown("Fire1"))
+        // {
+        //     LaunchProjectileBasedOnVelocity();
+        // }
     }
 
-    public void LaunchProjectile()
+    public void LaunchProjectileBasedOnAngle(Transform target)
     {
         Rigidbody projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         Vector3 toTarget = target.position - transform.position;
@@ -36,6 +36,49 @@ public class FireProjectile : MonoBehaviour
         // Calculamos los componentes de la velocidad
         float vx = velocity * Mathf.Cos(angle * Mathf.Deg2Rad);
         float vy = velocity * Mathf.Sin(angle * Mathf.Deg2Rad);
+        
+        // Aplicamos la velocidad teniendo en cuenta la altura del objetivo
+        float h = target.position.y - transform.position.y;
+        if (h > 0)
+        {
+            // Ajustamos la velocidad vertical para compensar la altura del objetivo
+            float extraHeight = Mathf.Sqrt(2 * h / g);
+            vy += extraHeight;
+        }
+
+        // Aplicamos la velocidad al proyectil
+        projectile.velocity = new Vector3(velocityDir.x * vx, vy, velocityDir.z * vx);
+        projectile.transform.rotation = Quaternion.LookRotation(projectile.velocity);
+    }
+
+    public void LaunchProjectileBasedOnVelocity(Transform target)
+    {
+        Rigidbody projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        Vector3 toTarget = target.position - transform.position;
+
+        float g = Physics.gravity.magnitude;
+        float desiredSpeed = speed; // Velocidad de lanzamiento deseada
+
+        // Calculamos la distancia horizontal d
+        Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
+        float d = toTargetXZ.magnitude;
+
+        // Calculamos el ángulo necesario para la velocidad deseada
+        float angle = Mathf.Asin(g * d / Mathf.Pow(desiredSpeed, 2)) / 2.0f; // Este es el ángulo en radianes
+
+        if (float.IsNaN(angle)) // Si el ángulo no es real, significa que la velocidad deseada es demasiado baja para alcanzar el objetivo
+        {
+            Debug.LogError("La velocidad deseada es demasiado baja para alcanzar el objetivo. Ajustando a la velocidad mínima necesaria...");
+            // Ajusta la velocidad al mínimo necesario para alcanzar el objetivo a 45 grados, o maneja este caso como prefieras
+            desiredSpeed = Mathf.Sqrt(d * g / Mathf.Sin(2 * 45 * Mathf.Deg2Rad));
+            angle = 45 * Mathf.Deg2Rad; // Volvemos a 45 grados en radianes como nuestro ángulo de compromiso
+        }
+
+        // Ajustamos la dirección de lanzamiento para apuntar al objetivo
+        Vector3 velocityDir = toTargetXZ.normalized;
+        // Calculamos los componentes de la velocidad
+        float vx = desiredSpeed * Mathf.Cos(angle);
+        float vy = desiredSpeed * Mathf.Sin(angle);
         
         // Aplicamos la velocidad teniendo en cuenta la altura del objetivo
         float h = target.position.y - transform.position.y;

@@ -1,0 +1,28 @@
+{
+    "method": "POST",
+    "description": "one new play",
+    "endpoint": "/api/play",
+    "data": [
+        {
+            "playNumber": 1,
+            "isPlayerPlay": true,
+            "numFieldsCovered": 2,
+            "cardPlayedId": 2,
+            "gameId": 1
+        },
+        {
+            "playNumber": 1,
+            "isPlayerPlay": true,
+            "numFieldsCovered": 2,
+            "cardPlayedId": 4,
+            "gameId": 1
+        },
+        {
+            "playNumber": 1,
+            "isPlayerPlay": false,
+            "numFieldsCovered": 1,
+            "cardPlayedId": 3,
+            "gameId": 1
+          }
+    ]
+}
