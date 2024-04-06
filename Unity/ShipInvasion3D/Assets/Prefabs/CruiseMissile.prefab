@@ -8,6 +8,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 4ab581e06f3b88042b9154887d4c359e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4ab581e06f3b88042b9154887d4c359e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4ab581e06f3b88042b9154887d4c359e,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 4ab581e06f3b88042b9154887d4c359e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -75,6 +90,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -9132729238498812400}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4ab581e06f3b88042b9154887d4c359e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6796927841336487206}
   m_SourcePrefab: {fileID: 100100000, guid: 4ab581e06f3b88042b9154887d4c359e, type: 3}
 --- !u!1 &7285279288537715834 stripped
 GameObject:
@@ -94,7 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b54e06878b91441393e3a75d76b70e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 0}
+  explosion: {fileID: 1220471986098533783, guid: b8558dc89ade3460b84c32a7977a0433,
+    type: 3}
 --- !u!54 &-9132729238498812400
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -122,3 +142,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6796927841336487206
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7285279288537715834}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.15536633, y: 0.37564343, z: 5.555976}
+  m_Center: {x: -0.040190704, y: -0.059461884, z: 0.040365696}
