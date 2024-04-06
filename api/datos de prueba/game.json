@@ -1,0 +1,17 @@
+{
+    "method": "POST",
+    "description": "one new game",
+    "endpoint": "/api/games",
+    "data": [
+        {
+            "isPlayerWon": true,
+            "playerId": 3,
+            "arenaId": 1
+        },
+        {
+            "isPlayerWon": false,
+            "playerId": 1,
+            "arenaId": 1
+        }
+    ]
+}

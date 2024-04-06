@@ -1,0 +1,38 @@
+[
+    {
+        "method": "POST",
+        "description": "one new player",
+        "endpoint": "/api/players",
+        "data": [
+            {
+                "username": "Remy",
+                "password": "Ship"
+            },
+            {
+                "username": "Emily",
+                "password": "Ship"
+            },
+            {
+                "username": "Marcos",
+                "password": "Ship"
+            }
+        ]
+    },
+    {
+        "method": "PUT",
+        "description": "update one player's info",
+        "endpoint": "/api/players/3",
+        "data": [
+            {
+                "losses": 5
+            },
+            {
+                "wins": 3
+            },
+            {
+                "wins": 3,
+                "coins": 4
+            }
+        ]
+    }
+]
