@@ -28,6 +28,9 @@ app.get("/api/cards", async (req, res) => {
   try {
     connection = await connectToDB();
     const [cards] = await connection.execute("SELECT * FROM view_carddetails");
+    if (cards.length === 0) {
+      return res.status(404).json({ error: "No cards found" });
+    }
     res.status(200).json({Items: cards});
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -46,6 +49,9 @@ app.get("/api/cards/:cardId", async (req, res) => {
       "SELECT * FROM view_carddetails WHERE CardId = ?",
       [cardId]
     );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Card not found" });
+    }
     res.status(200).json(rows[0]);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -67,6 +73,9 @@ app
         "SELECT * FROM view_playerdetails WHERE PlayerId = ?",
         [playerId]
       );
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "Player not found" });
+      }
       res.status(200).json(rows[0]);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -77,6 +86,10 @@ app
   .put(async (req, res) => {
     let connection = null;
     const { playerId } = req.params;
+    const [playerExists] = await connection.execute("SELECT * FROM Player WHERE id = ?", [playerId]);
+    if (playerExists.length === 0) {
+      return res.status(404).json({ error: "Player not found" });
+    }
     const keys = Object.keys(req.body);
     const changableFields = ["coins", "wins", "losses"];
     if (keys.some((key) => !changableFields.includes(key))) {
@@ -108,6 +121,10 @@ app
     const { playerId } = req.params;
     try {
       connection = await connectToDB();
+      const [playerExists] = await connection.execute("SELECT * FROM Player WHERE id = ?", [playerId]);
+      if (playerExists.length === 0) {
+        return res.status(404).json({ error: "Player not found" });
+      }
       await connection.execute("DELETE FROM Player WHERE id = ?", [playerId]);
       res.status(200).json({ msg: "Player deleted successfully" });
     } catch (error) {
@@ -183,6 +200,9 @@ app
         "SELECT * FROM view_gamedetails WHERE PlayerId = ?",
         [playerId]
       );
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "No games found" });
+      }
       res.status(200).json(rows);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -228,6 +248,9 @@ app
         "SELECT * FROM view_gamedetails WHERE GameId = ?",
         [gameId]
       );
+      if (currgame.length === 0) {
+        return res.status(404).json({ error: "Game not found" });
+      }
       const [Plays] = await connection.execute(
         "SELECT * FROM view_playdetails WHERE GameId = ?",
         [gameId]
@@ -243,18 +266,18 @@ app
 
 // Route to manage all games of a player
 app
-  .route("/api/play")
+  .route("/api/plays")
   // Save new play
   .post(async (req, res) => {
     let connection = null;
-    const { PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId } =
+    const { playNumber, isPlayerPlay, numFieldsCovered, gameId, cardPlayedId } =
       req.body;
     if (
-      !PlayNumber ||
-      !IsPlayerPlay ||
-      !NumFieldsCovered ||
-      !GameId ||
-      !CardPlayedId
+      !playNumber ||
+      !isPlayerPlay ||
+      !numFieldsCovered ||
+      !gameId ||
+      !cardPlayedId
     ) {
       return res.status(400).json({ error: "Invalid request" });
     }
@@ -262,7 +285,7 @@ app
       connection = await connectToDB();
       const [result] = await connection.execute(
         "INSERT INTO Play (PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId) VALUES (?, ?, ?, ?, ?)",
-        [PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId]
+        [playNumber, isPlayerPlay, numFieldsCovered, gameId, cardPlayedId]
       );
       res.status(201).json({
         msg: "Game created successfully",
