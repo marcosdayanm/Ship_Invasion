@@ -7,6 +7,12 @@ public class GameController : MonoBehaviour
     [SerializeField] Transform enemyGrid;
     private bool isCameraOver = false;
     MoveCamera cameraController;
+    [HideInInspector] public bool isCardDragging = false;
+    [HideInInspector] public bool isCardInUse = false;
+
+    [SerializeField] GameObject playCardPanel;
+    [SerializeField] GameObject canvasSelectCard;
+
 
 
 
@@ -31,9 +37,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // public void FireToThisCoordinate(Transform quadTransform){
-    //     Debug.Log("Fire to: " + quadTransform.position);
-    // }
+    public void AtackMode(){
+        if (!isCameraOver){
+            cameraController.MoveCameraToOver();
+            isCameraOver = true;
+            StartCoroutine(MoveGridEnemy());
+            canvasSelectCard.SetActive(false);
+        }
+    }
 
     IEnumerator MoveGridEnemy(float duration = 1.0f){
         Vector3 start = enemyGrid.position;
@@ -47,5 +58,17 @@ public class GameController : MonoBehaviour
         }
 
         enemyGrid.position = target; // Asegura que el objeto llegue a la posición destino
+    }
+
+    public void OnCardDrag(){
+        isCardDragging = true;
+        playCardPanel.SetActive(true);
+    }
+
+    public void OnCardDrop(){
+        isCardDragging = false;
+        if (!isCardInUse){
+            playCardPanel.SetActive(false);
+        }
     }
 }
