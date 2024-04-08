@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 
 // clase custom para serializar diccionarios en JSON
@@ -86,38 +88,9 @@ public class APIConnection : MonoBehaviour
 
 
 
-// IEnumerator PostPlayerLogInCredentials()
-// {
-//     string fullUrl = apiURL + "/api/players/login";
-//     LoginData loginData = new LoginData("Marcos", "Ship");
-//     string jsonData = JsonUtility.ToJson(loginData);
-
-//     using (UnityWebRequest www = UnityWebRequest.Put(fullUrl, jsonData))
-//     {
-//         www.method = UnityWebRequest.kHttpVerbPOST;
-//         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonData);
-//         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-//         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-//         www.SetRequestHeader("Content-Type", "application/json");
-
-//         yield return www.SendWebRequest();
-
-//         if (www.result != UnityWebRequest.Result.Success)
-//         {
-//             Debug.LogError($"Request failed: {www.error}");
-//         }
-//         else
-//         {
-//             string responseData = www.downloadHandler.text;
-//             Debug.Log($"Response: {responseData}");
-//         }
-//     }
-// }
-
-
-    IEnumerator SendPostRequest(string url, string jsonData, Action<string> onSuccess, Action<string> onFailure)
+    IEnumerator SendPostRequest(string jsonData, Action<string> onSuccess, Action<string> onFailure)
     {
-        using (UnityWebRequest www = UnityWebRequest.PostWwwForm(url, "POST"))
+        using (UnityWebRequest www = UnityWebRequest.PostWwwForm(apiURL + endpoint, "POST"))
         {
             byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonData);
             www.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -134,14 +107,15 @@ public class APIConnection : MonoBehaviour
 
     IEnumerator PostPlayerLogInCredentials()
     {
-        string fullUrl = apiURL + "/api/players/login";
+        endpoint = "/api/players/login";
         LoginData loginData = new LoginData("Marcos", "Ship");
         string jsonData = JsonUtility.ToJson(loginData);
 
-        yield return StartCoroutine(SendPostRequest(fullUrl, jsonData,
+        yield return StartCoroutine(SendPostRequest(jsonData,
             onSuccess: (responseData) => {
-                Debug.Log($"Éxito: {responseData}");
-                // Aquí puedes deserializar y manejar la respuesta exitosa
+
+                Debug.Log(responseData);
+                PlayerPrefs.SetString("user", responseData);
                 // PlayerDetails playerDetails = JsonUtility.FromJson<PlayerDetails>(responseData);
             },
             onFailure: (error) => {
