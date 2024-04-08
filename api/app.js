@@ -150,15 +150,20 @@ app.route("/api/players/login").post(async (req, res) => {
   try {
     connection = await connectToDB();
     const [rows] = await connection.execute(
-      "SELECT * FROM view_playerdetails WHERE Username = ? AND Password = ?",
+      "SELECT * FROM Player WHERE Username = ? AND Password = ?",
       [username, password]
     );
     if (rows.length === 0) {
       return res
         .status(400)
         .json({ error: "Username or/and password incorrect" });
+    } else {
+      const [player] = await connection.execute(
+        "SELECT * FROM view_playerdetails WHERE PlayerUsername = ?",
+        [username]
+      );
+      res.status(200).json(player[0]);
     }
-    res.status(200).json(rows[0]);
   } catch (error) {
     res.status(500).json({ error: error.message });
   } finally {
