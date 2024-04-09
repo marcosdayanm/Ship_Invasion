@@ -250,15 +250,15 @@ app
   // Save new game
   .post(async (req, res) => {
     let connection = null;
-    const { isPlayerWon, playerId, arenaId } = req.body;
-    if (!isPlayerWon || !playerId || !arenaId) {
+    const { IsPlayerWon, PlayerId, ArenaId } = req.body;
+    if (!IsPlayerWon || !PlayerId || !ArenaId) {
       return res.status(400).json({ error: "Invalid request" });
     }
     try {
       connection = await connectToDB();
       const [result] = await connection.execute(
         "INSERT INTO Game (IsPlayerWon, PlayerId, ArenaId) VALUES (?, ?, ?)",
-        [isPlayerWon, playerId, arenaId]
+        [IsPlayerWon, PlayerId, ArenaId]
       );
       res.status(201).json({
         msg: "Game created successfully",
@@ -273,27 +273,53 @@ app
 
 // Route to manage one game with all its plays
 app
-  .route("/api/games/:gameId")
+  .route("/api/games/:GameId")
   // Get one game with all its plays
   .get(async (req, res) => {
     let connection = null;
-    const { gameId } = req.params;
+    const { GameId } = req.params;
 
     try {
       connection = await connectToDB();
       const [currgame] = await connection.execute(
         "SELECT * FROM view_gamedetails WHERE GameId = ?",
-        [gameId]
+        [GameId]
       );
       if (currgame.length === 0) {
         return res.status(404).json({ error: "Game not found" });
       }
       const [Plays] = await connection.execute(
         "SELECT * FROM view_playdetails WHERE GameId = ?",
-        [gameId]
+        [GameId]
       );
       let Game = currgame[0];
       res.status(200).json({ Game, Plays });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    } finally {
+      if (connection) connection.end();
+    }
+  })
+
+  // Updates IsPlayerWon of a game if the player won the game
+  .post(async (req, res) => {
+    let connection = null;
+    const { GameId } = req.params;
+    const { IsPlayerWon } = req.body;
+
+    if (!IsPlayerWon) {
+      return res.status(400).json({ error: "Invalid request" });
+    }
+    try {
+      connection = await connectToDB();
+      const [result] = await connection.execute(
+        "UPDATE Game SET IsPlayerWon = ? WHERE Id = ?",
+        [IsPlayerWon, GameId]
+      );
+      res.status(201).json({
+        msg: "IsPlayerWon updated successfully",
+        GameId: GameId,
+      });
     } catch (error) {
       res.status(500).json({ error: error.message });
     } finally {
@@ -307,14 +333,14 @@ app
   // Save new play
   .post(async (req, res) => {
     let connection = null;
-    const { playNumber, isPlayerPlay, numFieldsCovered, gameId, cardPlayedId } =
+    const { PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId } =
       req.body;
     if (
-      !playNumber ||
-      !isPlayerPlay ||
-      !numFieldsCovered ||
-      !gameId ||
-      !cardPlayedId
+      !PlayNumber ||
+      !IsPlayerPlay ||
+      !NumFieldsCovered ||
+      !GameId ||
+      !CardPlayedId
     ) {
       return res.status(400).json({ error: "Invalid request" });
     }
@@ -322,11 +348,11 @@ app
       connection = await connectToDB();
       const [result] = await connection.execute(
         "INSERT INTO Play (PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId) VALUES (?, ?, ?, ?, ?)",
-        [playNumber, isPlayerPlay, numFieldsCovered, gameId, cardPlayedId]
+        [PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId]
       );
       res.status(201).json({
-        msg: "Game created successfully",
-        GameId: result.insertId,
+        msg: "Play created successfully",
+        PlayId: result.insertId,
       });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -352,6 +378,7 @@ app
 // GET /api/games -> Get all games of a player with their details
 // POST /api/games -> Save new game
 // GET /api/games/:id -> Get a game with all its plays
+// POST /api/games/:id -> Updates IsPlayerWon of a game if the player won the game
 // POST /api/play -> Save a new play
 
 // Run the server
