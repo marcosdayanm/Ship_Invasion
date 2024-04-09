@@ -8,4 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Creditos.unity
+    guid: 62611f060a6f34294b1b74bec3d87600
+  - enabled: 0
+    path: Assets/Scenes/LoginPruebaPost.unity
+    guid: ce93d9ef3015843e5ad937225df09d0e
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: ca1c8a96e83874ffdbfe25c9fefe0b4e
+  - enabled: 1
+    path: Assets/Scenes/VisualizacionCartas.unity
+    guid: d1b11a03fc07a4d0185dd9cef669c267
   m_configObjects: {}
