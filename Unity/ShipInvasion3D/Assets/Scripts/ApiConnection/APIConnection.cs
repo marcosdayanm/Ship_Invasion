@@ -42,8 +42,12 @@ public class APIConnection : MonoBehaviour
 
     public void Start()
     {
-        StartCoroutine(GetCards());
-        StartCoroutine(PostPlayerLogInCredentials());
+        // StartCoroutine(GetCards());
+        // StartCoroutine(GetCard());
+        // StartCoroutine(PostPlayerLogInCredentials());
+        // StartCoroutine(PutPlay());
+        // StartCoroutine(PutGame());
+        StartCoroutine(GameEditIsPlayerWon(16));
     }
 
     IEnumerator GetCards()
@@ -66,6 +70,76 @@ public class APIConnection : MonoBehaviour
         card = JsonUtility.FromJson<CardDetails>(data);
         cardName.text = card.CardName;
     }
+
+
+    IEnumerator PostPlayerLogInCredentials()
+    {
+        endpoint = "/api/players/login";
+        LoginData loginData = new LoginData("Marcos", "Ship");
+        string jsonData = JsonUtility.ToJson(loginData);
+
+        yield return StartCoroutine(SendPostRequest(jsonData,
+            onSuccess: (responseData) => {
+
+                Debug.Log(responseData);
+                PlayerPrefs.SetString("user", responseData);
+                // PlayerDetails playerDetails = JsonUtility.FromJson<PlayerDetails>(responseData);
+            },
+            onFailure: (error) => {
+                Debug.LogError($"Error: {error}");
+            }));
+    }
+
+
+    IEnumerator PutPlay()
+    {
+        endpoint = "/api/plays";
+        Play play = new Play("1", "1", "1", "1", "1");
+        string jsonData = JsonUtility.ToJson(play);
+
+        yield return StartCoroutine(SendPostRequest(jsonData,
+            onSuccess: (responseData) => {
+
+                Debug.Log(responseData);
+            },
+            onFailure: (error) => {
+                Debug.LogError($"Error: {error}");
+            }));
+    }
+
+    IEnumerator PutGame()
+    {
+        endpoint = "/api/games";
+        Game game = new Game("0", "3", "1");
+        string jsonData = JsonUtility.ToJson(game);
+
+        yield return StartCoroutine(SendPostRequest(jsonData,
+            onSuccess: (responseData) => {
+
+                Debug.Log(responseData);
+            },
+            onFailure: (error) => {
+                Debug.LogError($"Error: {error}");
+            }));
+    }
+
+
+    IEnumerator GameEditIsPlayerWon(int GameId)
+    {
+        endpoint = $"/api/games/{GameId}";
+        EditIsPlayerWon game = new EditIsPlayerWon();
+        string jsonData = JsonUtility.ToJson(game);
+
+        yield return StartCoroutine(SendPostRequest(jsonData,
+            onSuccess: (responseData) => {
+
+                Debug.Log(responseData);
+            },
+            onFailure: (error) => {
+                Debug.LogError($"Error: {error}");
+            }));
+    }
+
 
     
 
@@ -104,26 +178,6 @@ public class APIConnection : MonoBehaviour
 
         }
     }
-
-    IEnumerator PostPlayerLogInCredentials()
-    {
-        endpoint = "/api/players/login";
-        LoginData loginData = new LoginData("Marcos", "Ship");
-        string jsonData = JsonUtility.ToJson(loginData);
-
-        yield return StartCoroutine(SendPostRequest(jsonData,
-            onSuccess: (responseData) => {
-
-                Debug.Log(responseData);
-                PlayerPrefs.SetString("user", responseData);
-                // PlayerDetails playerDetails = JsonUtility.FromJson<PlayerDetails>(responseData);
-            },
-            onFailure: (error) => {
-                Debug.LogError($"Error: {error}");
-            }));
-    }
-
-
 
 
 }
