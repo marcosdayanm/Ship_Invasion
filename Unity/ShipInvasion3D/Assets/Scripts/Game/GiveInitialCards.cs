@@ -31,7 +31,7 @@ public class GiveInitialCards : MonoBehaviour
             Transform cardObject = newCardCell.transform.Find("Card");
             CardDetails currentCard = defenseCards.Items[randomIndex];
             cardObject.GetComponent<CardController>().cardDetails = currentCard;
-            cardObject.GetComponent<CardController>().image.sprite = Resources.Load<Sprite>("Images/CartasDefensa/" + currentCard.CardName);
+            cardObject.GetComponent<CardController>().image.sprite = Resources.Load<Sprite>("Images/CartasDefensa/" + currentCard.CardId.ToString());
 
             yield return new WaitForSeconds(0.5f);
         }
