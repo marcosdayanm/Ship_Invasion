@@ -15,14 +15,14 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject playCardPanel;
     [SerializeField] GameObject canvasSelectCard;
 
-
-
-
+    Cards cards;
 
     // Start is called before the first frame update
     void Start()
     {
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<MoveCamera>();
+        cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
+        PreparationMode();
     }
 
     // Update is called once per frame
@@ -49,6 +49,21 @@ public class GameController : MonoBehaviour
         }
         
     }
+
+    void PreparationMode(){
+        cameraController.MoveCameraToOrigin();
+        isCameraOnAttack = false;
+        isCameraOnDefense = false;
+        // StartCoroutine(MoveGrid());
+    }
+
+
+
+
+
+
+
+
 
     public void AtackMode(){
         if (!isCameraOnAttack){
