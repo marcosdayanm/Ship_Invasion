@@ -47,19 +47,20 @@ public class APIConnection : MonoBehaviour
         // StartCoroutine(PostPlayerLogInCredentials());
         // StartCoroutine(PutPlay());
         // StartCoroutine(PutGame());
-        StartCoroutine(GameEditIsPlayerWon(16));
+        // StartCoroutine(GameEditIsPlayerWon(16));
     }
 
-    IEnumerator GetCards()
+    public IEnumerator GetCards()
     {
         endpoint = "/api/cards/";
         idParameter = "";
         yield return StartCoroutine(SendGetRequest());
         cards = JsonUtility.FromJson<Cards>(data);
-        foreach(CardDetails card in cards.Items)
-        {
-            Debug.Log(card.CardName);
-        }
+        PlayerPrefs.SetString("cards", data);
+        // foreach(CardDetails card in cards.Items)
+        // {
+        //     Debug.Log(card.CardName);
+        // }
     }
 
     IEnumerator GetCard()
