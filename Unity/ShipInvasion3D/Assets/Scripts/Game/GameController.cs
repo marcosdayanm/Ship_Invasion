@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject playCardPanel;
     [SerializeField] GameObject canvasSelectCard;
 
-    Cards cards;
+    public Cards cards;
 
     // Start is called before the first frame update
     void Start()

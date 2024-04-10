@@ -19,7 +19,8 @@ public class CardController :
     [HideInInspector] public Transform parentToReturnTo = null;
     [HideInInspector] public Transform lastCellCard = null;
     GameController gameController;
-    public Image image;
+    [SerializeField] public Image image;
+    [HideInInspector] public CardDetails cardDetails;
 
     // Start is called before the first frame update
     void Start()
