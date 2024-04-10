@@ -15,20 +15,6 @@ INSERT INTO CardType (TypeName, IsAttackCard) VALUES
 SELECT * FROM CardType;
 
 
--- Area
-INSERT INTO Area (LengthX, LengthY) VALUES 
-(1, 1),
-(1, 2),
-(2, 1),
-(1, 3),
-(3, 1),
-(1, 5),
-(5, 1),
-(10, 1),
-(1, 10),
-(3, 3);
-SELECT * FROM Area;
-
 -- Sprite
 INSERT INTO Sprite (Name, IsAddOn, Price) VALUES
 ("ElectroShips", true, 100),
@@ -54,14 +40,41 @@ INSERT INTO Quality (QualityName) VALUES
 ("Gold");
 SELECT * FROM Quality;
 
+-- Area
+INSERT INTO Area (LengthX, LengthY) VALUES 
+(1, 1),
+(2, 1),
+(1, 2),
+(3, 1),
+(1, 3),
+(4, 1),
+(1, 4),
+(5, 1),
+(3, 3),
+(10, 1);
+SELECT * FROM Area;
+
 -- Card
 INSERT INTO Card (Name, QualityId, CardTypeId, AreaId) VALUES 
-('Canonball', 1, 1, 1), 
-('Thunder', 2, 1, 4), 
-('Electric storm', 3, 1, 9),
-('Sailboat', 1, 2, 1),
-('Cruiser', 2, 2, 5),
-('Ship', 3, 2, 10);
+('Dardo', 1, 1, 1), 
+('Duplo', 1, 1, 2), 
+('Flecha', 1, 1, 3), 
+('Tridente', 1, 1, 4), 
+('Áncora', 1, 1, 5), 
+('Halberd', 2, 1, 6), 
+('Javelin', 2, 1, 7), 
+('Kraken', 2, 1, 8),
+('Zeppelin', 3, 1, 9),
+('Leviatán', 3, 1, 10),
+
+('Yate', 1, 2, 1),
+('Dinghy', 1, 2, 2),
+('Skiff', 1, 2, 3),
+('Galeón', 2, 2, 4),
+('Clipper', 2, 2, 5),
+('Corbeta', 2, 2, 6),
+('Fragata', 3, 2, 7),
+('Búnker', 3, 2, 8);
 SELECT * FROM Card;
 
 
