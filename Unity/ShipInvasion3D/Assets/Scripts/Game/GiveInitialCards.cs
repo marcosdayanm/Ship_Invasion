@@ -5,6 +5,8 @@ using UnityEngine;
 public class GiveInitialCards : MonoBehaviour
 {
     GameController gameController;
+    [SerializeField] GameObject playerHand;
+    [SerializeField] GameObject cellCard;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +20,20 @@ public class GiveInitialCards : MonoBehaviour
     }
 
     public void GiveCards(){
-         
+        Cards defenseCards = gameController.cards.DefenseCards();
+        StartCoroutine(GiveCardsCoroutine(defenseCards));
+    }
+
+    public IEnumerator GiveCardsCoroutine(Cards defenseCards){
+        for(int i = 0; i < 5; i++){
+            int randomIndex = Random.Range(0, defenseCards.Items.Count);
+            GameObject newCardCell = Instantiate(cellCard, playerHand.transform);
+            Transform cardObject = newCardCell.transform.Find("Card");
+            CardDetails currentCard = defenseCards.Items[randomIndex];
+            cardObject.GetComponent<CardController>().cardDetails = currentCard;
+            cardObject.GetComponent<CardController>().image.sprite = Resources.Load<Sprite>("Images/CartasDefensa/" + currentCard.CardName);
+
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }
