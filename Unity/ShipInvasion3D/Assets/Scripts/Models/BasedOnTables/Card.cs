@@ -16,7 +16,7 @@ public class Card
     public Quality Quality;
     public CardType CardType;
     public Area Area;
-    public Sprite Skin;
-    public Sprite Effect;
+    // public Sprite Skin;
+    // public Sprite Effect;
     public List<Play> Plays;
 }
