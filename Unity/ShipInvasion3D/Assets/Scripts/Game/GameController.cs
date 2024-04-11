@@ -9,18 +9,30 @@ public class GameController : MonoBehaviour
     private bool isCameraOnAttack = false;
     private bool isCameraOnDefense = false;
     MoveCamera cameraController;
+    GiveCards giveCards;
     [HideInInspector] public bool isCardDragging = false;
     [HideInInspector] public bool isCardInUse = false;
+    [HideInInspector] public int CardsCounter = 0;
 
     [SerializeField] GameObject playCardPanel;
     [SerializeField] GameObject canvasSelectCard;
 
-    Cards cards;
+    enum GameState {
+        Main,
+        AttackGrid,
+        DefenseGrid,
+        PCTurn
+    }
+
+    private GameState currentState = GameState.Main;
+
+    public Cards cards;
 
     // Start is called before the first frame update
     void Start()
     {
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<MoveCamera>();
+        giveCards = GameObject.FindWithTag("CardsSpawner").GetComponent<GiveCards>();
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
         PreparationMode();
     }
@@ -28,26 +40,19 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !cameraController.isRotating && !isCameraOnDefense){
-            if (isCameraOnAttack){
-                cameraController.MoveCameraToOrigin();
-            }else{
-                cameraController.MoveCameraToAttack();
-            }
-            isCameraOnAttack = !isCameraOnAttack;
-            StartCoroutine(MoveGridEnemy());
+        if(currentState == GameState.Main){
+            // Debug.Log(CardsCounter);
+            // if(CardsCounter < 5){
+            //     HandleMainState();
+            // }
+        }else if(currentState == GameState.AttackGrid){
+            AtackMode();
+        }else if(currentState == GameState.DefenseGrid){
+            DefenseMode();
+        }else if(currentState == GameState.PCTurn){
+            // PCPlay();
         }
 
-        if (Input.GetKeyDown(KeyCode.D) && !cameraController.isRotating && !isCameraOnAttack){
-            if (isCameraOnDefense){
-                cameraController.MoveCameraToOrigin();
-            }else{
-                cameraController.MoveCameraToDefense();
-            }
-            isCameraOnDefense = !isCameraOnDefense;
-            StartCoroutine(MoveGrid());
-        }
-        
     }
 
     void PreparationMode(){
@@ -55,6 +60,10 @@ public class GameController : MonoBehaviour
         isCameraOnAttack = false;
         isCameraOnDefense = false;
         // StartCoroutine(MoveGrid());
+    }
+
+    void HandleMainState(){
+        giveCards.GiveCardsInCombatMode();
     }
 
 
@@ -74,7 +83,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-        public void DefenseMode(){
+    public void DefenseMode(){
         if (!isCameraOnDefense){
             cameraController.MoveCameraToDefense();
             isCameraOnDefense = true;
