@@ -70,6 +70,7 @@ public class APIConnection : MonoBehaviour
         yield return StartCoroutine(SendGetRequest());
         card = JsonUtility.FromJson<CardDetails>(data);
         cardName.text = card.CardName;
+        PlayerPrefs.SetString(card.CardName, data);
     }
 
 
