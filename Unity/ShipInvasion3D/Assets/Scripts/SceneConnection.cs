@@ -21,6 +21,10 @@ public class SceneConnection : MonoBehaviour
         StartCoroutine(StartGame());
     }
 
+    public void toMainMenu () {
+        SceneManager.LoadScene("Menu"); //Para pasar a la escena del menu
+    }
+
     public void toGame () {
         SceneManager.LoadScene("SampleScene"); //Para pasar a la escena de juego
     }
