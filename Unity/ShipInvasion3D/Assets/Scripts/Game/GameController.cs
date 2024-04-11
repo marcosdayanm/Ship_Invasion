@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-        public void DefenseMode(){
+    public void DefenseMode(){
         if (!isCameraOnDefense){
             cameraController.MoveCameraToDefense();
             isCameraOnDefense = true;
