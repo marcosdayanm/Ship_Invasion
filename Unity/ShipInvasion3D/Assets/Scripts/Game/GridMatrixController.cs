@@ -14,6 +14,8 @@ public class GridMatrixController : MonoBehaviour
     {
         this.initializeGrid();
 
+
+// Testing
         this.PlaceShip(0, 0, 0, 2);
         this.CountShips();
 
