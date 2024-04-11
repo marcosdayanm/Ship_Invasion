@@ -11,6 +11,8 @@ public class GiveInitialCards : MonoBehaviour
     void Start()
     {
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        Cards defenseCards = gameController.cards.DefenseCards();
+        StartCoroutine(GiveCardsCoroutine(defenseCards));
     }
 
     // Update is called once per frame
@@ -19,12 +21,8 @@ public class GiveInitialCards : MonoBehaviour
         
     }
 
-    public void GiveCards(){
-        Cards defenseCards = gameController.cards.DefenseCards();
-        StartCoroutine(GiveCardsCoroutine(defenseCards));
-    }
-
     public IEnumerator GiveCardsCoroutine(Cards defenseCards){
+        yield return new WaitForSeconds(1f);
         for(int i = 0; i < 5; i++){
             int randomIndex = Random.Range(0, defenseCards.Items.Count);
             GameObject newCardCell = Instantiate(cellCard, playerHand.transform);
@@ -32,8 +30,9 @@ public class GiveInitialCards : MonoBehaviour
             CardDetails currentCard = defenseCards.Items[randomIndex];
             cardObject.GetComponent<CardController>().cardDetails = currentCard;
             cardObject.GetComponent<CardController>().image.sprite = Resources.Load<Sprite>("Images/CartasDefensa/" + currentCard.CardId.ToString());
-
             yield return new WaitForSeconds(0.5f);
         }
+        yield return new WaitForSeconds(1f);
+        gameController.DefenseMode();
     }
 }
