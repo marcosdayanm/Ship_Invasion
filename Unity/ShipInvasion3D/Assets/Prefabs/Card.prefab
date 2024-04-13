@@ -110,3 +110,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f691eea8d3c748189f3b93efa22582f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentToReturnTo: {fileID: 0}
+  shipPrefab: {fileID: 6724941405340545300, guid: 42ad441495d1c40c7bc50c165a9738a0,
+    type: 3}
+  lastCellCard: {fileID: 0}
+  image: {fileID: 7559203839967335832}
+  cardDetails:
+    CardId: 0
+    CardName: 
+    CardType: 
+    CardQuality: 
+    LengthX: 0
+    LengthY: 0
