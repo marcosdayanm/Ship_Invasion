@@ -8,11 +8,11 @@ public class GiveCards : MonoBehaviour
     [SerializeField] GameObject playerHandPreparation;
     [SerializeField] GameObject playerHandCombat;
     [SerializeField] GameObject cellCard;
+    bool isGivingCards = false;
     // Start is called before the first frame update
     void Start()
     {
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-        
     }
 
     // Update is called once per frame
@@ -22,16 +22,21 @@ public class GiveCards : MonoBehaviour
     }
 
     public void GiveCardsInCombatMode(){
-        Cards cards = gameController.cards;
-        StartCoroutine(GiveCardsCoroutine(cards, playerHandCombat));
+        if(playerHandCombat.transform.childCount < 5 && !isGivingCards){
+            Cards cards = gameController.cards;
+            StartCoroutine(GiveCardsCoroutine(cards, playerHandCombat));
+        }
     }
 
     public void GiveCardsInPreparationMode(){
-        Cards defenseCards = gameController.cards.DefenseCards();
-        StartCoroutine(GiveCardsCoroutine(defenseCards, playerHandPreparation));
+        if(playerHandPreparation.transform.childCount < 5){
+            Cards defenseCards = gameController.cards.DefenseCards();
+            StartCoroutine(GiveCardsCoroutine(defenseCards, playerHandPreparation, true));
+        }
     }
 
-    public IEnumerator GiveCardsCoroutine(Cards cards, GameObject playerHand){
+    public IEnumerator GiveCardsCoroutine(Cards cards, GameObject playerHand, bool prepatationMode = false){
+        isGivingCards = true;
         yield return new WaitForSeconds(1f);
         for(int i = 0; i < 5; i++){
             int randomIndex = Random.Range(0, cards.Items.Count);
@@ -48,6 +53,9 @@ public class GiveCards : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         yield return new WaitForSeconds(1f);
-        gameController.DefenseMode();
+        if(prepatationMode){
+            gameController.DefenseMode();
+        }
+        isGivingCards = false;
     }
 }

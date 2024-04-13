@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SpawnProjectile
   - CardsSpawner
+  - GridQuad
   layers:
   - Default
   - TransparentFX
