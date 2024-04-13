@@ -5,7 +5,7 @@ using UnityEngine;
 public class FireProjectile : MonoBehaviour
 {
     [SerializeField] Rigidbody projectilePrefab;
-    [SerializeField] float speed = 4;
+    [SerializeField] float speed = 80;
     // [SerializeField] Transform target;
     
     void Update()

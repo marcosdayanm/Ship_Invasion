@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
         PCTurn
     }
 
-    private GameState currentState = GameState.Main;
+    private GameState currentState;
 
     public Cards cards;
 
@@ -34,17 +34,14 @@ public class GameController : MonoBehaviour
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<MoveCamera>();
         giveCards = GameObject.FindWithTag("CardsSpawner").GetComponent<GiveCards>();
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
-        PreparationMode();
+        StartCoroutine(PreparationMode());
     }
 
     // Update is called once per frame
     void Update()
     {
         if(currentState == GameState.Main){
-            // Debug.Log(CardsCounter);
-            // if(CardsCounter < 5){
-            //     HandleMainState();
-            // }
+            HandleMainState();
         }else if(currentState == GameState.AttackGrid){
             AtackMode();
         }else if(currentState == GameState.DefenseGrid){
@@ -55,10 +52,12 @@ public class GameController : MonoBehaviour
 
     }
 
-    void PreparationMode(){
+    IEnumerator PreparationMode(){
         cameraController.MoveCameraToOrigin();
         isCameraOnAttack = false;
         isCameraOnDefense = false;
+        yield return new WaitForSeconds(0.2f);
+        giveCards.GiveCardsInPreparationMode();
         // StartCoroutine(MoveGrid());
     }
 
@@ -106,7 +105,7 @@ public class GameController : MonoBehaviour
         enemyGrid.position = target; // Asegura que el objeto llegue a la posición destino
     }
 
-        IEnumerator MoveGrid(float duration = 1.0f){
+    IEnumerator MoveGrid(float duration = 1.0f){
         Vector3 start = grid.position;
         Vector3 target = new Vector3(grid.position.x, isCameraOnDefense ? grid.position.y + 1.3f : grid.position.y - 1.3f, grid.position.z);
         float time = 0;
