@@ -21,6 +21,10 @@ public class UseCard : MonoBehaviour, IDropHandler
         cardController.parentToReturnTo = transform;
         text.SetActive(false);
         gameController.isCardInUse = true;
-        gameController.AtackMode();
+        if(cardController.cardDetails.CardType == "Attack"){
+            gameController.AtackMode();
+        }else{
+            gameController.DefenseMode();
+        }
     }
 }
