@@ -31,6 +31,7 @@ app.get("/api/cards", async (req, res) => {
     if (cards.length === 0) {
       return res.status(404).json({ error: "No cards found" });
     }
+    // console.log(cards);
     res.status(200).json({ Items: cards });
   } catch (error) {
     res.status(500).json({ error: error.message });

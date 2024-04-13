@@ -36,7 +36,11 @@ public class CountQuadState : MonoBehaviour
             Debug.Log($"totalShip: {totalShip}");
 
             return new List<int> {totalNone, totalMiss, totalHit, totalShip};
+    }
 
+
+    public void PlaceShipOnQuadPosition() {
+        
     }
 
     // Update is called once per frame
