@@ -89,6 +89,7 @@ public class CardController :
         isDragging = false;
         gameController.OnCardDrop();
         image.raycastTarget = true;
+        
         if (currentShipInstance != null)
             ValidateCardDrop(eventData);
     }
@@ -166,10 +167,23 @@ public class CardController :
         {
             if (hit.collider != null && hit.collider.CompareTag("GridQuad"))
             {
+
+                Quad quad = hit.collider.GetComponent<Quad>();
+                if (quad != null)
+                {
+                    // Acceder a las propiedades
+                    Debug.Log("Nombre del Quad: " + quad.name);
+
+                    // Modificar las propiedades
+                    quad.state = Quad.quadState.ship;
+
+
                 transform.localScale = new Vector3(.2f, .2f, .2f);
                 currentShipInstance.transform.position = hit.collider.bounds.center + fixPosition;
                 currentShipInstance.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal); // Ajusta la rotación si es necesario
                 currentShipInstance.transform.rotation *= fixRotation;
+                
+                }
             }else{
                 transform.localScale = new Vector3(1, 1, 1);
             }
