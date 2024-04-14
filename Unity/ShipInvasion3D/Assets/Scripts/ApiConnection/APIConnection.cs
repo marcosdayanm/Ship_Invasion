@@ -112,12 +112,19 @@ public class APIConnection : MonoBehaviour
             }));
     }
 
+    // Función para configurar el request POST para enviar un Play
     IEnumerator PutPlay()
     {
+        // Endpoint de la API para enviar un Play
         endpoint = "/api/plays";
+
+        // Se crea un objeto de la clase Play con la información del Play
         Play play = new Play("1", "1", "1", "1", "1");
+
+        // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
         string jsonData = JsonUtility.ToJson(play);
 
+        // Se envía el request POST y se espera a que termine, dependiedno de la respuesta, se ejecuta una función anónima en caso de exito o fracaso
         yield return StartCoroutine(SendPostRequest(jsonData,
             onSuccess: (responseData) => {
 
@@ -128,12 +135,17 @@ public class APIConnection : MonoBehaviour
             }));
     }
 
+    // Función para configurar el request POST para enviar un Game
     IEnumerator PutGame()
     {
+        // Endpoint de la API para enviar un Game
         endpoint = "/api/games";
+        // Se crea un objeto de la clase Game con la información del Game
         Game game = new Game("0", "3", "1");
+        // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
         string jsonData = JsonUtility.ToJson(game);
 
+// Se envía el request POST y se espera a que termine, dependiedno de la respuesta, se ejecuta una función anónima en caso de exito o fracaso
         yield return StartCoroutine(SendPostRequest(jsonData,
             onSuccess: (responseData) => {
 
@@ -144,13 +156,17 @@ public class APIConnection : MonoBehaviour
             }));
     }
 
-
+    // Función para configurar el request POST para modificar el atributo isPlayerWon de un Game en caso de que el jugador lo haya ganado
     IEnumerator GameEditIsPlayerWon(int GameId)
     {
+        // Endpoint de la API para modificar el atributo isPlayerWon de un Game
         endpoint = $"/api/games/{GameId}";
+
+        // Se crea un objeto de la clase EditIsPlayerWon con el atributo isPlayerWon en true
         EditIsPlayerWon game = new EditIsPlayerWon();
         string jsonData = JsonUtility.ToJson(game);
 
+// Se envía el request POST y se espera a que termine, dependiedno de la respuesta, se ejecuta una función anónima en caso de exito o fracaso
         yield return StartCoroutine(SendPostRequest(jsonData,
             onSuccess: (responseData) => {
 
@@ -185,18 +201,23 @@ public class APIConnection : MonoBehaviour
     }
 
 
-    // Función para enviar un request POST
+    // Función para enviar un request POST, ésta función toma como argumentos el JSON en string, una función anónima que se ejecutará si el request es exitoso y otra función anónima que se ejecutará si el request falla
     IEnumerator SendPostRequest(string jsonData, Action<string> onSuccess, Action<string> onFailure)
     {
+        // Se crea un objeto de la clase UnityWebRequest para enviar el request POST con la URL de la API y el endpoint
         using (UnityWebRequest www = UnityWebRequest.PostWwwForm(apiURL + endpoint, "POST"))
         {
+            // Se convierte el JSON en string en un array de bytes para que pueda ser enviado en el request (método de envío a través de UnityWebRequest)
             byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonData);
+            // Se configura el request con el array de bytes y el header Content-Type
             www.uploadHandler = new UploadHandlerRaw(bodyRaw);
             www.downloadHandler = new DownloadHandlerBuffer();
             www.SetRequestHeader("Content-Type", "application/json");
 
+            // Se envía el request y se espera a que termine
             yield return www.SendWebRequest();
 
+            // Si el request fue exitoso, se ejecuta la función onSuccess, si no se ejecuta la función onFailure
             if (www.result == UnityWebRequest.Result.Success) onSuccess?.Invoke(www.downloadHandler.text); 
             else onFailure?.Invoke(www.error); 
 
