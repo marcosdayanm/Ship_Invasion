@@ -113,11 +113,6 @@ public class GameController : MonoBehaviour
 
 
 
-
-
-
-
-
     // Función para activar el modo de ataque
     public void AtackMode(){
         // Si la cámara no está en modo ataque, se pone en modo ataque
