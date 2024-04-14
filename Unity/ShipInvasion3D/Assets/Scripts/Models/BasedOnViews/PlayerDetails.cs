@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 
 
-[System.Serializable]
-public class PlayerDetails
-{
+// Esta clase sirve para guardar los detalles de un jugador y poder serializarla y deserializarla
+[System.Serializable] public class PlayerDetails{
     public int PlayerId;
     public string PlayerUsername;
     public DateTime PlayerCreationDate;
@@ -14,15 +13,11 @@ public class PlayerDetails
 
     // public PurchasedSprite PurchasedSpritePlayerId; 
     // public PurchasedSprite PurchasedSpriteSpriteId;
-
-
     // public List<PurchasedSpriteDetails> PurchasedSprites { get; set; }
 }
 
-
-[System.Serializable]
-public class Players
-{
+// Esta clase sirve para guardar una lista de jugadores y poder serializarla y deserializarla
+[System.Serializable] public class Players {
     public List<PlayerDetails> Items;
 }
 
