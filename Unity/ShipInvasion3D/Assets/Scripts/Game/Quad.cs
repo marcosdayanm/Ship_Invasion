@@ -30,22 +30,35 @@ public class Quad : MonoBehaviour
 
     }
 
+    // CUando se haga click sobre un quad, se comprueba en qué estado está para poder cambiar al estado del quad apropiado
     void OnMouseDown(){
-        spawner.LaunchProjectileBasedOnVelocity(transform);
+        spawner.LaunchProjectileBasedOnVelocity(transform); // lanzar proyectil
+        AdjustQuadState();
+    }
+
+    public void AdjustQuadState() 
+    {
         if (state == quadState.ship)
         {
             state = quadState.hit;
             GetComponent<Renderer>().material = red;
         }
-            
+        else if (state == quadState.hit)
+        {
+            state = quadState.hit;
+            GetComponent<Renderer>().material = red;
+        }
         else 
         {
             state = quadState.miss;
             GetComponent<Renderer>().material = blue;
-        }
-        
-        
+        }  
     }
+
+        public void PlaceShip() 
+        {
+            state = quadState.ship;
+        }
 
     void OnMouseEnter(){
         // GetComponent<Renderer>().material.color = Color.blue;
