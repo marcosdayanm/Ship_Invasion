@@ -4,25 +4,22 @@ using UnityEngine;
 
 public class FireProjectile : MonoBehaviour
 {
+    // Prefab del proyectil a lanzar
     [SerializeField] Rigidbody projectilePrefab;
+    // Velocidad de lanzamiento del proyectil
     [SerializeField] float speed = 80;
-    // [SerializeField] Transform target;
-    
-    void Update()
-    {
-        // if (Input.GetButtonDown("Fire1"))
-        // {
-        //     LaunchProjectileBasedOnVelocity();
-        // }
-    }
 
-    public void LaunchProjectileBasedOnAngle(Transform target)
-    {
+
+    // Esta función sirve para lanzar el proyectil hacia el objetivo basado en un ángulo de lanzamiento (ángulo fijo)
+    public void LaunchProjectileBasedOnAngle(Transform target){
+        // Instanciamos el proyectil
         Rigidbody projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        // Calculamos el vector que apunta al objetivo
         Vector3 toTarget = target.position - transform.position;
 
+        // Gravedad del mundo
         float g = Physics.gravity.magnitude;
-        float angle = 45; // Ángulo de lanzamiento en grados, este podría ser ajustado según la necesidad
+        float angle = 45; // Ángulo de lanzamiento en grados
 
         // Calculamos la distancia horizontal d
         Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
@@ -39,8 +36,7 @@ public class FireProjectile : MonoBehaviour
         
         // Aplicamos la velocidad teniendo en cuenta la altura del objetivo
         float h = target.position.y - transform.position.y;
-        if (h > 0)
-        {
+        if (h > 0){
             // Ajustamos la velocidad vertical para compensar la altura del objetivo
             float extraHeight = Mathf.Sqrt(2 * h / g);
             vy += extraHeight;
@@ -51,11 +47,16 @@ public class FireProjectile : MonoBehaviour
         projectile.transform.rotation = Quaternion.LookRotation(projectile.velocity);
     }
 
+
+    // Esta función sirve para lanzar el proyectil hacia el objetivo basado en la velocidad de lanzamiento (velocidad fija)
     public void LaunchProjectileBasedOnVelocity(Transform target)
     {
+        // Instanciamos el proyectil
         Rigidbody projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        // Calculamos el vector que apunta al objetivo
         Vector3 toTarget = target.position - transform.position;
 
+        // Gravedad del mundo
         float g = Physics.gravity.magnitude;
         float desiredSpeed = speed; // Velocidad de lanzamiento deseada
 
@@ -64,7 +65,7 @@ public class FireProjectile : MonoBehaviour
         float d = toTargetXZ.magnitude;
 
         // Calculamos el ángulo necesario para la velocidad deseada
-        float angle = Mathf.Asin(g * d / Mathf.Pow(desiredSpeed, 2)) / 2.0f; // Este es el ángulo en radianes
+        float angle = Mathf.Asin(g * d / Mathf.Pow(desiredSpeed, 2)) / 2.0f;
 
         if (float.IsNaN(angle)) // Si el ángulo no es real, significa que la velocidad deseada es demasiado baja para alcanzar el objetivo
         {
@@ -82,8 +83,7 @@ public class FireProjectile : MonoBehaviour
         
         // Aplicamos la velocidad teniendo en cuenta la altura del objetivo
         float h = target.position.y - transform.position.y;
-        if (h > 0)
-        {
+        if (h > 0){
             // Ajustamos la velocidad vertical para compensar la altura del objetivo
             float extraHeight = Mathf.Sqrt(2 * h / g);
             vy += extraHeight;

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-[System.Serializable]
-public class CardDetails
-{
+
+// Esta clase sirve para guardar los detalles de una carta y poder serializarla y deserializarla
+[System.Serializable] public class CardDetails{
     public int CardId;
     public string CardName;
     public string CardType;
@@ -16,20 +16,19 @@ public class CardDetails
     // public SpriteDetails Effect;
 }
 
-[System.Serializable]
-public class Cards
-{
+// Esta clase sirve para guardar una lista de cartas y poder serializarla y deserializarla
+[System.Serializable] public class Cards{
     public List<CardDetails> Items;
 
-    public Cards DefenseCards()
-    {
+    // Este es un método que sirve para filtrar las cartas de tipo defensa
+    public Cards DefenseCards(){
         Cards defenceCards = new Cards();
         defenceCards.Items = this.Items.Where(card => card.CardType == "Defense").ToList();
         return defenceCards;
     }
 
-    public Cards AttackCards()
-    {
+    // Este es un método que sirve para filtrar las cartas de tipo ataque
+    public Cards AttackCards(){
         Cards attackCards = new Cards();
         attackCards.Items = this.Items.Where(card => card.CardType == "Attack").ToList();
         return attackCards;
