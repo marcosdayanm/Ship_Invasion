@@ -67,7 +67,7 @@ public class Quad : MonoBehaviour
         }
     }
 
-    // Función para indicar que si colocó un barco en el quad (cambia su estado)
+    // Función para indicar que se colocó un barco en el quad (cambia su estado)
     public void PlaceShip() {
         state = quadState.ship;
     }
