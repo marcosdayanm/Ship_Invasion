@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-[System.Serializable]
-public class PlayDetails
-{
+
+// Esta clase sirve para guardar los detalles de una jugada y poder serializarla y deserializarla
+[System.Serializable] public class PlayDetails{
     public int PlayId;
     public int PlayNumber;
     public bool IsPlayerPlay;
@@ -20,8 +20,7 @@ public class PlayDetails
 }
 
 
-[System.Serializable]
-public class Plays
-{
+// Esta clase sirve para guardar una lista de jugadas y poder serializarla y deserializarla
+[System.Serializable] public class Plays{
     public List<PlayDetails> Items;
 }

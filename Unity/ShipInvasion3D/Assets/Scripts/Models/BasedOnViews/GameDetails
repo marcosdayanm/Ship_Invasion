@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-[System.Serializable]
-public class GameDetails
-{
+// Esta clase sirve para guardar los datos de una partida
+[System.Serializable] public class GameDetails{
     public int GameId;
     public DateTime GameDate;
     public bool GameIsPlayerWonGame;
@@ -19,16 +18,14 @@ public class GameDetails
 }
 
 
-[System.Serializable]
-public class Games // Éste para todos los games
-{
-public List<GameDetails> Items;
+// Esta clase sirve para guardar una lista de varias partidas
+[System.Serializable] public class Games {
+    public List<GameDetails> Items;
 }
 
 
-[System.Serializable] 
-public class GameWithPlays // Éste es el que se va a usar para matchear
-{
+// Esta clase sirve para guardar los datos de una partida con todas sus jugadas
+[System.Serializable] public class GameWithPlays{
     public GameDetails Game;
     public List<Play> Plays;
 }
