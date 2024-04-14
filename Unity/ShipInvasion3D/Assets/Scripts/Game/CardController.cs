@@ -28,7 +28,8 @@ public class CardController :
     // Referencia al GameController para acceder a sus métodos y propiedades
     GameController gameController;
 
-    // GridStateController gridStateController;
+    // Referencia al GridStateController para acceder a sus métodos y propiedades
+    GridStateController gridStateController;
 
     // Referencia a la imagen de la carta (para desactivar el raycastTarget mientras se arrastra)
     [SerializeField] public Image image;
@@ -248,10 +249,12 @@ public class CardController :
                 // instancia del quad que se está seleccionando para cambiar de estado
                 Quad quad = hit.collider.GetComponent<Quad>();
                 if (quad != null){
-                    // Acceder a las propiedades
-                    Debug.Log("Nombre del Quad: " + quad.name);
-                    // Modificar las propiedades
-                    quad.state = Quad.quadState.ship;
+                    // // Acceder a las propiedades
+                    // Debug.Log("Nombre del Quad: " + quad.name);
+                    // // Modificar las propiedades
+                    // quad.state = Quad.quadState.ship;
+
+
 
 
                     // Hacemos la carta un poco chica para que se vea el barco
