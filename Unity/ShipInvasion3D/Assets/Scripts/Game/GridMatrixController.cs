@@ -6,16 +6,20 @@ using UnityEngine;
 
 public class GridMatrixController : MonoBehaviour
 {
-    private enum gridState { none, miss, ship, hit };
+    private enum gridState { 
+        none, 
+        miss, 
+        ship, 
+        hit 
+    };
+    
     [SerializeField] List<List<gridState>> gridMatrix = new List<List<gridState>>();
     
 
-    void Start()
-    {
+    void Start(){
         this.initializeGrid();
 
-
-// Testing
+        // Testing
         this.PlaceShip(0, 0, 0, 2);
         this.CountShips();
 
@@ -25,13 +29,10 @@ public class GridMatrixController : MonoBehaviour
         this.CountShips();
     }
 
-    void initializeGrid()
-    {
-        for (int i = 0; i < 12; i++)
-        {
+    void initializeGrid(){
+        for (int i = 0; i < 12; i++){
             gridMatrix.Add(new List<gridState>());
-            for (int j = 0; j < 12; j++)
-            {
+            for (int j = 0; j < 12; j++){
                 gridMatrix[i].Add(gridState.none);
             }
         }
@@ -39,15 +40,11 @@ public class GridMatrixController : MonoBehaviour
     }
 
 
-    int CountShips()
-    {
+    int CountShips(){
         int count = 0;
-        for (int i = 0; i < 12; i++)
-        {
-            for (int j = 0; j < 12; j++)
-            {
-                if (gridMatrix[i][j] == gridState.ship)
-                {
+        for (int i = 0; i < 12; i++){
+            for (int j = 0; j < 12; j++){
+                if (gridMatrix[i][j] == gridState.ship){
                     count++;
                 }
             }
@@ -56,15 +53,11 @@ public class GridMatrixController : MonoBehaviour
         return count;
     }
 
-    int CountMisses()
-    {
+    int CountMisses(){
         int count = 0;
-        for (int i = 0; i < 12; i++)
-        {
-            for (int j = 0; j < 12; j++)
-            {
-                if (gridMatrix[i][j] == gridState.miss)
-                {
+        for (int i = 0; i < 12; i++){
+            for (int j = 0; j < 12; j++){
+                if (gridMatrix[i][j] == gridState.miss){
                     count++;
                 }
             }
@@ -73,15 +66,11 @@ public class GridMatrixController : MonoBehaviour
         return count;
     }
 
-    int CountHits()
-    {
+    int CountHits(){
         int count = 0;
-        for (int i = 0; i < 12; i++)
-        {
-            for (int j = 0; j < 12; j++)
-            {
-                if (gridMatrix[i][j] == gridState.hit)
-                {
+        for (int i = 0; i < 12; i++){
+            for (int j = 0; j < 12; j++){
+                if (gridMatrix[i][j] == gridState.hit){
                     count++;
                 }
             }
@@ -90,30 +79,21 @@ public class GridMatrixController : MonoBehaviour
         return count;
     }
 
-    void PlaceShip(int x1, int y1, int x2, int y2)
-    {
-        for (int i = x1; i <= x2; i++)
-        {
-            for (int j = y1; j <= y2; j++)
-            {
+    void PlaceShip(int x1, int y1, int x2, int y2){
+        for (int i = x1; i <= x2; i++){
+            for (int j = y1; j <= y2; j++){
                 gridMatrix[i][j] = gridState.ship;
             }
         }
     }
 
 
-    void ValidateAttack(int x1, int y1, int x2, int y2)
-    {
-        for (int i = x1; i <= x2; i++)
-        {
-            for (int j = y1; j <= y2; j++)
-            {
-                if (gridMatrix[i][j] == gridState.ship)
-                {
+    void ValidateAttack(int x1, int y1, int x2, int y2){
+        for (int i = x1; i <= x2; i++){
+            for (int j = y1; j <= y2; j++){
+                if (gridMatrix[i][j] == gridState.ship){
                     gridMatrix[i][j] = gridState.hit;
-                }
-                else
-                {
+                }else{
                     gridMatrix[i][j] = gridState.miss;
                 }
             }

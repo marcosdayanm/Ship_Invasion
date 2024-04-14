@@ -31,13 +31,18 @@ public class Serialization<TK, TV>
 
 public class APIConnection : MonoBehaviour
 {
+    // Variable para almacenar la URL de la API
     [SerializeField] string apiURL = "http://localhost:3000";
+    // Variables para almacenar el endpoint y el parámetro de ID
     [SerializeField] string endpoint;
     [SerializeField] string idParameter;
-    [SerializeField] TMP_Text cardName;
+    // Variable para almacenar la data obtenida en el request (JSON en string)
     private string data;
+    // Variable que almacena la información de una carta (de tipo CardDetails)
     CardDetails card;
+    // Variable que almacena la información de todas las cartas (de tipo Cards)
     Cards cards;
+    // Variable que almacena la información de un jugador (de tipo PlayerDetails)
     PlayerDetails player;
 
     public void Start()
@@ -50,48 +55,62 @@ public class APIConnection : MonoBehaviour
         // StartCoroutine(GameEditIsPlayerWon(16));
     }
 
+    // Función para configurar el request GET para obtener TODAS las Cartas
     public IEnumerator GetCards()
     {
+        // Enpoint de la API para obtener todas las cartas
         endpoint = "/api/cards/";
+        // Parámetro de ID vacío porque no se necesita en este endpoint
         idParameter = "";
+        // Se envía el request GET
         yield return StartCoroutine(SendGetRequest());
+        // Se deserializa el JSON obtenido en un objeto Cards (se convierte de JSON a un objeto de la clase Cards)
         cards = JsonUtility.FromJson<Cards>(data);
+        // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
         PlayerPrefs.SetString("cards", data);
-        // foreach(CardDetails card in cards.Items)
-        // {
-        //     Debug.Log(card.CardName);
-        // }
     }
 
+    // Función para configurar el request GET para obtener una Carta específica
     IEnumerator GetCard()
     {
+        // Enpoint de la API para obtener una carta específica
         endpoint = "/api/cards/";
+        // Parámetro de ID para obtener la carta con ID 1 (ejemplo)
         idParameter = "1";
+        // Se envía el request GET
         yield return StartCoroutine(SendGetRequest());
+        // Se deserializa el JSON obtenido en un objeto CardDetails (se convierte de JSON a un objeto de la clase CardDetails)
         card = JsonUtility.FromJson<CardDetails>(data);
-        cardName.text = card.CardName;
+        // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
         PlayerPrefs.SetString(card.CardName, data);
     }
 
 
+    // Función para configurar el request POST para enviar las credenciales de inicio de sesión de un jugador
     IEnumerator PostPlayerLogInCredentials()
     {
+        // Enpoint de la API para enviar las credenciales de inicio de sesión
         endpoint = "/api/players/login";
+        // Se crea un objeto de la clase LoginData con las credenciales de inicio de sesión
         LoginData loginData = new LoginData("Marcos", "Ship");
+        // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
         string jsonData = JsonUtility.ToJson(loginData);
 
+        // Se envía el request POST
         yield return StartCoroutine(SendPostRequest(jsonData,
+            // Se pasa una función anónima que se ejecutará si el request es exitoso
             onSuccess: (responseData) => {
-
                 Debug.Log(responseData);
+                // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
                 PlayerPrefs.SetString("user", responseData);
+
                 // PlayerDetails playerDetails = JsonUtility.FromJson<PlayerDetails>(responseData);
             },
+            // Se pasa una función anónima que se ejecutará si el request falla
             onFailure: (error) => {
                 Debug.LogError($"Error: {error}");
             }));
     }
-
 
     IEnumerator PutPlay()
     {
@@ -145,13 +164,16 @@ public class APIConnection : MonoBehaviour
 
     
 
+    // Función para enviar un request GET
     IEnumerator SendGetRequest()
     {
+        // Se crea un objeto de la clase UnityWebRequest para enviar el request GET con la URL de la API y el endpoint
         UnityWebRequest www = UnityWebRequest.Get(apiURL + endpoint + idParameter);
 
+        // Se envía el request y se espera a que termine
         yield return www.SendWebRequest();
 
-        // If the request fails, we log the error
+        // Si el request fue exitoso, se almacena la data obtenida en la variable data, si no se muestra un mensaje de error
         if(www.result != UnityWebRequest.Result.Success)
         {
             Debug.Log($"Request failed: {www.error}");
@@ -163,7 +185,7 @@ public class APIConnection : MonoBehaviour
     }
 
 
-
+    // Función para enviar un request POST
     IEnumerator SendPostRequest(string jsonData, Action<string> onSuccess, Action<string> onFailure)
     {
         using (UnityWebRequest www = UnityWebRequest.PostWwwForm(apiURL + endpoint, "POST"))
@@ -185,12 +207,14 @@ public class APIConnection : MonoBehaviour
 }
 
 
+// Clase para construir el objeto con las credenciales de un jugador para iniciar sesión
 [System.Serializable]
 public class LoginData
 {
     public string username;
     public string password;
 
+    // Constructor de la clase
     public LoginData(string username, string password)
     {
         this.username = username;
