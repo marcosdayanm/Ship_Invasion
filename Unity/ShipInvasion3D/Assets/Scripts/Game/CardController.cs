@@ -15,16 +15,22 @@ public class CardController :
 {
 
     private bool isDragging = false;
+
     private bool isHovering = false;
     [HideInInspector] public Transform parentToReturnTo = null;
     [SerializeField] public GameObject shipPrefab;
     [HideInInspector] public Transform lastCellCard = null;
     GameController gameController;
+
+    // GridStateController gridStateController;
+
     [SerializeField] public Image image;
     [HideInInspector] public CardDetails cardDetails;
     private GameObject currentShipInstance;
     private Vector3 fixPosition;
     private Quaternion fixRotation;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -89,9 +95,16 @@ public class CardController :
         isDragging = false;
         gameController.OnCardDrop();
         image.raycastTarget = true;
+
+        bool isShipPlaced = false;
         
         if (currentShipInstance != null)
-            ValidateCardDrop(eventData);
+            isShipPlaced = ValidateCardDrop(eventData);
+
+        if (isShipPlaced)
+        {
+
+        }
     }
 
     private void SetShip(){
@@ -139,7 +152,7 @@ public class CardController :
         }
     }
 
-    private void ValidateCardDrop(PointerEventData eventData){
+    private bool ValidateCardDrop(PointerEventData eventData){
         Ray ray = Camera.main.ScreenPointToRay(eventData.position);
         RaycastHit hit;
 
@@ -147,6 +160,7 @@ public class CardController :
         {
             // El barco se soltó sobre un quad válido, así que destruimos la carta
             Destroy(transform.parent.gameObject); // Destruye la carta
+            return true;
         }
         else
         {
@@ -156,6 +170,7 @@ public class CardController :
                 Destroy(currentShipInstance);
             }
         }
+        return false;
     }
 
     private void PositionShipOnQuad(PointerEventData eventData)
@@ -167,7 +182,7 @@ public class CardController :
         {
             if (hit.collider != null && hit.collider.CompareTag("GridQuad"))
             {
-
+                // instancia del quad que se está seleccionando para cambiar de estado
                 Quad quad = hit.collider.GetComponent<Quad>();
                 if (quad != null)
                 {
