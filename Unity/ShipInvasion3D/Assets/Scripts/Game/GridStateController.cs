@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GridStateController : MonoBehaviour
 {
+    // Variables para almacenar el estado del grid 
     public int totalNone = 0;
     public int totalMiss = 0;
     public int totalHit = 0;
@@ -16,12 +17,16 @@ public class GridStateController : MonoBehaviour
         GridState();
     }
 
+    // Función para obtener el estado del grid, se recorre todos los quads del grid y se cuenta cuantos hay de cada tipo (para mandarlos a UI)
     public List<int> GridState()
     {
+        // loop de todos los rows dentro del gird
         foreach (Transform row in transform) 
         {
+            // loop de todos los quads dentro de cada row
             foreach (Transform quad in row) 
             {
+                // se obtiene el script de cada quad para poder acceder a su estado, y se cuenta cuantos hay de cada tipo
                 Quad quadScript = quad.GetComponent<Quad>();
                 if (quadScript != null && quadScript.state == Quad.quadState.miss) totalMiss++;
                 else if (quadScript != null && quadScript.state == Quad.quadState.hit) totalHit++;
@@ -30,17 +35,18 @@ public class GridStateController : MonoBehaviour
                 totalNone++;
             }
         }
-        
+            // se calculan los totalNone y se manda a imprimir en consola
             totalNone = totalNone - totalMiss - totalHit - totalShip;
             Debug.Log($"totalNone: {totalNone}");
             Debug.Log($"totalMiss: {totalMiss}");
             Debug.Log($"totalHit: {totalHit}");
             Debug.Log($"totalShip: {totalShip}");
 
+            // se regresan los valores para poder mandarlos a la UI
             return new List<int> {totalNone, totalMiss, totalHit, totalShip};
     }
 
-    // función para colocar barcos en la cuadrícula
+    // Función para colocar barcos o misiles en cuadrícula y cambiar el estado de todos los quads en donde se situ el barco o misil, a ésta función se le pasa un objeto de la carta jugada, y se le pasa el quad donde se situará el barco o misil
     public void PlaceShipMisile(CardDetails cardDetails, Transform startingQuad)
     {
         // checar si la carta es de ataque o de defensa
@@ -71,24 +77,30 @@ public class GridStateController : MonoBehaviour
         // Iterar sobre cada fila del grid.
         foreach (Transform row in transform)
         {
+            // se itera de forma descendente sobre cada quad de cada row porque tenemos definido el anchor point en la esquina superior derecha del grid
             for (int i = row.childCount - 1; i >= 0; i--) // Itera de atrás hacia adelante
             {
-                // se separan las coordenadas de cada quad iterado igual que con el de arriba
+                // se separan las coordenadas de cada quad iterado igual que con el quad inical
                 Transform loopedQuad = row.GetChild(i);
                 Quad quadScript = loopedQuad.GetComponent<Quad>();
                 string[] coordinates = loopedQuad.name.Split(',');
                 int x = int.Parse(coordinates[0]);
                 int y = int.Parse(coordinates[1]);
 
-                // Activar la búsqueda y ajustar los estados del primer quad.
+                // Si llegamos al quad inicial, se coloca la primera posición de la carta y se comienza a buscar en base a la coordenada extraída del quad inicial
                 if (x == xToFind && y == yToFind)
                 {
-                        if (isShip)
-                            quadScript.state = Quad.quadState.ship;
-                        else 
-                            quadScript.AdjustQuadState();
+                    // acción depoendiendo de si es barco o misil
+                    if (isShip)
+                        quadScript.state = Quad.quadState.ship;
+                    else 
+                        quadScript.AdjustQuadState();
+
+                    // se activa la flag de búsqueda
                     isActivatedSearch = true;
-                    if (isHorizontal)
+
+                    // dependiendo de las características del barco se ajustan las longitudes pendientes a buscar
+                    if (isHorizontal || isSquare)
                         xLength--;
                     else if (isVertical)
                         yLength--;
@@ -119,10 +131,17 @@ public class GridStateController : MonoBehaviour
                 if ((isHorizontal && xLength <= 0) || (isVertical && yLength <= 0))
                     break;
             }
-            // si es square se debe de reiniciar la xLength para que se pueda seguir iterando sobre las filas de abajo del cuadrado
+            // si es square se debe de reiniciar la xLength para que se pueda seguir iterando sobre las filas de abajo del cuadrado, y de igual forma se decrementa la yLength para ir manteniendo rastro de las posiciones pendientes a cambiar su estado
             if (isSquare)
-                xLength = cardDetails.LengthX;
+            {
+                if (isActivatedSearch)
+                {
+                    xLength = cardDetails.LengthX;
+                    yLength--;
+                }
+            }
 
+                // Terminar los loops si ya no hay más que buscar
             if ((isHorizontal && xLength <= 0) || ((isVertical || isSquare) && yLength <= 0))
                 break;
         }
