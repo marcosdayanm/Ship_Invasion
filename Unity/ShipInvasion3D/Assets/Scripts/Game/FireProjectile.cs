@@ -7,7 +7,7 @@ public class FireProjectile : MonoBehaviour
     // Prefab del proyectil a lanzar
     [SerializeField] Rigidbody projectilePrefab;
     // Velocidad de lanzamiento del proyectil
-    [SerializeField] float speed = 80;
+    [SerializeField] float speed = 120;
 
 
     // Esta función sirve para lanzar el proyectil hacia el objetivo basado en un ángulo de lanzamiento (ángulo fijo)
