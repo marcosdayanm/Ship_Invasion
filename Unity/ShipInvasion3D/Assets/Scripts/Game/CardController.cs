@@ -29,13 +29,14 @@ public class CardController :
     GameController gameController;
 
     // Referencia al GridStateController para acceder a sus métodos y propiedades
-    GridStateController gridStateController;
+    [SerializeField] GridStateController gridStateController;
 
     // Referencia a la imagen de la carta (para desactivar el raycastTarget mientras se arrastra)
     [SerializeField] public Image image;
 
     // Variable para almacenar la información de una sola carta (nombre, tipo, tamaño de barco, etc.)
-    [HideInInspector] public CardDetails cardDetails;
+    // [HideInInspector] 
+    public CardDetails cardDetails;
 
     // Referencia al objeto que se instanciará al arrastrar una carta de tipo Defense
     private GameObject currentShipInstance;
@@ -51,6 +52,7 @@ public class CardController :
     {
         // Obtenemos la referencia al GameController
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        gridStateController = GameObject.FindWithTag("Grid").GetComponent<GridStateController>();
     }
 
     // Update is called once per frame
@@ -137,15 +139,22 @@ public class CardController :
         // Activamos nuevamente el raycastTarget de la imagen de la carta para que se detecte el click sobre ella
         image.raycastTarget = true;
 
-        bool isShipPlaced = false;
+        // Variable para guardar el quad sobre el que se soltó el barco, si no se soltó en un quad, por defecto es null
+        Transform quadTransfrom = null;
         
         // Si la carta es de tipo Defense (hay barco), validamos si se soltó sobre un quad válido
         if (currentShipInstance != null)
-            isShipPlaced = ValidateCardDrop(eventData);
+            // Se guarda el quad sobre el que se soltó el barco (este lo regresa la función que valida si el barco se soltó sobre eun quad válido)
+            quadTransfrom = ValidateCardDrop(eventData);
 
-        if (isShipPlaced)
-        {
-
+        // Si sí hay un quad válido, cambiamos el estado de los quads en donde se situó el barco
+        if (quadTransfrom != null){
+            // Llamamos al método PlaceShipMisile del GridStateController para 
+            // que cambie el estado de los quads en donde se situó el barco y 
+            gridStateController.PlaceShipMisile(cardDetails, quadTransfrom);
+            // Llamamos al método GridState del GridStateController para que actualice el estado de la 
+            // cuadrícula (recuento de quads de cada tipo)
+            gridStateController.GridState();
         }
     }
 
@@ -215,7 +224,7 @@ public class CardController :
 
 
     // Función para validar si el barco se soltó en un quad válido
-    private bool ValidateCardDrop(PointerEventData eventData){
+    private Transform ValidateCardDrop(PointerEventData eventData){
         // Lanzamos un raycast para detectar si el barco se soltó sobre un quad válido
         Ray ray = Camera.main.ScreenPointToRay(eventData.position);
         RaycastHit hit;
@@ -224,14 +233,14 @@ public class CardController :
         if (Physics.Raycast(ray, out hit) && hit.collider != null && hit.collider.CompareTag("GridQuad")){
             // El barco se soltó sobre un quad válido, así que destruimos la carta
             Destroy(transform.parent.gameObject); // Destruye la carta
-            return true;
+            return hit.collider.transform;
         }else{
             // El barco se soltó fuera de un quad válido, así que lo destruimos y la carta vuelve a su posición original
             if (currentShipInstance != null){
                 Destroy(currentShipInstance);
             }
         }
-        return false;
+        return null;
     }
 
 
