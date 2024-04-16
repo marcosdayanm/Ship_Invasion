@@ -83,6 +83,7 @@ public class GiveCards : MonoBehaviour
             // Esperamos medio segundo antes de repartir la siguiente carta (para que se vea un buen efecto)
             yield return new WaitForSeconds(0.5f);
         }
+        gameController.cardsInHand = playerHand.transform.childCount;
         // Esperamos un segundo antes de terminar de repartir cartas
         yield return new WaitForSeconds(1f);
         // Si estamos en modo preparación, cambiamos al modo de defensa
