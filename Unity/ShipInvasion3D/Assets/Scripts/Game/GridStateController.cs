@@ -17,6 +17,7 @@ public class GridStateController : MonoBehaviour
         GridState();
     }
 
+    // NOTA: Tal vez debamos reiniciar las cariables de conteo de los estados, porque si no se contaran varias veces
     // Función para obtener el estado del grid, se recorre todos los quads del grid y se cuenta cuantos hay de cada tipo (para mandarlos a UI)
     public List<int> GridState()
     {
