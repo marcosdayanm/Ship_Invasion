@@ -7405,7 +7405,9 @@ MonoBehaviour:
   isCardInUse: 0
   playCardPanel: {fileID: 732531681}
   canvasSelectCard: {fileID: 2084753255}
+  playerHandPreparation: {fileID: 1367431069}
   cardsInHand: 0
+  startCombatButton: {fileID: 0}
   cards:
     Items: []
 --- !u!4 &351811558
@@ -18845,7 +18847,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 905487249}
   m_OnClick:
     m_PersistentCalls:
