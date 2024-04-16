@@ -21,6 +21,13 @@ public class GridStateController : MonoBehaviour
     // Función para obtener el estado del grid, se recorre todos los quads del grid y se cuenta cuantos hay de cada tipo (para mandarlos a UI)
     public List<int> GridState()
     {
+
+        // reiniciar las variables de conteo
+        totalNone = 0;
+        totalMiss = 0;
+        totalHit = 0;
+        totalShip = 0;
+
         // loop de todos los rows dentro del gird
         foreach (Transform row in transform) 
         {
@@ -38,10 +45,10 @@ public class GridStateController : MonoBehaviour
         }
             // se calculan los totalNone y se manda a imprimir en consola
             totalNone = totalNone - totalMiss - totalHit - totalShip;
-            Debug.Log($"totalNone: {totalNone}");
-            Debug.Log($"totalMiss: {totalMiss}");
-            Debug.Log($"totalHit: {totalHit}");
-            Debug.Log($"totalShip: {totalShip}");
+            // Debug.Log($"totalNone: {totalNone}");
+            // Debug.Log($"totalMiss: {totalMiss}");
+            // Debug.Log($"totalHit: {totalHit}");
+            // Debug.Log($"totalShip: {totalShip}");
 
             // se regresan los valores para poder mandarlos a la UI
             return new List<int> {totalNone, totalMiss, totalHit, totalShip};
@@ -65,12 +72,6 @@ public class GridStateController : MonoBehaviour
         // Determinar si el barco es horizontal, vertical o cuadrado.
         bool isHorizontal = cardDetails.LengthX > 1;
         bool isVertical = cardDetails.LengthY > 1;
-        bool isSquare = isHorizontal && isVertical;
-        if (isSquare)
-        {
-            isHorizontal = false;
-            isVertical = false;
-        }
 
         // Activación de la búsqueda una vez encontrada la posición inicial.
         bool isActivatedSearch = false;
@@ -101,7 +102,7 @@ public class GridStateController : MonoBehaviour
                     isActivatedSearch = true;
 
                     // dependiendo de las características del barco se ajustan las longitudes pendientes a buscar
-                    if (isHorizontal || isSquare)
+                    if (isHorizontal)
                         xLength--;
                     else if (isVertical)
                         yLength--;
@@ -110,7 +111,7 @@ public class GridStateController : MonoBehaviour
                 // Continuar colocando el barco o misil mientras la búsqueda esté activada.
                 else if (isActivatedSearch)
                 {
-                    if ((isHorizontal || isSquare) && xLength > 0 && y == yToFind)
+                    if ((isHorizontal) && xLength > 0 && y == yToFind)
                     {
                         if (isShip)
                             quadScript.state = Quad.quadState.ship;
@@ -133,19 +134,105 @@ public class GridStateController : MonoBehaviour
                     break;
             }
             // si es square se debe de reiniciar la xLength para que se pueda seguir iterando sobre las filas de abajo del cuadrado, y de igual forma se decrementa la yLength para ir manteniendo rastro de las posiciones pendientes a cambiar su estado
-            if (isSquare)
-            {
-                if (isActivatedSearch)
-                {
-                    xLength = cardDetails.LengthX;
-                    yLength--;
-                }
-            }
+            
 
                 // Terminar los loops si ya no hay más que buscar
-            if ((isHorizontal && xLength <= 0) || ((isVertical || isSquare) && yLength <= 0))
+            if ((isHorizontal && xLength <= 0) || (isVertical && yLength <= 0))
                 break;
         }
     }
+
+
+
+
+    // Función para validar si se puede colocar barcos en cuadrícula basándose en que en caso de ser un ship no esté chocando con otro, que no se pueda poner en un lugar en donde ya se lanzó un misil, y que no se pueda poner en un lugar en donde ya se puso un barco
+    public bool ValidateShipPlacing(CardDetails cardDetails, Transform startingQuad)
+    {
+        // checar si la carta es de ataque o de defensa, si es de ataque no es necesario validar si se puede poner en la cuadrícula
+        bool isShip = cardDetails.CardType == "Defense";
+        if (!isShip)
+            return false;
+
+        // se separa el nombre del quad en coordenadas x e y para poder hacer comparaciones
+        string[] coordinatesToFind = startingQuad.name.Split(',');
+        int xToFind = int.Parse(coordinatesToFind[0]);
+        int yToFind = int.Parse(coordinatesToFind[1]);
+
+        // longitudes del barco
+        int xLength = cardDetails.LengthX;
+        int yLength = cardDetails.LengthY;
+
+        // Determinar si es que el barco se va a sobresalir del grid
+        if (xToFind - xLength < 0 || yToFind - yLength < 0)
+            return false;
+
+        // Determinar si el barco es horizontal, vertical o cuadrado.
+        bool isHorizontal = cardDetails.LengthX > 1;
+        bool isVertical = cardDetails.LengthY > 1;
+
+        // Activación de la búsqueda una vez encontrada la posición inicial.
+        bool isActivatedSearch = false;
+        
+        // Iterar sobre cada fila del grid.
+        foreach (Transform row in transform)
+        {
+            // se itera de forma descendente sobre cada quad de cada row porque tenemos definido el anchor point en la esquina superior derecha del grid
+            for (int i = row.childCount - 1; i >= 0; i--) // Itera de atrás hacia adelante
+            {
+                // se separan las coordenadas de cada quad iterado igual que con el quad inical
+                Transform loopedQuad = row.GetChild(i);
+                Quad quadScript = loopedQuad.GetComponent<Quad>();
+                string[] coordinates = loopedQuad.name.Split(',');
+                int x = int.Parse(coordinates[0]);
+                int y = int.Parse(coordinates[1]);
+
+                // Si llegamos al quad inicial, se coloca la primera posición de la carta y se comienza a buscar en base a la coordenada extraída del quad inicial
+                if (x == xToFind && y == yToFind)
+                {
+                    // se activa la flag de búsqueda
+                    isActivatedSearch = true;
+
+                    // se valida que no se esté poniendo en un lugar donde ya se lanzó un misil o ya se puso un barco
+                    if (quadScript.state == Quad.quadState.miss || quadScript.state == Quad.quadState.ship)
+                        return false;
+
+                    // dependiendo de las características del barco se ajustan las longitudes pendientes a buscar
+                    if (isHorizontal)
+                        xLength--;
+                    else if (isVertical)
+                        yLength--;
+                }
+
+                // Continuar colocando el barco o misil mientras la búsqueda esté activada.
+                else if (isActivatedSearch)
+                {
+                    if (isHorizontal && xLength > 0 && y == yToFind)
+                    {
+                        if (quadScript.state == Quad.quadState.miss || quadScript.state == Quad.quadState.ship)
+                            return false;
+                        xLength--;
+                    }
+                    else if (isVertical && yLength > 0 && x == xToFind)
+                    {
+                        if (quadScript.state == Quad.quadState.miss || quadScript.state == Quad.quadState.ship)
+                            return false;
+                        yLength--;
+                    }
+                }
+
+                // Terminar los loops si ya no hay más que buscar
+                if ((isHorizontal && xLength <= 0) || (isVertical && yLength <= 0))
+                    return true;
+            }
+
+                // Terminar los loops si ya no hay más que buscar
+            if ((isHorizontal && xLength <= 0) || (isVertical  && yLength <= 0))
+                return true;
+        }
+        return true;
+    }
+
+    
+
 }
 
