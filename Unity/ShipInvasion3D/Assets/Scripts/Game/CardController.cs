@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -53,11 +51,6 @@ public class CardController :
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     // Esta función se ejectura cuando se hace hover sobre una carta
     public void OnPointerEnter(PointerEventData eventData){
@@ -137,16 +130,22 @@ public class CardController :
         // Activamos nuevamente el raycastTarget de la imagen de la carta para que se detecte el click sobre ella
         image.raycastTarget = true;
 
+
+        // RaycastHit hit;
+
+        // Ray ray = Camera.main.ScreenPointToRay(eventData.position);
+        // if (Physics.Raycast(ray, out hit) && hit.collider != null && hit.collider.CompareTag("GridQuad"))
+        // {
+        //     Quad quad = hit.collider.GetComponent<Quad>();
+        //     gridStateController.PlaceShipMisile(cardDetails, quad.transform);
+        // }
+
         bool isShipPlaced = false;
         
         // Si la carta es de tipo Defense (hay barco), validamos si se soltó sobre un quad válido
         if (currentShipInstance != null)
             isShipPlaced = ValidateCardDrop(eventData);
 
-        if (isShipPlaced)
-        {
-
-        }
     }
 
     // Función para instanciar el barco en el tablero
@@ -253,9 +252,6 @@ public class CardController :
                     // Debug.Log("Nombre del Quad: " + quad.name);
                     // // Modificar las propiedades
                     // quad.state = Quad.quadState.ship;
-
-
-
 
                     // Hacemos la carta un poco chica para que se vea el barco
                     transform.localScale = new Vector3(.2f, .2f, .2f);

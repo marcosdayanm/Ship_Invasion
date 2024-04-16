@@ -33,18 +33,6 @@ public class MoveCamera : MonoBehaviour
     // Variable para controlar si la cámara está rotando
     public bool isRotating = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     // Función para mover la cámara a la posición de ataque
     public void MoveCameraToAttack(){
