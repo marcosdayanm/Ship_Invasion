@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 // Este script sirve para controlar el flujo del juego y las diferentes fases del juego
@@ -33,6 +34,14 @@ public class GameController : MonoBehaviour
     // Panel para seleccionar una carta (mano del jugador)
     [SerializeField] GameObject canvasSelectCard;
 
+    // Variable para referenciar a la mano del jugador de la fase de preparación
+    public GameObject playerHandPreparation;
+
+    // Variable para contar las cartas en la mano del jugador
+    public int cardsInHand = 0;
+
+    // Referencia al botón para empezar el combate
+    public Button startCombatButton;
 
     // Enumerador para controlar el estado del juego
     enum GameState {
