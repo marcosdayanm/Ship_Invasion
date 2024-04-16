@@ -36,13 +36,6 @@ public class Quad : MonoBehaviour
         renderer.material = black;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
     // CUando se haga click sobre un quad, se comprueba en qué estado está para poder cambiar al estado del quad apropiado
     void OnMouseDown(){
         spawner.LaunchProjectileBasedOnVelocity(transform); // lanzar proyectil
@@ -55,12 +48,14 @@ public class Quad : MonoBehaviour
         if (state == quadState.ship){
             // Si hay barco en el quad, se cambia el estado a hit (que se le dio al barco)
             state = quadState.hit;
-            GetComponent<Renderer>().material = red;}
+            GetComponent<Renderer>().material = red;
+            }
         else if (state == quadState.hit){
             // Si ya se le dio al barco, no se hace nada
             state = quadState.hit;
             GetComponent<Renderer>().material = red;
-        }else{
+        }
+        else{
             // Si no hay barco, se cambia el estado a miss (que se falló al barco)
             state = quadState.miss;
             GetComponent<Renderer>().material = blue;
