@@ -142,12 +142,13 @@ public class CardController :
 
         // Si sí hay un quad válido, cambiamos el estado de los quads en donde se situó el barco
         if (quadTransfrom != null){
-            // Llamamos al método PlaceShipMisile del GridStateController para 
-            // que cambie el estado de los quads en donde se situó el barco y 
+            // llamamos al método PlaceShipMisile del GridStateController para que cambie el estado de los quads en donde se situó el barco
             gridStateController.PlaceShipMisile(cardDetails, quadTransfrom);
             // Llamamos al método GridState del GridStateController para que actualice el estado de la 
             // cuadrícula (recuento de quads de cada tipo)
             gridStateController.GridState();
+            Debug.Log(cardDetails.LengthX);
+            Debug.Log(cardDetails.LengthY);
         }
     }
 
@@ -224,10 +225,22 @@ public class CardController :
 
         // Si el raycast detecta un objeto y el objeto es un quad
         if (Physics.Raycast(ray, out hit) && hit.collider != null && hit.collider.CompareTag("GridQuad")){
-            // El barco se soltó sobre un quad válido, así que destruimos la carta
-            Destroy(transform.parent.gameObject); // Destruye la carta
-            return hit.collider.transform;
-        }else{
+            // Validamos si el barco se soltó sobre un quad válido según los criterios de la lógica del juego
+            bool isValid = gridStateController.ValidateShipPlacing(cardDetails, hit.collider.transform);
+            Debug.Log($"isValid {isValid}");
+            if (isValid)
+            {
+                // El barco se soltó sobre un quad válido, así que destruimos la carta
+                Destroy(transform.parent.gameObject);
+                return hit.collider.transform;
+            }
+            // si no es válida la posición para ubicar el barco, se destruye la instancia del barco y la carta regresa al deck
+            else {
+                Destroy(currentShipInstance);
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
+        else {
             // El barco se soltó fuera de un quad válido, así que lo destruimos y la carta vuelve a su posición original
             if (currentShipInstance != null){
                 Destroy(currentShipInstance);
