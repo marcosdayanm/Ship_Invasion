@@ -64,8 +64,9 @@ INSERT INTO Card (Name, QualityId, CardTypeId, AreaId) VALUES
 ('Halberd', 2, 1, 6), 
 ('Javelin', 2, 1, 7), 
 ('Kraken', 2, 1, 8),
-('Zeppelin', 3, 1, 9),
+('Zeppelin', 2, 1, 9),
 ('Leviatán', 3, 1, 10),
+('Ballistic', 3, 1, 11),
 
 ('Yate', 1, 2, 1),
 ('Boat', 1, 2, 2),
@@ -75,8 +76,9 @@ INSERT INTO Card (Name, QualityId, CardTypeId, AreaId) VALUES
 ('Galeón', 2, 2, 6), -- 6
 ('Clipper', 2, 2, 7), -- 7
 ('Corbeta', 2, 2, 8), -- 8
-('Fragata', 3, 2, 9),
-('Búnker', 3, 2, 10);
+('Fragata', 2, 2, 9),
+('Búnker', 3, 2, 10),
+('DeathStar', 3, 2, 11);
 SELECT * FROM Card;
 
 
