@@ -1623,7 +1623,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2133588924}
         m_TargetAssemblyTypeName: SceneConnection, Assembly-CSharp
-        m_MethodName: toGame
+        m_MethodName: toSeleccionArena
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
