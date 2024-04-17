@@ -201,13 +201,25 @@ public class CardController :
                 fixPosition = new Vector3(0, 5f, -20f);
             }
         // Barcos 5x1 o 1x5
-        }else{
+        }else if (cardDetails.LengthX == 5 && cardDetails.LengthY == 1 || cardDetails.LengthX == 1 && cardDetails.LengthY == 5){
             currentShipInstance.transform.localScale = new Vector3(.7f, .7f, .9f);
             // Validamos si es horizontal o vertical
             if(cardDetails.LengthX == 5){
                 // Horizontal
                 fixRotation = Quaternion.Euler(0, 90, 0);
                 fixPosition = new Vector3(-25f, 5f, 0);
+            }else{
+                // Vertical
+                fixRotation = Quaternion.Euler(0, 0, 0);
+                fixPosition = new Vector3(0, 5f, -25f);
+            }
+        }else if (cardDetails.LengthX == 6 && cardDetails.LengthY == 1 || cardDetails.LengthX == 1 && cardDetails.LengthY == 6){
+            currentShipInstance.transform.localScale = new Vector3(.7f, .7f, 1f);
+            // Validamos si es horizontal o vertical
+            if(cardDetails.LengthX == 6){
+                // Horizontal
+                fixRotation = Quaternion.Euler(0, 90, 0);
+                fixPosition = new Vector3(-43.3f, 7.2f, 0);
             }else{
                 // Vertical
                 fixRotation = Quaternion.Euler(0, 0, 0);
