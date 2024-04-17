@@ -51,7 +51,8 @@ INSERT INTO Area (LengthX, LengthY) VALUES
 (1, 4),
 (5, 1),
 (1, 5),
-(6, 1);
+(6, 1),
+(1, 6);
 SELECT * FROM Area;
 
 -- Card
