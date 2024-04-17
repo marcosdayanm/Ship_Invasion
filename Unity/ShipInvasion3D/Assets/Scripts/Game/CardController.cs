@@ -108,7 +108,7 @@ public class CardController :
         // Desactivamos el raycastTarget de la imagen de la carta para que no se detecte el click sobre ella (y detecte otras cosas como el quad del tablero)
         image.raycastTarget = false;
         // Si la carta es de tipo Defense, instanciamos el barco, si no omitimos este paso
-        if(cardDetails.CardType != null && cardDetails.CardType == "Defense"){
+        if(cardDetails.CardType != null && cardDetails.CardType == "Defense" && gameController.ableToPlaceShip){
             SetShip();
         }
     }
@@ -232,6 +232,11 @@ public class CardController :
             {
                 // El barco se soltó sobre un quad válido, así que destruimos la carta
                 Destroy(transform.parent.gameObject);
+                // Actualizamos el conteo de cartas que hay en la mano
+                gameController.cardsInHand = gameController.playerHandPreparation.transform.childCount - 1;
+                if(gameController.cardsInHand == 0){
+                    gameController.startCombatButton.interactable = true;
+                }
                 return hit.collider.transform;
             }
             // si no es válida la posición para ubicar el barco, se destruye la instancia del barco y la carta regresa al deck
