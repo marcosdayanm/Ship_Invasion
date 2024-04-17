@@ -105,7 +105,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6535811016419712313}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f691eea8d3c748189f3b93efa22582f, type: 3}
   m_Name: 
@@ -113,7 +113,7 @@ MonoBehaviour:
   parentToReturnTo: {fileID: 0}
   shipPrefab: {fileID: 6724941405340545300, guid: 42ad441495d1c40c7bc50c165a9738a0,
     type: 3}
-  lastCellCard: {fileID: 0}
+  gridStateController: {fileID: 0}
   image: {fileID: 7559203839967335832}
   cardDetails:
     CardId: 0
