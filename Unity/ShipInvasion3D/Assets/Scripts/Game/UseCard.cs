@@ -14,6 +14,9 @@ public class UseCard : MonoBehaviour, IDropHandler
     // Referencia al controlador del juego
     GameController gameController;
 
+    // Referencia al contenedor de la mano de preparación (o de defensa)
+    [SerializeField] private GameObject playerHand;
+
     void Start()
     {
         // Buscamos el controlador del juego para poder acceder a las cartas
@@ -35,9 +38,10 @@ public class UseCard : MonoBehaviour, IDropHandler
         gameController.isCardInUse = true;
         // Activamos el modo de ataque o defensa dependiendo del tipo de carta
         if(cardController.cardDetails.CardType == "Attack"){
-            gameController.AtackMode();
+            gameController.SetAttackGridState();
         }else{
-            gameController.DefenseMode();
+            cardController.parentToReturnTo = playerHand.transform;
+            gameController.SetDefenseGridState();
         }
     }
 }
