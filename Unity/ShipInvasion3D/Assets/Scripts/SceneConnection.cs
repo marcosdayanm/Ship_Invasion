@@ -45,4 +45,9 @@ public class SceneConnection : MonoBehaviour
     public void toCreditos () {
         SceneManager.LoadScene("Creditos"); //Para pasar a la escena de creditos
     }
+    
+    // Función para ir a la escena de seleccion de arenas
+    public void toSeleccionArena () {
+        SceneManager.LoadScene("SeleccionArena"); //Para pasar a la escena de creditos
+    }
 }

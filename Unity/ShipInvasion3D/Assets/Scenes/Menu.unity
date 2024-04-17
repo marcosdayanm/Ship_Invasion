@@ -286,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa03e329b254b48afa8ddb28ca5530ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  API: {fileID: 0}
 --- !u!4 &317673133
 Transform:
   m_ObjectHideFlags: 0
@@ -1362,7 +1363,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 317673132}
         m_TargetAssemblyTypeName: SceneConnection, Assembly-CSharp
-        m_MethodName: toGame
+        m_MethodName: toSeleccionArena
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
