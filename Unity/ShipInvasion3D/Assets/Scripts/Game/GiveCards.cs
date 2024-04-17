@@ -90,6 +90,7 @@ public class GiveCards : MonoBehaviour
         if(prepatationMode){
             // Pasamos a modo de defensa para que el jugador pueda usar las cartas de defensa y colocar sus barcos en el tablero
             gameController.DefenseMode();
+            gameController.startCombatButton.gameObject.SetActive(true);
         }
         // Indicamos que hemos terminado de dar cartas
         isGivingCards = false;
