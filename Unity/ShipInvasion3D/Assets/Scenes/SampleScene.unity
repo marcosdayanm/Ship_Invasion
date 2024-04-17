@@ -6397,7 +6397,6 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
   - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
@@ -6524,21 +6523,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!114 &330585548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ea91c0c4bccc4067bf1b576b5067a7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridCenter: {fileID: 0}
-  rotationSpeed: 120
-  gridEnemy: {fileID: 0}
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7399,15 +7383,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882b9ff3ff91f451d8f8f87d157b2942, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyGrid: {fileID: 0}
+  enemyGrid: {fileID: 621334055}
   grid: {fileID: 1216790528}
   isCardDragging: 0
   isCardInUse: 0
   playCardPanel: {fileID: 732531681}
-  canvasSelectCard: {fileID: 2084753255}
+  canvasCombat: {fileID: 2084753255}
+  canvasPreparation: {fileID: 1187457135}
   playerHandPreparation: {fileID: 1367431069}
   cardsInHand: 0
-  startCombatButton: {fileID: 0}
+  startCombatButton: {fileID: 905487248}
+  ableToPlaceShip: 0
+  quadHoverActive: 0
+  currentState: 4
   cards:
     Items: []
 --- !u!4 &351811558
@@ -10559,6 +10547,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6724941405340545300, guid: 42ad441495d1c40c7bc50c165a9738a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11511,6 +11504,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ship (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724941405340545300, guid: 42ad441495d1c40c7bc50c165a9738a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14148,6 +14146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1325161897}
+  playerHand: {fileID: 1367431069}
 --- !u!114 &732531686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18787,7 +18786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &905487247
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18805,7 +18804,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -50, y: 0}
+  m_AnchoredPosition: {x: -20, y: 20}
   m_SizeDelta: {x: 200, y: 70}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &905487248
@@ -18851,7 +18850,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 905487249}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 351811557}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: StartCombatMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &905487249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45129,6 +45140,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6724941405340545300, guid: 42ad441495d1c40c7bc50c165a9738a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -45502,6 +45518,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6724941405340545300, guid: 42ad441495d1c40c7bc50c165a9738a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -45864,6 +45885,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724941405340545300, guid: 42ad441495d1c40c7bc50c165a9738a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

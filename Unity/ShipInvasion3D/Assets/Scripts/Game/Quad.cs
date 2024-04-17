@@ -26,20 +26,25 @@ public class Quad : MonoBehaviour
     public Material red;
     public Material blue;
 
+    // Referencia al controlador del juego
+    GameController gameController;
+
 
     // Start is called before the first frame update
     void Start()
     {
         // Se obtiene la referencia al script que lanza proyectiles
         spawner = GameObject.FindWithTag("SpawnProjectile").GetComponent<FireProjectile>();
+        // Buscamos el controlador del juego para poder comparar los estados actuales de juego
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         Renderer renderer = GetComponent<Renderer>();
         renderer.material = black;
     }
 
     // CUando se haga click sobre un quad, se comprueba en qué estado está para poder cambiar al estado del quad apropiado
     void OnMouseDown(){
-        spawner.LaunchProjectileBasedOnVelocity(transform); // lanzar proyectil
-        AdjustQuadState();
+        // spawner.LaunchProjectileBasedOnVelocity(transform); // lanzar proyectil
+        // AdjustQuadState();
     }
 
     // Función para cambiar el estado del quad según sea el caso 
@@ -69,13 +74,19 @@ public class Quad : MonoBehaviour
 
     // Función para indicar que se está hovereando sobre el quad
     void OnMouseEnter(){
-        // Se mueve un poco hacia arriba para indicar que se está hovereando sobre el quad
-        transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+        // Aplicar hover únicamente sí está en modo ataque o defensa (es decir en espera de selección de quads)
+        if(gameController.quadHoverActive){
+            // Se mueve un poco hacia arriba para indicar que se está hovereando sobre el quad
+            transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+        }
     }
 
     // Función para indicar que se dejó de hoverear sobre el quad
     void OnMouseExit(){
-        // Vuelve a la posición original
-        transform.position = new Vector3(transform.position.x, transform.position.y - 1, transform.position.z);
+        // Aplicar hover únicamente sí está en modo ataque o defensa (es decir en espera de selección de quads)
+        if(gameController.quadHoverActive){
+            // Vuelve a la posición original
+            transform.position = new Vector3(transform.position.x, transform.position.y - 1, transform.position.z);
+        }
     }
 }

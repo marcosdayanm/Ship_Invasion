@@ -31,8 +31,10 @@ public class GameController : MonoBehaviour
     // Panel para jugar una carta (a donde se debe arrastrar para jugarla)
     [SerializeField] GameObject playCardPanel;
 
-    // Panel para seleccionar una carta (mano del jugador)
-    [SerializeField] GameObject canvasSelectCard;
+    // Panel para seleccionar una carta (mano del jugador en modo combate)
+    [SerializeField] GameObject canvasCombat;
+    // Panel para seleccionar una carta (mano del jugador en modo preparación)
+    [SerializeField] GameObject canvasPreparation;
 
     // Variable para referenciar a la mano del jugador de la fase de preparación
     public GameObject playerHandPreparation;
@@ -43,16 +45,23 @@ public class GameController : MonoBehaviour
     // Referencia al botón para empezar el combate
     public Button startCombatButton;
 
+    // Variable para autorizar si las cartas de defensa pueden poner barcos
+    public bool ableToPlaceShip = false;
+
+    // Variable para indicar si los quad deben hacer efecto de hover o no
+    public bool quadHoverActive = false;
+
     // Enumerador para controlar el estado del juego
-    enum GameState {
+    [HideInInspector] public enum GameState {
         Main,
         AttackGrid,
         DefenseGrid,
-        PCTurn
+        PCTurn,
+        none
     }
 
     // Variable para controlar el estado actual del juego
-    private GameState currentState;
+    [HideInInspector] public  GameState currentState = GameState.none;
 
     // Referencia a las todas las cartas disponibles en el juego
     public Cards cards;
@@ -104,16 +113,20 @@ public class GameController : MonoBehaviour
 
         // Repartimos las cartas al jugador
         giveCards.GiveCardsInPreparationMode();
-
-        // TODO: **Estas dos siguientes líneas describen lo que se debe hacer**
-        // 1. Esperamos a que el jugador coloque todos sus barcos iniciales
-        // 2. Cambiamos el estado del juego al estado principal
     }
 
     // Función que se ejecuta en el estado principal
     void HandleMainState(){
+        Debug.Log("Main State");
+        // Deshabilitar que se puedan instanciar barcos para las cartas de defensa
+        ableToPlaceShip = false;
+        quadHoverActive = false;
+        isCameraOnAttack = false;
+        isCameraOnDefense = false;
         // Dar cartas al jugador
-        giveCards.GiveCardsInCombatMode();
+        if(cardsInHand < 5){
+           giveCards.GiveCardsInCombatMode();
+        }
 
         // TODO: **Estas dos siguientes líneas describen lo que se debe hacer**
         // 1. Esperamos a que el jugador utilice una carta
@@ -124,6 +137,7 @@ public class GameController : MonoBehaviour
 
     // Función para activar el modo de ataque
     public void AtackMode(){
+        Debug.Log("AtackGrid State");
         // Si la cámara no está en modo ataque, se pone en modo ataque
         if (!isCameraOnAttack){
             isCameraOnAttack = true;
@@ -132,22 +146,56 @@ public class GameController : MonoBehaviour
             // Movemos el grid del enemigo para que sea visible
             StartCoroutine(MoveGridEnemy());
             // Desactivamos el panel de selección de cartas (la mano del jugador)
-            canvasSelectCard.SetActive(false);
+            canvasCombat.SetActive(false);
         }
     }
 
     // Función para activar el modo de defensa
     public void DefenseMode(){
+        Debug.Log("DefenseGrid State");
         // Si la cámara no está en modo defensa, se pone en modo defensa
         if (!isCameraOnDefense){
+            quadHoverActive = true;
             isCameraOnDefense = true;
+            // Habilitar que se instancien barcos para las cartas de defensa
+            ableToPlaceShip = true;
+            // Mover el contenedor de la mano del jugador a la parte lateral de la pantalla
+            RectTransform rectTransformPlayerHand = playerHandPreparation.GetComponent<RectTransform>();
+            rectTransformPlayerHand.sizeDelta = new Vector2(200, 200);
+            rectTransformPlayerHand.anchoredPosition = new Vector2(-400, 300);
+            // Reducir su espaciado para que las cartas se encimen y quepan en la pantalla
+            GridLayoutGroup gridLayout = playerHandPreparation.GetComponent<GridLayoutGroup>();
+            gridLayout.spacing =  new Vector2(gridLayout.spacing.x, -100);
+            canvasPreparation.SetActive(true);
             // Movemos la cámara a la posición de defensa
             cameraController.MoveCameraToDefense();
             // Movemos el grid del jugador para que sea visible
             StartCoroutine(MoveGrid());
             // Desactivamos el panel de selección de cartas (la mano del jugador)
-            canvasSelectCard.SetActive(false);
+            canvasCombat.SetActive(false);
         }
+    }
+
+    // Función para cambiar el modo de preparación a modo de combate
+    public void StartCombatMode(){
+        // Movemos la cámara a la posición original
+        cameraController.MoveCameraToOrigin();
+        // Ocultar canvas de la fase de preparación
+        canvasPreparation.SetActive(false);
+        // Mostrar canvas de la fase de combate
+        canvasCombat.SetActive(true);
+        // Cambiar estado a main para empezar fase de combate
+        currentState = GameState.Main;
+    }
+
+    // Function to set the attack state of the game
+    public void SetAttackGridState(){
+        currentState = GameState.AttackGrid;
+    }
+
+    // Function to set the defense state of the game
+    public void SetDefenseGridState(){
+        currentState = GameState.DefenseGrid;
     }
 
     // Corrutina para mover el grid del enemigo  que recibe la duración de la animación
