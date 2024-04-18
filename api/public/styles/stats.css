@@ -1,0 +1,39 @@
+body{
+    background-color: var(--pink);
+}
+main{
+    padding-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+
+    background-image: url("/img/fig2.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.stats{
+    position: relative;
+    background-color: var(--white);
+    min-width: 1000px;
+    min-height: 600px;
+
+    /* overflow: scroll; */
+}
+.title{
+    position: absolute;
+    width: 400px;
+    margin: 0;
+    top: 0;
+    right: 0;
+    transform: translate(40%, -40%);
+}
+.title img{
+    transform: rotate(5deg);
+}
+.hola{
+    height: 2000px;
+    width: 100%;
+    background-color: red;
+}
