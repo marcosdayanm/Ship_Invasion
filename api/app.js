@@ -1,8 +1,8 @@
 import express from "express";
 import mysql from "mysql2/promise";
 import dotenv from "dotenv/config";
-import fs from 'fs';
-
+import fs from "fs";
+import { marked } from "marked";
 import { hashPassword } from "./utils/hashPassword.js";
 
 const PORT = process.env.PORT || 3000;
@@ -13,7 +13,7 @@ const app = express();
 // Enable JSON parsing
 app.use(express.json());
 
-app.use(express.static('./public'))
+app.use(express.static("./public"));
 
 // Function to connect to the database
 async function connectToDB() {
@@ -26,27 +26,28 @@ async function connectToDB() {
 }
 
 //Endopoints para pagina web
-app.get('/', (req, res) => {
-  fs.readFile('./public/play.html', 'utf8', (err, html)=>{
-      if(err) res.status(500).send('There was an error: ' + err);
-      console.log('Loading page...');
-      res.send(html);
+app.get("/", (req, res) => {
+  fs.readFile("./public/play.html", "utf8", (err, html) => {
+    if (err) res.status(500).send("There was an error: " + err);
+    console.log("Loading page...");
+    res.send(html);
   });
 });
 
-app.get('/stats', (req, res) => {
-  fs.readFile('./public/stats.html', 'utf8', (err, html)=>{
-      if(err) res.status(500).send('There was an error: ' + err);
-      console.log('Loading page...');
-      res.send(html);
+app.get("/stats", (req, res) => {
+  fs.readFile("./public/stats.html", "utf8", (err, html) => {
+    if (err) res.status(500).send("There was an error: " + err);
+    console.log("Loading page...");
+    res.send(html);
   });
 });
 
-app.get('/gdd', (req, res) => {
-  fs.readFile('./public/gdd.html', 'utf8', (err, html)=>{
-      if(err) res.status(500).send('There was an error: ' + err);
-      console.log('Loading page...');
-      res.send(html);
+app.get("/gdd", (req, res) => {
+  fs.readFile("./public/gdd.html", "utf8", (err, md) => {
+    if (err) res.status(500).send("There was an error: " + err);
+    console.log("Loading page...");
+    const html = marked(md);
+    res.send(html);
   });
 });
 
