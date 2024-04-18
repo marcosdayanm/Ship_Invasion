@@ -14,6 +14,9 @@ public class UseCard : MonoBehaviour, IDropHandler
     // Referencia al controlador del juego
     GameController gameController;
 
+    // Prefab de un contenedor de una carta
+    [SerializeField] GameObject cellCardPrefab;
+
     // Referencia al contenedor de la mano de preparación (o de defensa)
     [SerializeField] private GameObject playerHand;
 
@@ -30,6 +33,8 @@ public class UseCard : MonoBehaviour, IDropHandler
         GameObject card = eventData.pointerDrag;
         // Obtenemos el controlador de la carta
         CardController cardController = card.GetComponent<CardController>();
+        // Destruir el contenedor de la carta actual, porque ya no se va a ubicar ahí
+        Destroy(cardController.parentToReturnTo.gameObject);
         // Cambiamos el padre de la carta a la zona de uso (panel) para que se quede ahí en lugar de volver a la mano
         cardController.parentToReturnTo = transform;
         // Desactivamos el texto que se muestra en el panel para que solo esté la carta
@@ -40,8 +45,18 @@ public class UseCard : MonoBehaviour, IDropHandler
         if(cardController.cardDetails.CardType == "Attack"){
             gameController.SetAttackGridState();
         }else{
-            cardController.parentToReturnTo = playerHand.transform;
+            // Crear un nuevo contenedor para situar la carta que se está usuando
+            GameObject cellCard = Instantiate(cellCardPrefab, playerHand.transform);
+            // Destuir la carta que viene por defecto en el prefab (porque ya tenemos la carta que vamos a poner en el contenedor)
+            Destroy(cellCard.transform.Find("Card").gameObject);
+            // Asignar como padre al nuevo contenedor que acabamos de crear
+            cardController.parentToReturnTo = cellCard.transform;
+            // Pasar a modo defensa
             gameController.SetDefenseGridState();
+            // Volvemos a activar el texto que se muestra en el panel para que solo esté la carta
+            text.SetActive(true);
+            // Activamos la variable que indica que se está usando una carta
+            gameController.isCardInUse = false;
         }
     }
 }

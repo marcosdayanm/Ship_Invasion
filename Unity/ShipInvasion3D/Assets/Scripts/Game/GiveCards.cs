@@ -34,6 +34,18 @@ public class GiveCards : MonoBehaviour
         
     }
 
+
+    // Función para dar una sola carta al jugador en modo combate
+    public void GiveCardInCombatMode(){
+        // Si la mano del jugador no tiene 5 cartas y no se están dando cartas, se reparte 1 más
+        if(playerHandCombat.transform.childCount < 5 && !isGivingCards){
+            // Obtenemos las cartas disponibles que tenemos guardadas en el gameController
+            Cards cards = gameController.cards;
+            // Llamamos a la corrutina para repartir las cartas (animación de repartir cartas)
+            StartCoroutine(GiveCardsCoroutine(cards, playerHandCombat, amountCarts: 1));
+        }
+    }
+
     // Función para dar cartas al jugador en modo combate
     public void GiveCardsInCombatMode(){
         // Si la mano del jugador no tiene 5 cartas y no se están dando cartas, se reparten
@@ -57,13 +69,13 @@ public class GiveCards : MonoBehaviour
     }
 
     // Corrutina para dar cartas al jugador (animación de repartir cartas)
-    public IEnumerator GiveCardsCoroutine(Cards cards, GameObject playerHand, bool prepatationMode = false){
+    public IEnumerator GiveCardsCoroutine(Cards cards, GameObject playerHand, bool prepatationMode = false, int amountCarts = 5){
         // Indicamos que se están dando cartas
         isGivingCards = true;
         // Esperamos un segundo antes de empezar a repartir cartas (para que no sea instantáneo)
         yield return new WaitForSeconds(1f);
         // Repartimos 5 cartas
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < amountCarts; i++){
             // Obtenemos un índice aleatorio para obtener una carta aleatoria de todas las disponibles
             int randomIndex = Random.Range(0, cards.Items.Count);
             // Instanciamos una celda de carta en la mano del jugador
