@@ -25,9 +25,25 @@ async function connectToDB() {
   });
 }
 
-
+//Endopoints para pagina web
 app.get('/', (req, res) => {
-  fs.readFile('./public/index.html', 'utf8', (err, html)=>{
+  fs.readFile('./public/play.html', 'utf8', (err, html)=>{
+      if(err) res.status(500).send('There was an error: ' + err);
+      console.log('Loading page...');
+      res.send(html);
+  });
+});
+
+app.get('/stats', (req, res) => {
+  fs.readFile('./public/stats.html', 'utf8', (err, html)=>{
+      if(err) res.status(500).send('There was an error: ' + err);
+      console.log('Loading page...');
+      res.send(html);
+  });
+});
+
+app.get('/gdd', (req, res) => {
+  fs.readFile('./public/gdd.html', 'utf8', (err, html)=>{
       if(err) res.status(500).send('There was an error: ' + err);
       console.log('Loading page...');
       res.send(html);
