@@ -144,7 +144,6 @@ public class GridStateController : MonoBehaviour
 
 
 
-
     // Función para validar si se puede colocar barcos en cuadrícula basándose en que en caso de ser un ship no esté chocando con otro, que no se pueda poner en un lugar en donde ya se lanzó un misil, y que no se pueda poner en un lugar en donde ya se puso un barco
     public bool ValidateShipPlacing(CardDetails cardDetails, Transform startingQuad)
     {
