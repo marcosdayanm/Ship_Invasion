@@ -7,13 +7,29 @@ main{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+
+    background-image: url("/img/fig3.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .how-to-play{
     min-height: 100vh;
+    background-image: url("/img/fig4.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.how-to-play figure{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.how-to-play img{
+    width: 70%;
 }
 .videogame{
-    /* background-color: var(--white); */
-    background-color: red;
+    background-color: var(--white);
     min-width: 1000px;
     min-height: 600px;
 }
