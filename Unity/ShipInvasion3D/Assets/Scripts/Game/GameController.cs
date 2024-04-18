@@ -161,8 +161,8 @@ public class GameController : MonoBehaviour
             ableToPlaceShip = true;
             // Mover el contenedor de la mano del jugador a la parte lateral de la pantalla
             RectTransform rectTransformPlayerHand = playerHandPreparation.GetComponent<RectTransform>();
-            rectTransformPlayerHand.sizeDelta = new Vector2(200, 200);
-            rectTransformPlayerHand.anchoredPosition = new Vector2(-400, 300);
+            rectTransformPlayerHand.sizeDelta = new Vector2(300, 300);
+            rectTransformPlayerHand.anchoredPosition = new Vector2(-700, 700);
             // Reducir su espaciado para que las cartas se encimen y quepan en la pantalla
             GridLayoutGroup gridLayout = playerHandPreparation.GetComponent<GridLayoutGroup>();
             gridLayout.spacing =  new Vector2(gridLayout.spacing.x, -100);
