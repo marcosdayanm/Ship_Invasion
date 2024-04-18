@@ -1,0 +1,32 @@
+body{
+    background-color: var(--blue);
+}
+main{
+    padding-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+
+    background-image: url("/img/fig1.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.gdd{
+    position: relative;
+    /* background-color: var(--white); */
+    min-width: 1000px;
+    min-height: 600px;
+}
+.title{
+    position: absolute;
+    width: 300px;
+    margin: 0;
+    top: 0;
+    left: 0;
+    transform: translate(30%, -40%);
+}
+.title img{
+    transform: rotate(-5deg);
+}
