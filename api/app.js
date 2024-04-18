@@ -1,6 +1,7 @@
 import express from "express";
 import mysql from "mysql2/promise";
 import dotenv from "dotenv/config";
+import fs from 'fs';
 
 import { hashPassword } from "./utils/hashPassword.js";
 
@@ -12,6 +13,8 @@ const app = express();
 // Enable JSON parsing
 app.use(express.json());
 
+app.use(express.static('./public'))
+
 // Function to connect to the database
 async function connectToDB() {
   return await mysql.createConnection({
@@ -21,6 +24,15 @@ async function connectToDB() {
     database: process.env.DB_NAME,
   });
 }
+
+
+app.get('/', (req, res) => {
+  fs.readFile('./public/index.html', 'utf8', (err, html)=>{
+      if(err) res.status(500).send('There was an error: ' + err);
+      console.log('Loading page...');
+      res.send(html);
+  });
+});
 
 // Get all cards with their details
 app.get("/api/cards", async (req, res) => {
