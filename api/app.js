@@ -69,6 +69,26 @@ app.get("/api/cards", async (req, res) => {
   }
 });
 
+// Get all cards with their details
+app.get("/api/cards/top5mostusedcards", async (req, res) => {
+  let connection = null;
+  try {
+    connection = await connectToDB();
+    const [cards] = await connection.execute(
+      "SELECT CardId, CardName, CardType, CardQuality COUNT(*) AS NumberOfPlays FROM view_playdetails GROUP BY CardId, CardName ORDER BY NumberOfPlays DESC LIMIT 5"
+    );
+    if (cards.length === 0) {
+      return res.status(404).json({ error: "No cards found" });
+    }
+    // console.log(cards);
+    res.status(200).json({ Items: cards });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (connection) connection.end();
+  }
+});
+
 // Get one card with its details
 app.get("/api/cards/:cardId", async (req, res) => {
   let connection = null;
@@ -83,6 +103,25 @@ app.get("/api/cards/:cardId", async (req, res) => {
       return res.status(404).json({ error: "Card not found" });
     }
     res.status(200).json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (connection) connection.end();
+  }
+});
+
+// Get all players with their details
+app.get("/api/players", async (req, res) => {
+  let connection = null;
+  try {
+    connection = await connectToDB();
+    const [players] = await connection.execute(
+      "SELECT * FROM view_playerdetails"
+    );
+    if (players.length === 0) {
+      return res.status(404).json({ error: "No players found" });
+    }
+    res.status(200).json(players);
   } catch (error) {
     res.status(500).json({ error: error.message });
   } finally {
@@ -257,16 +296,9 @@ app
   // Get all games of a player with their details
   .get(async (req, res) => {
     let connection = null;
-    const { playerId } = req.query;
-    if (!playerId) {
-      return res.status(400).json({ error: "Invalid request" });
-    }
     try {
       connection = await connectToDB();
-      const [rows] = await connection.execute(
-        "SELECT * FROM view_gamedetails WHERE PlayerId = ?",
-        [playerId]
-      );
+      const [rows] = await connection.execute("SELECT * FROM view_gamedetails");
       if (rows.length === 0) {
         return res.status(404).json({ error: "No games found" });
       }
@@ -360,6 +392,21 @@ app
 // Route to manage all games of a player
 app
   .route("/api/plays")
+  .get(async (req, res) => {
+    let connection = null;
+    try {
+      connection = await connectToDB();
+      const [rows] = await connection.execute("SELECT * FROM view_playdetails");
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "No plays found" });
+      }
+      res.status(200).json(rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    } finally {
+      if (connection) connection.end();
+    }
+  })
   // Save new play
   .post(async (req, res) => {
     let connection = null;
