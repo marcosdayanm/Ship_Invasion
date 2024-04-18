@@ -75,7 +75,7 @@ app.get("/api/cards/top5mostusedcards", async (req, res) => {
   try {
     connection = await connectToDB();
     const [cards] = await connection.execute(
-      "SELECT CardId, CardName, CardType, CardQuality COUNT(*) AS NumberOfPlays FROM view_playdetails GROUP BY CardId, CardName ORDER BY NumberOfPlays DESC LIMIT 5"
+      "SELECT CardId, CardName, CardType, CardQuality, COUNT(*) AS NumberOfPlays FROM view_playdetails GROUP BY CardId, CardName ORDER BY NumberOfPlays DESC LIMIT 5"
     );
     if (cards.length === 0) {
       return res.status(404).json({ error: "No cards found" });

@@ -1,43 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estadísticas - Ship Invasion</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Black+Ops+One&family=Bungee&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/stats.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anta&family=Black+Ops+One&family=Bungee&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      type="module"
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js"
+      integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="module" defer src="/js/user_charts.js"></script>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/stats.css" />
+  </head>
+  <body>
     <header>
-        <div class="container header-content">
-            <figure>
-                <img src="/img/logo.png" alt="Logo Ship Invasion">
-            </figure>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="/">Jugar Ahora</a>
-                    </li>
-                    <li>
-                        <a href="/stats">Estadísticas</a>
-                    </li>
-                    <li>
-                        <a href="/gdd">GDD</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+      <div class="container header-content">
+        <figure>
+          <img src="/img/logo.png" alt="Logo Ship Invasion" />
+        </figure>
+        <nav>
+          <ul>
+            <li>
+              <a href="/">Jugar Ahora</a>
+            </li>
+            <li>
+              <a href="/stats">Estadísticas</a>
+            </li>
+            <li>
+              <a href="/gdd">GDD</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
     <main>
-        <div class="stats">
-            <figure class="title">
-                <img src="/img/stats.png" alt="Logo Ship Invasion">
-            </figure>
-            <!-- <div class="hola"></div> -->
+      <figure class="title">
+        <img src="/img/stats.png" alt="Logo Ship Invasion" />
+      </figure>
+      <div class="stats">
+        <div class="chartContainer">
+          <canvas id="winsAmountPerPlayer" width="600" height="600"></canvas>
+          <canvas id="gamesPlayedOnEachArena" width="600" height="600"></canvas>
+          <canvas id="mostUsedCards" width="600" height="600"></canvas>
         </div>
+      </div>
     </main>
-</body>
+  </body>
 </html>

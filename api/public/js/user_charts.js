@@ -9,19 +9,19 @@ function random_color(alpha = 1.0) {
 
 Chart.defaults.font.size = 16;
 
-async function getPlaysByGame(gameId) {
-  try {
-    const playsByGame = await fetch(
-      `http://localhost:3000/api/games/${gameId}`,
-      {
-        method: "GET",
-      }
-    );
-    return playsByGame.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
+// async function getPlaysByGame(gameId) {
+//   try {
+//     const playsByGame = await fetch(
+//       `http://localhost:3000/api/games/${gameId}`,
+//       {
+//         method: "GET",
+//       }
+//     );
+//     return playsByGame.json();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 async function getGames(gameId) {
   try {
@@ -83,52 +83,52 @@ async function logIn(username, password) {
 }
 
 // We obtain a reference to the canvas that we are going to use to plot the chart.
-const ctx = document.getElementById("firstChart").getContext("2d");
+// const ctx = document.getElementById("firstChart").getContext("2d");
 
 // To plot a chart, we need a configuration object that has all the information that the chart needs.
-const firstChart = new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-  },
-});
+// const firstChart = new Chart(ctx, {
+//   type: "bar",
+//   data: {
+//     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+//     datasets: [
+//       {
+//         label: "# of Votes",
+//         data: [12, 19, 3, 5, 2, 3],
+//         backgroundColor: [
+//           "rgba(255, 99, 132, 0.2)",
+//           "rgba(54, 162, 235, 0.2)",
+//           "rgba(255, 206, 86, 0.2)",
+//           "rgba(75, 192, 192, 0.2)",
+//           "rgba(153, 102, 255, 0.2)",
+//           "rgba(255, 159, 64, 0.2)",
+//         ],
+//         borderColor: [
+//           "rgba(255, 99, 132, 1)",
+//           "rgba(54, 162, 235, 1)",
+//           "rgba(255, 206, 86, 1)",
+//           "rgba(75, 192, 192, 1)",
+//           "rgba(153, 102, 255, 1)",
+//           "rgba(255, 159, 64, 1)",
+//         ],
+//         borderWidth: 1,
+//       },
+//     ],
+//   },
+//   options: {
+//     scales: {
+//       y: {
+//         beginAtZero: true,
+//       },
+//     },
+//   },
+// });
 
 // To plot data from an API, we first need to fetch a request, and then process the data.
 try {
   // Fetching API's data
   const players = await getPlayers();
   const games = await getGames();
-  const playsByGame = await getPlaysByGame(games[0].id);
+  // const playsByGame = await getPlaysByGame(games[0].id);
   const plays = await getPlays();
   const top5cards = await getTop5MostUsedCards();
 
@@ -139,7 +139,7 @@ try {
 
   console.log(players);
   console.log(games);
-  console.log(playsByGame);
+  // console.log(playsByGame);
   console.log(plays);
   console.log(top5cards);
 
@@ -218,9 +218,7 @@ try {
   const top5cards_cardquality = players.map((e) => e["CardQuality"]);
   const top5cards_count = players.map((e) => e["NumberOfPlays"]);
 
-  const ctx_levels3 = document
-    .getElementById("cardMostUsedCards")
-    .getContext("2d");
+  const ctx_levels3 = document.getElementById("mostUsedCards").getContext("2d");
   const levelChart3 = new Chart(ctx_levels3, {
     type: "bar",
     data: {
