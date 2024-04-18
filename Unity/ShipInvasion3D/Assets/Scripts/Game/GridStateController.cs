@@ -162,10 +162,6 @@ public class GridStateController : MonoBehaviour
         int xLength = cardDetails.LengthX;
         int yLength = cardDetails.LengthY;
 
-        // Determinar si es que el barco se va a sobresalir del grid
-        if (xToFind - xLength < 0 || yToFind - yLength < 0)
-            return false;
-
         // Determinar si el barco es horizontal, vertical o cuadrado.
         bool isHorizontal = cardDetails.LengthX > 1;
         bool isVertical = cardDetails.LengthY > 1;
@@ -229,7 +225,9 @@ public class GridStateController : MonoBehaviour
             if ((isHorizontal && xLength <= 0) || (isVertical  && yLength <= 0))
                 return true;
         }
-        return true;
+        if ((isHorizontal && xLength <= 0) || (isVertical && yLength <= 0))
+            return true;
+        return false; 
     }
 
     
