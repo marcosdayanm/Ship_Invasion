@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject playCardPanel;
 
     // Panel para seleccionar una carta (mano del jugador en modo combate)
-    [SerializeField] GameObject canvasCombat;
+    public GameObject canvasCombat;
     // Panel para seleccionar una carta (mano del jugador en modo preparación)
     [SerializeField] GameObject canvasPreparation;
 
@@ -117,27 +117,34 @@ public class GameController : MonoBehaviour
 
     // Función que se ejecuta en el estado principal
     void HandleMainState(){
-        Debug.Log("Main State");
+        // Debug.Log("Main State");
+        // Movemos la cámara a la posición original
+        cameraController.MoveCameraToOrigin();
+        // Mostar el canvas de combate por si no se está mostrando
+        canvasCombat.SetActive(true);
+        // Ocultar el canvas de preparación/defenseMode
+        canvasPreparation.SetActive(false);
         // Deshabilitar que se puedan instanciar barcos para las cartas de defensa
         ableToPlaceShip = false;
         quadHoverActive = false;
         isCameraOnAttack = false;
         isCameraOnDefense = false;
         // Dar cartas al jugador
-        if(cardsInHand < 5){
-           giveCards.GiveCardsInCombatMode();
+        // Si tiene 0 cartas, se reparten 5 cartas (al inicio del juego)
+        if(cardsInHand == 0){
+            giveCards.GiveCardsInCombatMode();
+        // Si tiene más de 0 cartas y menos de 5 (normalmente tendría 4, porque acaba de usar una), 
+        // entonces se reparte sólo una carta
+        }else if (cardsInHand > 0 && cardsInHand < 5){
+            giveCards.GiveCardInCombatMode();
         }
-
-        // TODO: **Estas dos siguientes líneas describen lo que se debe hacer**
-        // 1. Esperamos a que el jugador utilice una carta
-        // 2. Cambiar al estado de ataque o defensa dependiendo del tipo de carta
     }
 
 
 
     // Función para activar el modo de ataque
     public void AtackMode(){
-        Debug.Log("AtackGrid State");
+        // Debug.Log("AtackGrid State");
         // Si la cámara no está en modo ataque, se pone en modo ataque
         if (!isCameraOnAttack){
             isCameraOnAttack = true;
@@ -152,7 +159,7 @@ public class GameController : MonoBehaviour
 
     // Función para activar el modo de defensa
     public void DefenseMode(){
-        Debug.Log("DefenseGrid State");
+        // Debug.Log("DefenseGrid State");
         // Si la cámara no está en modo defensa, se pone en modo defensa
         if (!isCameraOnDefense){
             quadHoverActive = true;
@@ -162,11 +169,12 @@ public class GameController : MonoBehaviour
             // Mover el contenedor de la mano del jugador a la parte lateral de la pantalla
             RectTransform rectTransformPlayerHand = playerHandPreparation.GetComponent<RectTransform>();
             rectTransformPlayerHand.sizeDelta = new Vector2(300, 300);
-            rectTransformPlayerHand.anchoredPosition = new Vector2(-700, 700);
+            rectTransformPlayerHand.anchoredPosition = new Vector2(-800, 700);
             // Reducir su espaciado para que las cartas se encimen y quepan en la pantalla
             GridLayoutGroup gridLayout = playerHandPreparation.GetComponent<GridLayoutGroup>();
             gridLayout.spacing =  new Vector2(gridLayout.spacing.x, -100);
             canvasPreparation.SetActive(true);
+            startCombatButton.gameObject.SetActive(false);
             // Movemos la cámara a la posición de defensa
             cameraController.MoveCameraToDefense();
             // Movemos el grid del jugador para que sea visible
@@ -191,6 +199,11 @@ public class GameController : MonoBehaviour
     // Function to set the attack state of the game
     public void SetAttackGridState(){
         currentState = GameState.AttackGrid;
+    }
+
+    // Function to set the attack state of the game
+    public void SetMainState(){
+        currentState = GameState.Main;
     }
 
     // Function to set the defense state of the game
