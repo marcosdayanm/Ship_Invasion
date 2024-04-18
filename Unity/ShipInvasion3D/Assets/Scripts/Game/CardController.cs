@@ -93,7 +93,7 @@ public class CardController :
     // Estas funciones se ejecutan cuando se inicia un arrastre de una carta
     public void OnBeginDrag(PointerEventData eventData){
         // Si no se está hovereando una carta
-        if(!isHovering){
+        if(!isHovering && !isDragging){
             // Aumentamos el tamaño de la carta, la movemos hacia arriba para que se vea mejor, y la movemos al frente de todos los elementos
             // (normalmente se hace con el hover, pero si por alguna razón no se está hovereando, lo hacemos aquí)
             parentToReturnTo = transform.parent;
@@ -140,6 +140,7 @@ public class CardController :
             // Se guarda el quad sobre el que se soltó el barco (este lo regresa la función que valida si el barco se soltó sobre eun quad válido)
             quadTransfrom = ValidateCardDrop(eventData);
 
+
         // Si sí hay un quad válido, cambiamos el estado de los quads en donde se situó el barco
         if (quadTransfrom != null){
             // llamamos al método PlaceShipMisile del GridStateController para que cambie el estado de los quads en donde se situó el barco
@@ -149,6 +150,23 @@ public class CardController :
             gridStateController.GridState();
             Debug.Log(cardDetails.LengthX);
             Debug.Log(cardDetails.LengthY);
+
+            // Si seguimos en la fase de preparación:
+            if (gameController.currentState == GameController.GameState.none){
+                // Actualizamos el conteo de cartas que hay en la mano
+                gameController.cardsInHand = gameController.playerHandPreparation.transform.childCount - 1;
+                // Activar el botón para poder pasar al modo combate
+                if(gameController.cardsInHand == 0){
+                    gameController.startCombatButton.interactable = true;
+                }
+            }
+
+            // Si se colocó una carta correctamente en la fase de combate
+            // (aquí solo se puede poner una carta, por eso inmediatamente cambiamos al main)
+            if (gameController.currentState == GameController.GameState.DefenseGrid){
+                gameController.cardsInHand = gameController.canvasCombat.transform.Find("Cards").transform.childCount - 1;
+                gameController.SetMainState();
+            }
         }
     }
 
@@ -244,11 +262,6 @@ public class CardController :
             {
                 // El barco se soltó sobre un quad válido, así que destruimos la carta
                 Destroy(transform.parent.gameObject);
-                // Actualizamos el conteo de cartas que hay en la mano
-                gameController.cardsInHand = gameController.playerHandPreparation.transform.childCount - 1;
-                if(gameController.cardsInHand == 0){
-                    gameController.startCombatButton.interactable = true;
-                }
                 return hit.collider.transform;
             }
             // si no es válida la posición para ubicar el barco, se destruye la instancia del barco y la carta regresa al deck

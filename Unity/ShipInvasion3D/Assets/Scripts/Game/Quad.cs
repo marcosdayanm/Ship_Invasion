@@ -43,8 +43,8 @@ public class Quad : MonoBehaviour
 
     // CUando se haga click sobre un quad, se comprueba en qué estado está para poder cambiar al estado del quad apropiado
     void OnMouseDown(){
-        spawner.LaunchProjectileBasedOnVelocity(transform); // lanzar proyectil
-        AdjustQuadState();
+        // spawner.LaunchProjectileBasedOnVelocity(transform); // lanzar proyectil
+        // AdjustQuadState();
     }
 
     // Función para cambiar el estado del quad según sea el caso 
