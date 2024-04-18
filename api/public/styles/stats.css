@@ -1,39 +1,74 @@
-body{
-    background-color: var(--pink);
+body {
+  background-color: var(--pink);
 }
-main{
-    padding-top: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+main {
+  padding-top: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 
-    background-image: url("/img/fig2.png");
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    background-size: cover;
+  background-image: url("/img/fig2.png");
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.stats{
-    position: relative;
-    background-color: var(--white);
-    min-width: 1000px;
-    min-height: 600px;
+.stats {
+  position: relative;
+  background-color: var(--white);
+  min-width: 1000px;
+  min-height: 600px;
 
-    /* overflow: scroll; */
+  /* overflow: scroll; */
 }
-.title{
-    position: absolute;
-    width: 400px;
-    margin: 0;
-    top: 0;
-    right: 0;
-    transform: translate(40%, -40%);
+.title {
+  position: absolute;
+  width: 400px;
+  margin: 0;
+  top: 0;
+  right: 0;
+  transform: translate(40%, -40%);
 }
-.title img{
-    transform: rotate(5deg);
+.title img {
+  transform: rotate(5deg);
 }
-.hola{
-    height: 2000px;
-    width: 100%;
-    background-color: red;
+/* .hola {
+  height: 2000px;
+  width: 100%;
+  background-color: red;
+} */
+
+.container,
+canvas {
+  padding: 1%;
+  border: 1px solid black;
+}
+
+#creatingChart {
+  margin: 0;
+}
+
+.container,
+.container h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.chartContainer {
+  border: 0;
+  /* justify-content: center; */
+  justify-items: center;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  /* align-content: center; */
+}
+
+.chartContainer canvas {
+  flex-grow: 1;
+  max-width: 30%;
+  max-height: 600px;
 }
