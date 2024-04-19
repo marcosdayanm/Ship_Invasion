@@ -69,6 +69,25 @@ app.get("/api/cards", async (req, res) => {
   }
 });
 
+app.get("/api/games/total-games-by-arena", async (req, res) => {
+  let connection = null;
+  const { cardId } = req.params;
+  try {
+    connection = await connectToDB();
+    const [rows] = await connection.execute(
+      "SELECT ArenaName, COUNT(*) AS TotalGames FROM view_gamedetails GROUP BY ArenaId ORDER BY TotalGames DESC"
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Data not found" });
+    }
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (connection) connection.end();
+  }
+});
+
 // Get all cards with their details
 app.get("/api/cards/top5mostusedcards", async (req, res) => {
   let connection = null;
@@ -81,7 +100,25 @@ app.get("/api/cards/top5mostusedcards", async (req, res) => {
       return res.status(404).json({ error: "No cards found" });
     }
     // console.log(cards);
-    res.status(200).json({ Items: cards });
+    res.status(200).json({ cards });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (connection) connection.end();
+  }
+});
+
+app.get("/api/plays/playsrecord", async (req, res) => {
+  let connection = null;
+  try {
+    connection = await connectToDB();
+    const [number] = await connection.execute(
+      "SELECT COUNT(*) AS NumberOfPlays FROM view_playdetails GROUP BY GameId ORDER BY NumberOfPlays DESC LIMIT 1"
+    );
+    if (number.length === 0) {
+      return res.status(404).json({ error: "No number found" });
+    }
+    res.status(200).json({ number: number[0] });
   } catch (error) {
     res.status(500).json({ error: error.message });
   } finally {

@@ -16,11 +16,12 @@ main {
 .stats {
   position: relative;
   background-color: var(--white);
-  min-width: 1000px;
+  min-width: 1200px;
   min-height: 600px;
 
   /* overflow: scroll; */
 }
+
 .title {
   position: absolute;
   width: 400px;
@@ -32,43 +33,56 @@ main {
 .title img {
   transform: rotate(5deg);
 }
-/* .hola {
-  height: 2000px;
-  width: 100%;
-  background-color: red;
-} */
-
-.container,
-canvas {
-  padding: 1%;
-  border: 1px solid black;
-}
 
 #creatingChart {
   margin: 0;
 }
 
-.container,
+/* .container,
 .container h2 {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
+} */
 
 .chartContainer {
-  border: 0;
-  /* justify-content: center; */
   justify-items: center;
   display: flex;
   width: 100%;
   flex-direction: row;
   align-items: center;
-  /* align-content: center; */
 }
 
 .chartContainer canvas {
   flex-grow: 1;
   max-width: 30%;
   max-height: 600px;
+}
+
+.numbersboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  background-color: #007bff;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 150px;
+  text-align: center;
+}
+
+.titlecard {
+  font-size: 16px;
+}
+
+.cardnumber {
+  font-size: 24px;
+  font-weight: bold;
 }
