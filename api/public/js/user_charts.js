@@ -56,6 +56,20 @@ async function getPlays(gameId) {
   }
 }
 
+async function getTotalGamesOnEachArena(gameId) {
+  try {
+    const total = await fetch(
+      "http://localhost:3000/api/games/total-games-by-arena",
+      {
+        method: "GET",
+      }
+    );
+    return total.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function getTop5MostUsedCards(gameId) {
   try {
     const cards = await fetch(
@@ -65,6 +79,17 @@ async function getTop5MostUsedCards(gameId) {
       }
     );
     return cards.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getPlaysRecord(gameId) {
+  try {
+    const total = await fetch("http://localhost:3000/api/plays/playsrecord", {
+      method: "GET",
+    });
+    return total.json();
   } catch (error) {
     console.log(error);
   }
@@ -82,68 +107,43 @@ async function logIn(username, password) {
   }
 }
 
-// We obtain a reference to the canvas that we are going to use to plot the chart.
-// const ctx = document.getElementById("firstChart").getContext("2d");
+async function fetchData() {
+  try {
+    const [players, games, plays, top5cards, totalGames, totalPlaysRecord] =
+      await Promise.all([
+        getPlayers(),
+        getGames(),
+        getPlays(),
+        getTop5MostUsedCards(),
+        getTotalGamesOnEachArena(),
+        getPlaysRecord(),
+      ]);
+    console.log({
+      players,
+      games,
+      plays,
+      top5cards,
+      totalGames,
+      totalPlaysRecord,
+    });
+    return [
+      players,
+      games,
+      plays,
+      top5cards.cards,
+      totalGames,
+      totalPlaysRecord,
+    ];
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+}
 
-// To plot a chart, we need a configuration object that has all the information that the chart needs.
-// const firstChart = new Chart(ctx, {
-//   type: "bar",
-//   data: {
-//     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-//     datasets: [
-//       {
-//         label: "# of Votes",
-//         data: [12, 19, 3, 5, 2, 3],
-//         backgroundColor: [
-//           "rgba(255, 99, 132, 0.2)",
-//           "rgba(54, 162, 235, 0.2)",
-//           "rgba(255, 206, 86, 0.2)",
-//           "rgba(75, 192, 192, 0.2)",
-//           "rgba(153, 102, 255, 0.2)",
-//           "rgba(255, 159, 64, 0.2)",
-//         ],
-//         borderColor: [
-//           "rgba(255, 99, 132, 1)",
-//           "rgba(54, 162, 235, 1)",
-//           "rgba(255, 206, 86, 1)",
-//           "rgba(75, 192, 192, 1)",
-//           "rgba(153, 102, 255, 1)",
-//           "rgba(255, 159, 64, 1)",
-//         ],
-//         borderWidth: 1,
-//       },
-//     ],
-//   },
-//   options: {
-//     scales: {
-//       y: {
-//         beginAtZero: true,
-//       },
-//     },
-//   },
-// });
-
-// To plot data from an API, we first need to fetch a request, and then process the data.
 try {
-  // Fetching API's data
-  const players = await getPlayers();
-  const games = await getGames();
-  // const playsByGame = await getPlaysByGame(games[0].id);
-  const plays = await getPlays();
-  const top5cards = await getTop5MostUsedCards();
+  // fetch simultaneo con función que usa promise para más eficiencia y no esperar a que cada fetch termine
+  const [players, games, plays, top5cards, totalGames, totalPlaysRecord] =
+    await fetchData();
 
-  games.forEach(async (game) => {
-    const plays = await getPlays(game.id);
-    game["plays"] = plays;
-  });
-
-  console.log(players);
-  console.log(games);
-  // console.log(playsByGame);
-  console.log(plays);
-  console.log(top5cards);
-
-  // In this case, we just separate the data into different arrays using the map method of the values array. This creates new arrays that hold only the data that we need.
   const players_colors = players.map((e) => random_color(0.8));
   const players_borders = players.map((e) => "rgba(0, 0, 0, 1.0)");
   const players_names = players.map((e) => e["PlayerUsername"]);
@@ -151,8 +151,40 @@ try {
   const players_losses = players.map((e) => e["PlayerLosses"]);
   const players_coins = players.map((e) => e["PlayerCoins"]);
 
+  console.log(players_wins);
+  console.log(players_losses);
+
+  const playersRatio = players.map(
+    (e) => e["PlayerWins"] / (e["PlayerWins"] + e["PlayerLosses"])
+  );
+
+  console.log(playersRatio);
+
+  const totalPlayersWins = players_wins.reduce((ac, e) => ac + e, 0);
+  const totalPlayersLosses = players_losses.reduce((ac, e) => ac + e, 0);
+
   // Average win ratio
-  const playersAverageWinRatio = players_wins / (players_wins + players_losses);
+  const playersAverageWinRatio = (
+    totalPlayersWins /
+    (totalPlayersWins + totalPlayersLosses)
+  ).toFixed(2);
+  console.log(playersAverageWinRatio);
+
+  document.getElementById("winLossRatio").textContent = playersAverageWinRatio;
+
+  const totalGamesPlayed = totalGames.reduce(
+    (ac, e) => ac + e["TotalGames"],
+    0
+  );
+
+  document.getElementById("totalGamesPlayed").textContent = totalGamesPlayed;
+
+  const totalPlayers = players.length;
+
+  document.getElementById("totalPlayers").textContent = totalPlayers;
+
+  document.getElementById("totalPlaysRecord").textContent =
+    totalPlaysRecord.number.NumberOfPlays;
 
   // Average Coins Amount per player
   const playerAverageCoins = players_coins / players.length;
@@ -164,10 +196,10 @@ try {
   const levelChart1 = new Chart(winsChart, {
     type: "pie",
     data: {
-      labels: "Wins",
+      labels: players_names,
       datasets: [
         {
-          label: players_names,
+          label: "Wins",
           backgroundColor: players_colors,
           borderColor: players_borders,
           data: players_wins,
@@ -176,17 +208,12 @@ try {
     },
   });
 
-  const games_colors = games.map((e) => random_color(0.8));
-  const games_borders = games.map((e) => "rgba(0, 0, 0, 1.0)");
-  const games_arena = games.map((e) => e["ArenaName"]);
-  const games_dates = games.map((e) => e["GameDate"]);
+  console.log(totalGames);
 
-  const totalGamesPlayedOnEachArena = [
-    games_arena.filter((e) => e === 1).length,
-    games_arena.filter((e) => e === 2).length,
-    games_arena.filter((e) => e === 3).length,
-    games_arena.filter((e) => e === 4).length,
-  ];
+  const total_games_colors = totalGames.map((e) => random_color(0.8));
+  const total_games_borders = totalGames.map((e) => "rgba(0, 0, 0, 1.0)");
+  const total_games_arena = totalGames.map((e) => e["ArenaName"]);
+  const total_games_number = totalGames.map((e) => e["TotalGames"]);
 
   const ctx_levels2 = document
     .getElementById("gamesPlayedOnEachArena")
@@ -194,38 +221,36 @@ try {
   const levelChart2 = new Chart(ctx_levels2, {
     type: "line",
     data: {
-      labels: level_names,
+      labels: total_games_arena,
       datasets: [
         {
-          label: [
-            "Mar Abierto",
-            "Tormenta Eléctrica",
-            "Río de Fuego",
-            "Pantano Tóxico",
-          ],
-          backgroundColor: games_colors,
+          label: "Total de juegos por arena",
+          backgroundColor: total_games_colors,
           pointRadius: 10,
-          data: totalGamesPlayedOnEachArena,
+          data: total_games_number,
         },
       ],
     },
   });
 
-  const top5cards_colors = players.map((e) => random_color(0.8));
-  const top5cards_borders = players.map((e) => "rgba(0, 0, 0, 1.0)");
-  const top5cards_cardname = players.map((e) => e["CardName"]);
-  const top5cards_cardtype = players.map((e) => e["CardType"]);
-  const top5cards_cardquality = players.map((e) => e["CardQuality"]);
-  const top5cards_count = players.map((e) => e["NumberOfPlays"]);
+  const top5cards_colors = top5cards.map((e) => random_color(0.8));
+  const top5cards_borders = top5cards.map((e) => "rgba(0, 0, 0, 1.0)");
+  const top5cards_cardname = top5cards.map((e) => e["CardName"]);
+  const top5cards_cardtype = top5cards.map((e) => e["CardType"]);
+  const top5cards_cardquality = top5cards.map((e) => e["CardQuality"]);
+  const top5cards_count = top5cards.map((e) => e["NumberOfPlays"]);
+
+  // console.log(top5cards_cardname);
+  // console.log(top5cards_count);
 
   const ctx_levels3 = document.getElementById("mostUsedCards").getContext("2d");
   const levelChart3 = new Chart(ctx_levels3, {
     type: "bar",
     data: {
-      labels: level_names,
+      labels: top5cards_cardname,
       datasets: [
         {
-          label: top5cards_cardname,
+          label: "Top 5 cartas más usadas",
           backgroundColor: top5cards_colors,
           borderColor: top5cards_borders,
           borderWidth: 2,
@@ -235,5 +260,5 @@ try {
     },
   });
 } catch (error) {
-  console.log(error);
+  console.log(`Error desconocido: ${error}`);
 }
