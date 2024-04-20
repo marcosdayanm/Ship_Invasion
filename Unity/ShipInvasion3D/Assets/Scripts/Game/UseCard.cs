@@ -43,7 +43,16 @@ public class UseCard : MonoBehaviour, IDropHandler
         gameController.isCardInUse = true;
         // Activamos el modo de ataque o defensa dependiendo del tipo de carta
         if(cardController.cardDetails.CardType == "Attack"){
+            gameController.attackCardLength[0] = cardController.cardDetails.LengthX;
+            gameController.attackCardLength[1] = cardController.cardDetails.LengthY;
+            // Destuir la carta actual
+            Destroy(card.gameObject);
+            // Pasar a modo ataque
             gameController.SetAttackGridState();
+            // Volvemos a activar el texto que se muestra en el panel para que solo esté la carta
+            text.SetActive(true);
+            // Activamos la variable que indica que se está usando una carta
+            gameController.isCardInUse = false;
         }else{
             // Crear un nuevo contenedor para situar la carta que se está usuando
             GameObject cellCard = Instantiate(cellCardPrefab, playerHand.transform);
