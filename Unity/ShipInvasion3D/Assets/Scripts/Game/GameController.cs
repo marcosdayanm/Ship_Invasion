@@ -66,6 +66,22 @@ public class GameController : MonoBehaviour
     // Referencia a las todas las cartas disponibles en el juego
     public Cards cards;
 
+    // Variable que guarda la longitud de una carta de ataque
+    public int[] attackCardLength = new int[2];
+
+    // Lista de quad a donde se mandarán proyectiles
+    public List<Transform> quadOnAttack = new List<Transform>();
+
+    // Variable para guardar el spawner de los proyectiles
+    FireProjectile projectileSpawner;
+
+    // Variable para indicar que se están lanzando misiles (para controlar que la lista no se limpie hasta que todos los misiles se hayan lanzado)
+    // [HideInInspector] 
+    public bool isLaunching = false;
+
+    // Variable para indicar que el lanzamiento de misisles está activo (para controlar que en el loop no se ejecute muchas veces el lanzamiento en cada frame)
+    public bool launchingActive = false;
+
     // Esta función se ejecutará al inicio del juego
     void Start()
     {
@@ -74,6 +90,7 @@ public class GameController : MonoBehaviour
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<MoveCamera>();
         // Script que reparte cartas al jugador 
         giveCards = GameObject.FindWithTag("CardsSpawner").GetComponent<GiveCards>();
+        projectileSpawner = GameObject.FindWithTag("SpawnProjectile").GetComponent<FireProjectile>();
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
         // Inicializamos el estado del juego en el estado principal (fase de preparación)
@@ -113,6 +130,8 @@ public class GameController : MonoBehaviour
 
         // Repartimos las cartas al jugador
         giveCards.GiveCardsInPreparationMode();
+
+        // TODO: Choose and "place the ships" of the AI
     }
 
     // Función que se ejecuta en el estado principal
@@ -129,6 +148,9 @@ public class GameController : MonoBehaviour
         quadHoverActive = false;
         isCameraOnAttack = false;
         isCameraOnDefense = false;
+        // Movemos los grids para que no sean visibles
+        StartCoroutine(MoveGrid(false));
+        StartCoroutine(MoveGridEnemy(false));
         // Dar cartas al jugador
         // Si tiene 0 cartas, se reparten 5 cartas (al inicio del juego)
         if(cardsInHand == 0){
@@ -137,6 +159,10 @@ public class GameController : MonoBehaviour
         // entonces se reparte sólo una carta
         }else if (cardsInHand > 0 && cardsInHand < 5){
             giveCards.GiveCardInCombatMode();
+        }
+        if(quadOnAttack.Count > 0 && !launchingActive){
+            StartCoroutine(LaunchProjectiles());
+            launchingActive = true;
         }
     }
 
@@ -147,11 +173,12 @@ public class GameController : MonoBehaviour
         // Debug.Log("AtackGrid State");
         // Si la cámara no está en modo ataque, se pone en modo ataque
         if (!isCameraOnAttack){
+            quadHoverActive = true;
             isCameraOnAttack = true;
             // Movemos la cámara a la posición de ataque
             cameraController.MoveCameraToAttack();
             // Movemos el grid del enemigo para que sea visible
-            StartCoroutine(MoveGridEnemy());
+            StartCoroutine(MoveGridEnemy(true));
             // Desactivamos el panel de selección de cartas (la mano del jugador)
             canvasCombat.SetActive(false);
         }
@@ -178,7 +205,7 @@ public class GameController : MonoBehaviour
             // Movemos la cámara a la posición de defensa
             cameraController.MoveCameraToDefense();
             // Movemos el grid del jugador para que sea visible
-            StartCoroutine(MoveGrid());
+            StartCoroutine(MoveGrid(true));
             // Desactivamos el panel de selección de cartas (la mano del jugador)
             canvasCombat.SetActive(false);
         }
@@ -212,11 +239,11 @@ public class GameController : MonoBehaviour
     }
 
     // Corrutina para mover el grid del enemigo  que recibe la duración de la animación
-    IEnumerator MoveGridEnemy(float duration = 1.0f){
+    IEnumerator MoveGridEnemy(bool showGrid, float duration = 1.0f){
         // Posición inicial y final del grid del enemigo
         Vector3 start = enemyGrid.position;
         // Obtener el punto a donde se va a mover el grid del enemigo (1.3 hacia arriba si la cámara está en modo ataque, 1.3 hacia abajo si no lo está)
-        Vector3 target = new Vector3(enemyGrid.position.x, isCameraOnAttack ? enemyGrid.position.y + 1.3f : enemyGrid.position.y - 1.3f, enemyGrid.position.z);
+        Vector3 target = new Vector3(enemyGrid.position.x, showGrid ? 20.1f : 18.8f, enemyGrid.position.z);
         float time = 0;
         // Mientras no haya pasado el tiempo de duración, se mueve el grid del enemigo
         while (time < duration) {
@@ -231,11 +258,11 @@ public class GameController : MonoBehaviour
 
 
     // Corrutina para mover el grid del jugador que recibe la duración de la animación
-    IEnumerator MoveGrid(float duration = 1.0f){
+    IEnumerator MoveGrid(bool showGrid, float duration = 1.0f){
         // Posición inicial y final del grid del jugador
         Vector3 start = grid.position;
         // Obtener el punto a donde se va a mover el grid del jugador (1.3 hacia arriba si la cámara está en modo defensa, 1.3 hacia abajo si no lo está)
-        Vector3 target = new Vector3(grid.position.x, isCameraOnDefense ? grid.position.y + 1.3f : grid.position.y - 1.3f, grid.position.z);
+        Vector3 target = new Vector3(grid.position.x, showGrid ? 20.1f : 18.8f, grid.position.z);
         float time = 0; 
         // Mientras no haya pasado el tiempo de duración, se mueve el grid del jugador
         while (time < duration) {
@@ -246,6 +273,17 @@ public class GameController : MonoBehaviour
             yield return null; // Espera hasta el próximo frame
         }
         grid.position = target; // Asegura que el objeto llegue a la posición destino
+    }
+
+    public IEnumerator LaunchProjectiles(){
+        foreach(Transform quad in quadOnAttack){
+            projectileSpawner.LaunchProjectileBasedOnVelocity(quad);
+            yield return new WaitForSeconds(1);
+        }
+        yield return new WaitForSeconds(1);
+        quadOnAttack.Clear();
+        isLaunching = false;
+        launchingActive = false;
     }
 
     // Función para avisar que se está arrastrando una carta
