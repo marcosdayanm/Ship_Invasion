@@ -148,8 +148,8 @@ public class CardController :
             // Llamamos al método GridState del GridStateController para que actualice el estado de la 
             // cuadrícula (recuento de quads de cada tipo)
             gridStateController.GridState();
-            Debug.Log(cardDetails.LengthX);
-            Debug.Log(cardDetails.LengthY);
+            // Debug.Log(cardDetails.LengthX);
+            // Debug.Log(cardDetails.LengthY);
 
             // Si seguimos en la fase de preparación:
             if (gameController.currentState == GameController.GameState.none){
@@ -168,6 +168,7 @@ public class CardController :
                 gameController.SetMainState();
             }
         }
+        isHovering = false;
     }
 
     // Función para instanciar el barco en el tablero
