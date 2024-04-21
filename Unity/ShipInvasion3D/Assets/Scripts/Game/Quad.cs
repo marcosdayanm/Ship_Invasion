@@ -25,6 +25,7 @@ public class Quad : MonoBehaviour
     public Material black;
     public Material red;
     public Material blue;
+    public Material yellow;
 
     // Referencia al controlador del juego
     GameController gameController;
@@ -52,6 +53,28 @@ public class Quad : MonoBehaviour
                 gameController.isLaunching = true;
                 gameController.currentState = GameController.GameState.Main;
                 gameController.OnCardDrop();
+
+                // cambio de estado de los quads a donde se atacó
+                int currentX = int.Parse(gameObject.name.Split(',')[0]);
+                int currentY = int.Parse(gameObject.name.Split(',')[1]);
+
+                // El misil es horizontal
+                if(gameController.attackCardLength[0] > 1){
+                    for(int i = currentX - gameController.attackCardLength[0]; i < currentX; i++){
+                        if(i >= 0 && i < transform.parent.childCount){
+                            Quad loopedQuad = transform.parent.GetChild(i).GetComponent<Quad>();
+                            loopedQuad.AdjustQuadState();
+                        }
+                    }
+                // El misil es vertical
+                }else{
+                    for(int i = currentY; i < currentY + gameController.attackCardLength[1]; i++){
+                        if(i-1 >= 0 && i-1 < transform.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < transform.parent.parent.GetChild(i-1).childCount){
+                            Quad loopedQuad = transform.parent.parent.GetChild(i-1).GetChild(currentX-1).GetComponent<Quad>();
+                            loopedQuad.AdjustQuadState();
+                        }
+                    }
+                }        
 
 
                 // StartCoroutine(gameController.LaunchProjectiles());
