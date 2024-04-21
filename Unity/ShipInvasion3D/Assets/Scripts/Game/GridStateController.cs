@@ -164,6 +164,7 @@ public class GridStateController : MonoBehaviour
         // Determinar si el barco es horizontal, vertical o cuadrado.
         bool isHorizontal = cardDetails.LengthX > 1;
         bool isVertical = cardDetails.LengthY > 1;
+        bool is1x1 = !isHorizontal && !isVertical;
 
         // Activación de la búsqueda una vez encontrada la posición inicial.
         bool isActivatedSearch = false;
@@ -196,6 +197,8 @@ public class GridStateController : MonoBehaviour
                         xLength--;
                     else if (isVertical)
                         yLength--;
+                    else if (is1x1)
+                        return true;
                 }
 
                 // Continuar colocando el barco o misil mientras la búsqueda esté activada.
