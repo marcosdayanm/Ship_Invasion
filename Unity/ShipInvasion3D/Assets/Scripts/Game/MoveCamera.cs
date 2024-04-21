@@ -7,7 +7,7 @@ using UnityEngine;
 public class MoveCamera : MonoBehaviour
 {
     // Duración de la animación de mover la cámara
-    [SerializeField] float duration = 1.0f;
+    [SerializeField] float duration = 0.5f;
 
     // Posiciones de la cámara
     // Posición de la cámara en modo ataque
