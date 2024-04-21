@@ -23,6 +23,10 @@ public class GameController : MonoBehaviour
     // Referencia al script que reparte cartas al jugador
     GiveCards giveCards;
 
+    BotCPU botCPU;
+
+
+
     // Variables para controlar si se está arrastrando una carta y
     // si se está usando una carta
     [HideInInspector] public bool isCardDragging = false;
@@ -63,7 +67,7 @@ public class GameController : MonoBehaviour
     // Variable para controlar el estado actual del juego
     [HideInInspector] public  GameState currentState = GameState.none;
 
-    // Referencia a las todas las cartas disponibles en el juego
+    // Referencia a todas las cartas disponibles en el juego
     public Cards cards;
 
     // Variable que guarda la longitud de una carta de ataque
@@ -90,10 +94,12 @@ public class GameController : MonoBehaviour
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<MoveCamera>();
         // Script que reparte cartas al jugador 
         giveCards = GameObject.FindWithTag("CardsSpawner").GetComponent<GiveCards>();
+        botCPU = GameObject.FindWithTag("BotCPU").GetComponent<BotCPU>();
         projectileSpawner = GameObject.FindWithTag("SpawnProjectile").GetComponent<FireProjectile>();
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
         // Inicializamos el estado del juego en el estado principal (fase de preparación)
+        botCPU.PreparationMode();
         StartCoroutine(PreparationMode());
     }
 
@@ -132,6 +138,7 @@ public class GameController : MonoBehaviour
         giveCards.GiveCardsInPreparationMode();
 
         // TODO: Choose and "place the ships" of the AI
+
     }
 
     // Función que se ejecuta en el estado principal

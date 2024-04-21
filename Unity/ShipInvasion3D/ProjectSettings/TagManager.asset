@@ -8,6 +8,8 @@ TagManager:
   - CardsSpawner
   - GridQuad
   - Grid
+  - EnemyGrid
+  - BotCPU
   layers:
   - Default
   - TransparentFX
