@@ -87,7 +87,7 @@ public class APIConnection : MonoBehaviour
 
 
     // Función para configurar el request POST para enviar las credenciales de inicio de sesión de un jugador
-    IEnumerator PostPlayerLogInCredentials(string username, string password)
+    public IEnumerator PostPlayerLogInCredentials(string username, string password)
     {
         // Enpoint de la API para enviar las credenciales de inicio de sesión
         endpoint = "/api/players/login";

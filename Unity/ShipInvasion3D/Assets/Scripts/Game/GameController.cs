@@ -69,6 +69,7 @@ public class GameController : MonoBehaviour
 
     // Referencia a todas las cartas disponibles en el juego
     public Cards cards;
+    public PlayerDetails user;
 
     // Variable que guarda la longitud de una carta de ataque
     public int[] attackCardLength = new int[2];
@@ -94,12 +95,16 @@ public class GameController : MonoBehaviour
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<MoveCamera>();
         // Script que reparte cartas al jugador 
         giveCards = GameObject.FindWithTag("CardsSpawner").GetComponent<GiveCards>();
-        botCPU = GameObject.FindWithTag("BotCPU").GetComponent<BotCPU>();
         projectileSpawner = GameObject.FindWithTag("SpawnProjectile").GetComponent<FireProjectile>();
+        botCPU = GameObject.FindWithTag("BotCPU").GetComponent<BotCPU>();
+
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
+        user = JsonUtility.FromJson<PlayerDetails>(PlayerPrefs.GetString("user"));
+
+        Debug.Log(cards.Items[0].CardName);
+
         // Inicializamos el estado del juego en el estado principal (fase de preparación)
-        botCPU.PreparationMode();
         StartCoroutine(PreparationMode());
     }
 
@@ -112,7 +117,7 @@ public class GameController : MonoBehaviour
             HandleMainState();
         }else if(currentState == GameState.AttackGrid){
             // Si estamos en el estado de ataque, activamos el modo de ataque y esperamos a que el jugador seleccione a donde va a atacar
-            AtackMode();
+            AttackMode();
         }else if(currentState == GameState.DefenseGrid){
             // Si estamos en el estado de defensa, activamos el modo de defensa y esperamos a que el jugador seleccione a donde va a defender (poner barco)
             DefenseMode();
@@ -133,6 +138,8 @@ public class GameController : MonoBehaviour
         
         // Esperamos un poco antes de repartir las cartas
         yield return new WaitForSeconds(0.2f);
+
+        botCPU.PreparationMode();
 
         // Repartimos las cartas al jugador
         giveCards.GiveCardsInPreparationMode();
@@ -156,8 +163,8 @@ public class GameController : MonoBehaviour
         isCameraOnAttack = false;
         isCameraOnDefense = false;
         // Movemos los grids para que no sean visibles
-        StartCoroutine(MoveGrid(false));
-        StartCoroutine(MoveGridEnemy(false));
+        StartCoroutine(MoveGrid(false, 0.5f));
+        StartCoroutine(MoveGridEnemy(false, 0.5f));
         // Dar cartas al jugador
         // Si tiene 0 cartas, se reparten 5 cartas (al inicio del juego)
         if(cardsInHand == 0){
@@ -176,8 +183,8 @@ public class GameController : MonoBehaviour
 
 
     // Función para activar el modo de ataque
-    public void AtackMode(){
-        // Debug.Log("AtackGrid State");
+    public void AttackMode(){
+        // Debug.Log("AttackGrid State");
         // Si la cámara no está en modo ataque, se pone en modo ataque
         if (!isCameraOnAttack){
             quadHoverActive = true;
@@ -185,7 +192,7 @@ public class GameController : MonoBehaviour
             // Movemos la cámara a la posición de ataque
             cameraController.MoveCameraToAttack();
             // Movemos el grid del enemigo para que sea visible
-            StartCoroutine(MoveGridEnemy(true));
+            StartCoroutine(MoveGridEnemy(true, 0.5f));
             // Desactivamos el panel de selección de cartas (la mano del jugador)
             canvasCombat.SetActive(false);
         }
@@ -212,9 +219,12 @@ public class GameController : MonoBehaviour
             // Movemos la cámara a la posición de defensa
             cameraController.MoveCameraToDefense();
             // Movemos el grid del jugador para que sea visible
-            StartCoroutine(MoveGrid(true));
+            StartCoroutine(MoveGrid(true, 0.5f));
             // Desactivamos el panel de selección de cartas (la mano del jugador)
             canvasCombat.SetActive(false);
+
+            botCPU.Attack();
+            botCPU.Defense();
         }
     }
 
@@ -243,6 +253,10 @@ public class GameController : MonoBehaviour
     // Function to set the defense state of the game
     public void SetDefenseGridState(){
         currentState = GameState.DefenseGrid;
+    }
+
+    public void SetPcTurnGridState(){
+        currentState = GameState.PCTurn;
     }
 
     // Corrutina para mover el grid del enemigo  que recibe la duración de la animación
@@ -285,7 +299,7 @@ public class GameController : MonoBehaviour
     public IEnumerator LaunchProjectiles(){
         foreach(Transform quad in quadOnAttack){
             projectileSpawner.LaunchProjectileBasedOnVelocity(quad);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
         yield return new WaitForSeconds(1);
         quadOnAttack.Clear();
