@@ -7445,6 +7445,12 @@ MonoBehaviour:
   currentState: 4
   cards:
     Items: []
+  user:
+    PlayerId: 0
+    PlayerUsername: 
+    PlayerWins: 0
+    PlayerLosses: 0
+    PlayerCoins: 0
   attackCardLength: 0000000000000000
   quadOnAttack: []
   isLaunching: 0
@@ -17137,6 +17143,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &839038408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 839038410}
+  - component: {fileID: 839038409}
+  m_Layer: 0
+  m_Name: EnemySpawnProjectile
+  m_TagString: EnemySpawnProjectile
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &839038409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839038408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83cd57984f68846ebbf7bf318357018a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: -9132729238498812400, guid: 96d039c82019d4759969bc17863bc072,
+    type: 3}
+  speed: 90
+--- !u!4 &839038410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839038408}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 20, z: 130}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &839535967
 GameObject:
   m_ObjectHideFlags: 0
@@ -25038,6 +25091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridStateControllerBot: {fileID: 621334056}
   gridStateControllerPlayer: {fileID: 1216790529}
+  quadOnAttack: []
 --- !u!4 &1159557490
 Transform:
   m_ObjectHideFlags: 0
@@ -40099,7 +40153,7 @@ Transform:
   m_GameObject: {fileID: 1886774321}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: -170}
+  m_LocalPosition: {x: 0, y: 50, z: -149.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46270,6 +46324,7 @@ SceneRoots:
   - {fileID: 2106673700}
   - {fileID: 619360534}
   - {fileID: 1886774323}
+  - {fileID: 839038410}
   - {fileID: 351811558}
   - {fileID: 2084753259}
   - {fileID: 2003812381}

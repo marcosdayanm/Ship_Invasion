@@ -205,6 +205,53 @@ RectTransform:
   m_AnchoredPosition: {x: 0.000031352, y: 44}
   m_SizeDelta: {x: 718.3409, y: 431.7315}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &31632494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 31632495}
+  - component: {fileID: 31632496}
+  m_Layer: 0
+  m_Name: APIConnection
+  m_TagString: APIConnection
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &31632495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31632494}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 841.1914, y: 399.92706, z: 134.17734}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &31632496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31632494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be45d7e099c204edf8d7837e8838886b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  apiURL: http://localhost:3000
+  endpoint: 
+  idParameter: 
 --- !u!1 &42902314
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,6 +1315,11 @@ MonoBehaviour:
   signupSet: {fileID: 2120911018}
   loginForm: {fileID: 2086003155}
   signupForm: {fileID: 21094848}
+  loginInputUser: {fileID: 343610263}
+  loginInputPassword: {fileID: 1558256751}
+  signupInputUser: {fileID: 0}
+  signupInputPassword: {fileID: 0}
+  signupInputConfirmPassword: {fileID: 0}
 --- !u!4 &682035482
 Transform:
   m_ObjectHideFlags: 0
@@ -2948,7 +3000,7 @@ GameObject:
   - component: {fileID: 1435687663}
   m_Layer: 0
   m_Name: SceneController
-  m_TagString: Untagged
+  m_TagString: SceneConnection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5059,7 +5111,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 682035481}
         m_TargetAssemblyTypeName: AuthController, Assembly-CSharp
-        m_MethodName: SwitchFormToLogIn
+        m_MethodName: OnLoginButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5384,3 +5436,4 @@ SceneRoots:
   - {fileID: 958866861}
   - {fileID: 1435687662}
   - {fileID: 682035482}
+  - {fileID: 31632495}

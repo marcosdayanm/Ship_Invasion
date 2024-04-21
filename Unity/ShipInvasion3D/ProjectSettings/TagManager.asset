@@ -10,6 +10,9 @@ TagManager:
   - Grid
   - EnemyGrid
   - BotCPU
+  - SceneConnection
+  - APIConnection
+  - EnemySpawnProjectile
   layers:
   - Default
   - TransparentFX
