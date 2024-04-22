@@ -110,7 +110,6 @@ public class BotCPU : MonoBehaviour
                 if(i >= 0 && i < startingQuad.parent.childCount){
                     // Si sí, muestra efecto y sigue con el siguiente quad
                     Transform loopedQuad = startingQuad.parent.GetChild(i);
-                    loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
                     gameController.quadOnAttack.Add(loopedQuad);
                 }
             }
@@ -121,7 +120,6 @@ public class BotCPU : MonoBehaviour
                 if(i-1 >= 0 && i-1 < startingQuad.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < startingQuad.parent.parent.GetChild(i-1).childCount){
                     // Si sí, muestra efecto y sigue con el siguiente quad
                     Transform loopedQuad = startingQuad.parent.parent.GetChild(i-1).GetChild(currentX-1);
-                    loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
                     gameController.quadOnAttack.Add(loopedQuad);
                 }
             }
