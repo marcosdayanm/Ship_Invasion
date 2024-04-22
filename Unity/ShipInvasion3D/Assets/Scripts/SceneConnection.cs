@@ -36,6 +36,11 @@ public class SceneConnection : MonoBehaviour
         SceneManager.LoadScene("SampleScene"); //Para pasar a la escena de juego
     }
 
+    // Función para ir a la escena de juego
+    public void toEndGame () {
+        SceneManager.LoadScene("EndGame"); //Para pasar a la escena de juego
+    }
+
     // Función para ir la escena de visualización de cartas
     public void toVisualizacionCartas () {
         SceneManager.LoadScene("VisualizacionCartas"); //Para pasar a la escena de visualizacion de cartas

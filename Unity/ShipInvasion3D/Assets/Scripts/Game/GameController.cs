@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
 
     BotCPU botCPU;
 
+    Timer timer;
+
 
 
     // Variables para controlar si se está arrastrando una carta y
@@ -97,6 +99,7 @@ public class GameController : MonoBehaviour
         giveCards = GameObject.FindWithTag("CardsSpawner").GetComponent<GiveCards>();
         projectileSpawner = GameObject.FindWithTag("SpawnProjectile").GetComponent<FireProjectile>();
         botCPU = GameObject.FindWithTag("BotCPU").GetComponent<BotCPU>();
+        timer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
 
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
@@ -238,6 +241,8 @@ public class GameController : MonoBehaviour
         canvasCombat.SetActive(true);
         // Cambiar estado a main para empezar fase de combate
         currentState = GameState.Main;
+
+        timer.StartTimer(timer.matchTime);
     }
 
     // Function to set the attack state of the game

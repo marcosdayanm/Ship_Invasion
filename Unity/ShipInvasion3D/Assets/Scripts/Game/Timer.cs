@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class Timer : MonoBehaviour
 {
@@ -7,9 +8,26 @@ public class Timer : MonoBehaviour
     private bool isTimerActive = false; 
     private Coroutine timerCoroutine;
 
+    [SerializeField] TMP_Text matchTimerText;
+    [SerializeField] TMP_Text playTimerText;
+    
+    public float matchTime;
+
+    SceneConnection sceneConnection = null;
+
+
     // Delegado y evento para actualizar el tiempo restante cada segundo
     public delegate void TimeUpdateAction(float timeRemaining);
     public event TimeUpdateAction OnTimeUpdate;
+
+
+
+    public void Start()
+    {
+        matchTime = timeLimit;
+        sceneConnection = GameObject.FindWithTag("SceneConnection").GetComponent<SceneConnection>();
+    }
+
 
     // Propiedad para revisar si el temporizador está activo
     public bool IsTimerActive
@@ -26,27 +44,45 @@ public class Timer : MonoBehaviour
         }
     }
 
+        
     private IEnumerator Countdown()
-    {
-        isTimerActive = true;
-        float remainingTime = timeLimit;
-        while(remainingTime > 0)
         {
-            OnTimeUpdate?.Invoke(remainingTime);
-            yield return new WaitForSeconds(1f);
-            remainingTime--;
+            isTimerActive = true;
+            float remainingTime = timeLimit;
+            while(remainingTime > 0)
+            {
+                // Actualizar el texto del temporizador en pantalla
+                matchTimerText.text = FormatTime(remainingTime);
+                
+                OnTimeUpdate?.Invoke(remainingTime);
+                yield return new WaitForSeconds(1f);
+                remainingTime--;
+            }
+
+            matchTimerText.text = "00:00"; // Actualizar a 00:00 cuando el tiempo se acabe
+            OnTimeUpdate?.Invoke(0);
+            isTimerActive = false;
+            
+            // Detener todas las corrutinas
+            StopAllCoroutines();
+            
+            // Cambiar de escena
+            sceneConnection.toSeleccionArena();
         }
 
-        // Cuando el tiempo se acaba, notificar que el temporizador ya no está activo y el tiempo restante es 0
-        OnTimeUpdate?.Invoke(0);
-        isTimerActive = false;
-    }
+        // Método opcional para detener el temporizador manualmente si es necesario
+        public void StopTimer()
+        {
+            StopCoroutine(timerCoroutine);
+            isTimerActive = false;
+            OnTimeUpdate?.Invoke(0); // Opcional: notificar que el temporizador se detuvo antes de tiempo
+        }
 
-    // Método opcional para detener el temporizador manualmente si es necesario
-    public void StopTimer()
-    {
-        StopCoroutine(timerCoroutine);
-        isTimerActive = false;
-        OnTimeUpdate?.Invoke(0); // Opcional: notificar que el temporizador se detuvo antes de tiempo
-    }
+        // Método para formatear el tiempo en minutos y segundos
+        private string FormatTime(float time)
+        {
+            int minutes = Mathf.FloorToInt(time / 60);
+            int seconds = Mathf.FloorToInt(time % 60);
+            return string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
 }
