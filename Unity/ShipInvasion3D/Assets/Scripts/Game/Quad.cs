@@ -27,6 +27,8 @@ public class Quad : MonoBehaviour
     public Material blue;
     public Material yellow;
 
+    public Material currMaterial;
+
     // Referencia al controlador del juego
     GameController gameController;
 
@@ -104,6 +106,16 @@ public class Quad : MonoBehaviour
         }
     }
 
+    public void AdjustQuadMaterial() 
+    {
+        if (state == quadState.hit)
+            GetComponent<Renderer>().material = red;
+        else if (state == quadState.miss)
+            GetComponent<Renderer>().material = blue;
+        else 
+            GetComponent<Renderer>().material = black;
+    }
+
     // Función para indicar que se colocó un barco en el quad (cambia su estado)
     public void PlaceShip() {
         state = quadState.ship;
@@ -118,6 +130,7 @@ public class Quad : MonoBehaviour
                 HoverQuadsAttack();
             // Se mueve un poco hacia arriba para indicar que se está hovereando sobre el quad (en modo preparación)
             }else{
+                GetComponent<Renderer>().material = yellow;
                 transform.localPosition = new Vector3(transform.localPosition.x, 1, transform.localPosition.z);
             }
         }
@@ -129,6 +142,7 @@ public class Quad : MonoBehaviour
         if(gameController.currentState == GameController.GameState.AttackGrid){
             UnhoverQuadsAttack();
         }else{
+            AdjustQuadMaterial();
             transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
         }
     }
@@ -145,7 +159,11 @@ public class Quad : MonoBehaviour
                 if(i >= 0 && i < transform.parent.childCount){
                     // Si sí, muestra efecto y sigue con el siguiente quad
                     Transform loopedQuad = transform.parent.GetChild(i);
-                    loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
+
+                    Quad loopedQuadScript = loopedQuad.GetComponent<Quad>();
+                    loopedQuadScript.GetComponent<Renderer>().material = yellow;
+
+                    // loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
                     validToLauchProjectiles = true;
                     gameController.quadOnAttack.Add(loopedQuad);
                     Debug.Log("Permitido mandar Misiles: " + validToLauchProjectiles);
@@ -162,7 +180,11 @@ public class Quad : MonoBehaviour
                 if(i-1 >= 0 && i-1 < transform.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < transform.parent.parent.GetChild(i-1).childCount){
                     // Si sí, muestra efecto y sigue con el siguiente quad
                     Transform loopedQuad = transform.parent.parent.GetChild(i-1).GetChild(currentX-1);
-                    loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
+
+                    Quad loopedQuadScript = loopedQuad.GetComponent<Quad>();
+                    loopedQuadScript.GetComponent<Renderer>().material = yellow;
+
+                    // loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
                     validToLauchProjectiles = true;
                     gameController.quadOnAttack.Add(loopedQuad);
                     Debug.Log("Permitido mandar Misiles: " + validToLauchProjectiles);
@@ -186,7 +208,11 @@ public class Quad : MonoBehaviour
             for(int i = currentX - gameController.attackCardLength[0]; i < currentX; i++){
                 if(i >= 0 && i < transform.parent.childCount){
                     Transform loopedQuad = transform.parent.GetChild(i);
-                    loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 0, loopedQuad.localPosition.z);
+
+                    Quad loopedQuadScript = loopedQuad.GetComponent<Quad>();
+                    loopedQuadScript.AdjustQuadMaterial();
+
+                    // loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 0, loopedQuad.localPosition.z);
                 }
             }
         // El misil es vertical
@@ -194,7 +220,11 @@ public class Quad : MonoBehaviour
             for(int i = currentY; i < currentY + gameController.attackCardLength[1]; i++){
                 if(i-1 >= 0 && i-1 < transform.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < transform.parent.parent.GetChild(i-1).childCount){
                     Transform loopedQuad = transform.parent.parent.GetChild(i-1).GetChild(currentX-1);
-                    loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 0, loopedQuad.localPosition.z);
+
+                    Quad loopedQuadScript = loopedQuad.GetComponent<Quad>();
+                    loopedQuadScript.AdjustQuadMaterial();
+
+                    // loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 0, loopedQuad.localPosition.z);
                 }
             }
         }        
