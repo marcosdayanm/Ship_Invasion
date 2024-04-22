@@ -219,7 +219,7 @@ public class GameController : MonoBehaviour
             // Movemos la cámara a la posición de defensa
             cameraController.MoveCameraToDefense();
             // Movemos el grid del jugador para que sea visible
-            StartCoroutine(MoveGrid(true, 0.5f));
+            StartCoroutine(MoveGrid(true, 0.5f)); 
             // Desactivamos el panel de selección de cartas (la mano del jugador)
             canvasCombat.SetActive(false);
 
