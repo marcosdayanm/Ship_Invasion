@@ -53,37 +53,41 @@ public class Quad : MonoBehaviour
             if(validToLauchProjectiles){
                 gameController.cardsInHand--;
                 gameController.isLaunching = true;
-                gameController.currentState = GameController.GameState.Main;
+                gameController.currentState = GameController.GameState.PCTurn;
                 gameController.OnCardDrop();
-
-                // cambio de estado de los quads a donde se atacó
-                int currentX = int.Parse(gameObject.name.Split(',')[0]);
-                int currentY = int.Parse(gameObject.name.Split(',')[1]);
-
-                // El misil es horizontal
-                if(gameController.attackCardLength[0] > 1){
-                    for(int i = currentX - gameController.attackCardLength[0]; i < currentX; i++){
-                        if(i >= 0 && i < transform.parent.childCount){
-                            Quad loopedQuad = transform.parent.GetChild(i).GetComponent<Quad>();
-                            loopedQuad.AdjustQuadState();
-                        }
-                    }
-                // El misil es vertical
-                }else{
-                    for(int i = currentY; i < currentY + gameController.attackCardLength[1]; i++){
-                        if(i-1 >= 0 && i-1 < transform.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < transform.parent.parent.GetChild(i-1).childCount){
-                            Quad loopedQuad = transform.parent.parent.GetChild(i-1).GetChild(currentX-1).GetComponent<Quad>();
-                            loopedQuad.AdjustQuadState();
-                        }
-                    }
-                }        
-
+                StartCoroutine(ChangeQuadStatesOnAttack());
 
                 // StartCoroutine(gameController.LaunchProjectiles());
             }
         }
         // spawner.LaunchProjectileBasedOnVelocity(transform); // lanzar proyectil
         // AdjustQuadState();
+    }
+
+    IEnumerator ChangeQuadStatesOnAttack()
+    {
+        yield return new WaitForSeconds(1.5f);
+        // cambio de estado de los quads a donde se atacó
+        int currentX = int.Parse(gameObject.name.Split(',')[0]);
+        int currentY = int.Parse(gameObject.name.Split(',')[1]);
+
+        // El misil es horizontal
+        if(gameController.attackCardLength[0] > 1){
+            for(int i = currentX - gameController.attackCardLength[0]; i < currentX; i++){
+                if(i >= 0 && i < transform.parent.childCount){
+                    Quad loopedQuad = transform.parent.GetChild(i).GetComponent<Quad>();
+                    loopedQuad.AdjustQuadState();
+                }
+            }
+        // El misil es vertical
+        }else{
+            for(int i = currentY; i < currentY + gameController.attackCardLength[1]; i++){
+                if(i-1 >= 0 && i-1 < transform.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < transform.parent.parent.GetChild(i-1).childCount){
+                    Quad loopedQuad = transform.parent.parent.GetChild(i-1).GetChild(currentX-1).GetComponent<Quad>();
+                    loopedQuad.AdjustQuadState();
+                }
+            }
+        }
     }
 
     // Función para cambiar el estado del quad según sea el caso 
@@ -166,10 +170,10 @@ public class Quad : MonoBehaviour
                     // loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
                     validToLauchProjectiles = true;
                     gameController.quadOnAttack.Add(loopedQuad);
-                    Debug.Log("Permitido mandar Misiles: " + validToLauchProjectiles);
+                    // Debug.Log("Permitido mandar Misiles: " + validToLauchProjectiles);
                 }else{
                     validToLauchProjectiles = false;
-                    Debug.Log("No permitido mandar Misiles: " + validToLauchProjectiles);
+                    // Debug.Log("No permitido mandar Misiles: " + validToLauchProjectiles);
                     break;
                 }
             }
@@ -187,10 +191,10 @@ public class Quad : MonoBehaviour
                     // loopedQuad.localPosition = new Vector3(loopedQuad.localPosition.x, 1, loopedQuad.localPosition.z);
                     validToLauchProjectiles = true;
                     gameController.quadOnAttack.Add(loopedQuad);
-                    Debug.Log("Permitido mandar Misiles: " + validToLauchProjectiles);
+                    // Debug.Log("Permitido mandar Misiles: " + validToLauchProjectiles);
                 }else{
                     validToLauchProjectiles = false;
-                    Debug.Log("No permitido mandar Misiles: " + validToLauchProjectiles);
+                    // Debug.Log("No permitido mandar Misiles: " + validToLauchProjectiles);
                     break;
                 }
             }

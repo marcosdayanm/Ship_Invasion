@@ -41,6 +41,8 @@ public class GameController : MonoBehaviour
     public GameObject canvasCombat;
     // Panel para seleccionar una carta (mano del jugador en modo preparación)
     [SerializeField] GameObject canvasPreparation;
+    // Panel para anunciar que es turno de la PC y mostar su carta elegida
+    [SerializeField] GameObject canvasBot;
 
     // Variable para referenciar a la mano del jugador de la fase de preparación
     public GameObject playerHandPreparation;
@@ -79,8 +81,9 @@ public class GameController : MonoBehaviour
     // Lista de quad a donde se mandarán proyectiles
     public List<Transform> quadOnAttack = new List<Transform>();
 
-    // Variable para guardar el spawner de los proyectiles
+    // Variable para guardar los spawners de los proyectiles
     FireProjectile projectileSpawner;
+    FireProjectile projectileEnemySpawner;
 
     // Variable para indicar que se están lanzando misiles (para controlar que la lista no se limpie hasta que todos los misiles se hayan lanzado)
     // [HideInInspector] 
@@ -98,6 +101,7 @@ public class GameController : MonoBehaviour
         // Script que reparte cartas al jugador 
         giveCards = GameObject.FindWithTag("CardsSpawner").GetComponent<GiveCards>();
         projectileSpawner = GameObject.FindWithTag("SpawnProjectile").GetComponent<FireProjectile>();
+        projectileEnemySpawner = GameObject.FindWithTag("EnemySpawnProjectile").GetComponent<FireProjectile>();
         botCPU = GameObject.FindWithTag("BotCPU").GetComponent<BotCPU>();
         timer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
 
@@ -105,7 +109,7 @@ public class GameController : MonoBehaviour
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
         user = JsonUtility.FromJson<PlayerDetails>(PlayerPrefs.GetString("user"));
 
-        Debug.Log(cards.Items[0].CardName);
+        // Debug.Log(cards.Items[0].CardName);
 
         // Inicializamos el estado del juego en el estado principal (fase de preparación)
         StartCoroutine(PreparationMode());
@@ -117,7 +121,7 @@ public class GameController : MonoBehaviour
         // Máquina de estados para controlar el flujo del juego
         if(currentState == GameState.Main){
             // Si estamos en el estado principal, repartimos las cartas al jugador o esperamos a que utilice alguna carta
-            HandleMainState();
+            StartCoroutine(HandleMainState());
         }else if(currentState == GameState.AttackGrid){
             // Si estamos en el estado de ataque, activamos el modo de ataque y esperamos a que el jugador seleccione a donde va a atacar
             AttackMode();
@@ -126,9 +130,74 @@ public class GameController : MonoBehaviour
             DefenseMode();
         }else if(currentState == GameState.PCTurn){
             // Si estamos en el estado de turno de la PC, activamos el modo de ataque o defensa de la PC
-            // PCPlay();
+            if(!botCPU.isChoosingCard){
+                StartCoroutine(PCPlay());
+            }
         }
 
+    }
+
+    IEnumerator PCPlay(){
+        botCPU.isChoosingCard = true;
+        // Movemos la cámara a la posición original
+        cameraController.MoveCameraToOrigin();
+        // Mostar el canvas de combate por si no se está mostrando
+        canvasCombat.SetActive(false);
+        // Ocultar el canvas de preparación/defenseMode
+        canvasPreparation.SetActive(false);
+        // Mostrar el panel que anuncia que es turno de la PC
+        canvasBot.SetActive(true);
+        // Movemos los grids para que no sean visibles
+        StartCoroutine(MoveGrid(false, 0.5f));
+        StartCoroutine(MoveGridEnemy(false, 0.5f));
+        // Deshabilitar que se puedan instanciar barcos para las cartas de defensa
+        ableToPlaceShip = false;
+        quadHoverActive = false;
+        isCameraOnAttack = false;
+        isCameraOnDefense = false;
+        if(quadOnAttack.Count > 0 && !launchingActive){
+            launchingActive = true;
+            yield return StartCoroutine(LaunchProjectiles());
+        }
+        yield return StartCoroutine(botCPU.ChooseCard());
+        currentState = GameState.Main;
+        botCPU.isChoosingCard = false;
+        // TODO: Elegir una carta y jugarla
+    }
+
+    // Función que se ejecuta en el estado principal
+    IEnumerator HandleMainState(){
+        // Debug.Log("Main State");
+        // Movemos la cámara a la posición original
+        cameraController.MoveCameraToOrigin();
+        // Ocultar el canvas de preparación/defenseMode
+        canvasPreparation.SetActive(false);
+        // Ocultar el panel que anuncia que es turno de la PC
+        canvasBot.SetActive(false);
+        // Movemos los grids para que no sean visibles
+        StartCoroutine(MoveGrid(false, 0.5f));
+        StartCoroutine(MoveGridEnemy(false, 0.5f));
+        // Deshabilitar que se puedan instanciar barcos para las cartas de defensa
+        ableToPlaceShip = false;
+        quadHoverActive = false;
+        isCameraOnAttack = false;
+        isCameraOnDefense = false;
+        if(quadOnAttack.Count > 0 && !launchingActive){
+            launchingActive = true;
+            yield return StartCoroutine(LaunchProjectiles(true));
+        }
+        // Mostar el canvas de combate para que el jugador pueda seleccionar una carta
+        canvasCombat.SetActive(true);
+        // Dar cartas al jugador
+        // Si tiene 0 cartas, se reparten 5 cartas (al inicio del juego)
+        if(cardsInHand == 0){
+            giveCards.GiveCardsInCombatMode();
+        // Si tiene más de 0 cartas y menos de 5 (normalmente tendría 4, porque acaba de usar una), 
+        // entonces se reparte sólo una carta
+        }else if (cardsInHand > 0 && cardsInHand < 5){
+            giveCards.GiveCardInCombatMode();
+        }
+        yield return null;
     }
 
     // Corrutina para la fase de preparación
@@ -146,43 +215,7 @@ public class GameController : MonoBehaviour
 
         // Repartimos las cartas al jugador
         giveCards.GiveCardsInPreparationMode();
-
-        // TODO: Choose and "place the ships" of the AI
-
     }
-
-    // Función que se ejecuta en el estado principal
-    void HandleMainState(){
-        // Debug.Log("Main State");
-        // Movemos la cámara a la posición original
-        cameraController.MoveCameraToOrigin();
-        // Mostar el canvas de combate por si no se está mostrando
-        canvasCombat.SetActive(true);
-        // Ocultar el canvas de preparación/defenseMode
-        canvasPreparation.SetActive(false);
-        // Deshabilitar que se puedan instanciar barcos para las cartas de defensa
-        ableToPlaceShip = false;
-        quadHoverActive = false;
-        isCameraOnAttack = false;
-        isCameraOnDefense = false;
-        // Movemos los grids para que no sean visibles
-        StartCoroutine(MoveGrid(false, 0.5f));
-        StartCoroutine(MoveGridEnemy(false, 0.5f));
-        // Dar cartas al jugador
-        // Si tiene 0 cartas, se reparten 5 cartas (al inicio del juego)
-        if(cardsInHand == 0){
-            giveCards.GiveCardsInCombatMode();
-        // Si tiene más de 0 cartas y menos de 5 (normalmente tendría 4, porque acaba de usar una), 
-        // entonces se reparte sólo una carta
-        }else if (cardsInHand > 0 && cardsInHand < 5){
-            giveCards.GiveCardInCombatMode();
-        }
-        if(quadOnAttack.Count > 0 && !launchingActive){
-            StartCoroutine(LaunchProjectiles());
-            launchingActive = true;
-        }
-    }
-
 
 
     // Función para activar el modo de ataque
@@ -226,8 +259,8 @@ public class GameController : MonoBehaviour
             // Desactivamos el panel de selección de cartas (la mano del jugador)
             canvasCombat.SetActive(false);
 
-            botCPU.Attack();
-            botCPU.Defense();
+            // botCPU.Attack();
+            // botCPU.Defense();
         }
     }
 
@@ -301,9 +334,14 @@ public class GameController : MonoBehaviour
         grid.position = target; // Asegura que el objeto llegue a la posición destino
     }
 
-    public IEnumerator LaunchProjectiles(){
+    public IEnumerator LaunchProjectiles(bool enemy = false){
         foreach(Transform quad in quadOnAttack){
-            projectileSpawner.LaunchProjectileBasedOnVelocity(quad);
+            if(enemy){
+                projectileEnemySpawner.LaunchProjectileBasedOnVelocity(quad);
+            }else{
+                projectileSpawner.LaunchProjectileBasedOnVelocity(quad);
+            }
+
             yield return new WaitForSeconds(0.5f);
         }
         yield return new WaitForSeconds(1);
