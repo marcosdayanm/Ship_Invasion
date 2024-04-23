@@ -258,7 +258,7 @@ public class CardController :
         if (Physics.Raycast(ray, out hit) && hit.collider != null && hit.collider.CompareTag("GridQuad")){
             // Validamos si el barco se soltó sobre un quad válido según los criterios de la lógica del juego
             bool isValid = gridStateController.ValidateShipPlacing(cardDetails, hit.collider.transform);
-            Debug.Log($"isValid {isValid}");
+            // Debug.Log($"isValid {isValid}");
             if (isValid)
             {
                 // El barco se soltó sobre un quad válido, así que destruimos la carta
