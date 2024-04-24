@@ -27,7 +27,8 @@ public class GameController : MonoBehaviour
 
     Timer timer;
 
-
+    [SerializeField] AudioSource audioPreparation;
+    [SerializeField] AudioSource audioCombat;
 
     // Variables para controlar si se está arrastrando una carta y
     // si se está usando una carta
@@ -97,6 +98,7 @@ public class GameController : MonoBehaviour
     // Esta función se ejecutará al inicio del juego
     void Start()
     {
+        audioPreparation.Play();
         // Obtenemos las referencias a los componentes necesarios
         // Controlador de la cámara para poderla mover dependiendo del estado del juego
         cameraController = GameObject.FindWithTag("MainCamera").GetComponent<MoveCamera>();
@@ -291,6 +293,8 @@ public class GameController : MonoBehaviour
         canvasCombat.SetActive(true);
         // Cambiar estado a main para empezar fase de combate
         currentState = GameState.Main;
+        audioPreparation.Stop();
+        audioCombat.Play();
 
         timer.StartTimer(timer.matchTime);
     }
