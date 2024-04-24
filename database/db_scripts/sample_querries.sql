@@ -16,3 +16,5 @@ UPDATE Player SET Wins=19 WHERE Id=3;
 UPDATE Player SET Losses=4 WHERE Id=1;
 UPDATE Player SET Losses=10 WHERE Id=2;
 UPDATE Player SET Losses=9 WHERE Id=3;
+
+SELECT * FROM cartas WHERE language = "Ingles" LIMIT 5;

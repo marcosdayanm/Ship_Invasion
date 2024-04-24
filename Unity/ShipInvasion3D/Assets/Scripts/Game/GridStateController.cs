@@ -12,6 +12,9 @@ public class GridStateController : MonoBehaviour
     public int totalHit = 0;
     public int totalShip = 0;
 
+    // Variable que guarda la cantidad de casillas que fueron atacadas en un turno
+    public int totalAttacked = 0;
+
     void Start()
     {
         GridState();
