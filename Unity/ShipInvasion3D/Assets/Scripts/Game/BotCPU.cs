@@ -54,7 +54,7 @@ public class BotCPU : MonoBehaviour
     }
 
 
-    public IEnumerator ChooseCard(){
+    public IEnumerator ChooseCard(GameObject textCardChoosen){
         yield return new WaitForSeconds(2);
         Cards cards = gameController.cards;
         CardDetails card = cards.Items[Random.Range(0, cards.Items.Count)];
@@ -69,7 +69,9 @@ public class BotCPU : MonoBehaviour
             cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/CartasDefensa/" + card.CardId.ToString());
             Defense(card);
         }
+        textCardChoosen.SetActive(true);
         yield return new WaitForSeconds(3);
+        textCardChoosen.SetActive(false);
         Destroy(cellCard);
     }
 
@@ -164,7 +166,7 @@ public class BotCPU : MonoBehaviour
         }
 
         // LaunchProjectiles();
-        // gridStateControllerPlayer.PlaceShipMisile(card, startingQuad);
+        gridStateControllerPlayer.PlaceShipMisile(card, startingQuad);
     }
 
     public IEnumerator LaunchProjectiles()
