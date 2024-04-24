@@ -59,7 +59,7 @@ public class CardController :
         // Si no hay ninguna carta en uso y no se está arrastrando ninguna carta
         if(!gameController.isCardInUse){
             // Si no se está arrastrando la carta
-            if(!isDragging && !gameController.isCardDragging){
+            if(!isDragging){
                 // Aumentamos el tamaño de la carta y la movemos hacia arriba para que se vea mejor
                 transform.position = new Vector3(transform.position.x, transform.position.y + 90, transform.position.z);
                 transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -93,18 +93,18 @@ public class CardController :
     // Estas funciones se ejecutan cuando se inicia un arrastre de una carta
     public void OnBeginDrag(PointerEventData eventData){
         // Si no se está hovereando una carta
-        if(!isHovering && !isDragging){
+        if(!isHovering && !isDragging && !gameController.isCardInUse){
             // Aumentamos el tamaño de la carta, la movemos hacia arriba para que se vea mejor, y la movemos al frente de todos los elementos
             // (normalmente se hace con el hover, pero si por alguna razón no se está hovereando, lo hacemos aquí)
             parentToReturnTo = transform.parent;
             transform.SetParent(transform.root);
             transform.SetAsLastSibling();
         }
+        // Llamamos al método OnCardDrag del GameController para que sepa que se está arrastrando una carta y muestre el panel de usa carta
+        gameController.OnCardDrag();
         // Ajustamos el tamaño de la carta y la movemos hacia arriba para que se vea mejor
         transform.localScale = new Vector3(1, 1, 1);
         isDragging = true;
-        // Llamamos al método OnCardDrag del GameController para que sepa que se está arrastrando una carta y muestre el panel de usa carta
-        gameController.OnCardDrag();
         // Desactivamos el raycastTarget de la imagen de la carta para que no se detecte el click sobre ella (y detecte otras cosas como el quad del tablero)
         image.raycastTarget = false;
         // Si la carta es de tipo Defense, instanciamos el barco, si no omitimos este paso
@@ -115,60 +115,64 @@ public class CardController :
 
     // Esta función se ejecuta mientras se arrastra una carta
     public void OnDrag(PointerEventData eventData){
-        // Movemos la carta a la posición del mouse para dar el efecto de arrastre
-        transform.position = Input.mousePosition;
-        // Si la carta es de tipo Defense, posicionamos el barco en el tablero
-        if (currentShipInstance != null)
-            PositionShipOnQuad(eventData);
+        if(!gameController.isCardInUse || !isDragging){
+            // Movemos la carta a la posición del mouse para dar el efecto de arrastre
+            transform.position = Input.mousePosition;
+            // Si la carta es de tipo Defense, posicionamos el barco en el tablero
+            if (currentShipInstance != null)
+                PositionShipOnQuad(eventData);
+        }
     }
 
     // Esta función se ejecuta cuando se suelta una carta (se deja de arrastrar)
     public void OnEndDrag(PointerEventData eventData){
-        // Devolvemos la carta a su posición original
-        transform.SetParent(parentToReturnTo);
-        isDragging = false;
-        // Llamamos al método OnCardDrop del GameController para que sepa que se soltó una carta
-        gameController.OnCardDrop();
-        // Activamos nuevamente el raycastTarget de la imagen de la carta para que se detecte el click sobre ella
-        image.raycastTarget = true;
+        if(!gameController.isCardInUse){
+            // Llamamos al método OnCardDrop del GameController para que sepa que se soltó una carta
+            gameController.OnCardDrop();
+            // Devolvemos la carta a su posición original
+            transform.SetParent(parentToReturnTo);
+            isDragging = false;
+            // Activamos nuevamente el raycastTarget de la imagen de la carta para que se detecte el click sobre ella
+            image.raycastTarget = true;
 
-        // Variable para guardar el quad sobre el que se soltó el barco, si no se soltó en un quad, por defecto es null
-        Transform quadTransfrom = null;
-        
-        // Si la carta es de tipo Defense (hay barco), validamos si se soltó sobre un quad válido
-        if (currentShipInstance != null)
-            // Se guarda el quad sobre el que se soltó el barco (este lo regresa la función que valida si el barco se soltó sobre eun quad válido)
-            quadTransfrom = ValidateCardDrop(eventData);
+            // Variable para guardar el quad sobre el que se soltó el barco, si no se soltó en un quad, por defecto es null
+            Transform quadTransfrom = null;
+            
+            // Si la carta es de tipo Defense (hay barco), validamos si se soltó sobre un quad válido
+            if (currentShipInstance != null)
+                // Se guarda el quad sobre el que se soltó el barco (este lo regresa la función que valida si el barco se soltó sobre eun quad válido)
+                quadTransfrom = ValidateCardDrop(eventData);
 
 
-        // Si sí hay un quad válido, cambiamos el estado de los quads en donde se situó el barco
-        if (quadTransfrom != null){
-            // llamamos al método PlaceShipMisile del GridStateController para que cambie el estado de los quads en donde se situó el barco
-            gridStateController.PlaceShipMisile(cardDetails, quadTransfrom);
-            // Llamamos al método GridState del GridStateController para que actualice el estado de la 
-            // cuadrícula (recuento de quads de cada tipo)
-            gridStateController.GridState();
-            // Debug.Log(cardDetails.LengthX);
-            // Debug.Log(cardDetails.LengthY);
+            // Si sí hay un quad válido, cambiamos el estado de los quads en donde se situó el barco
+            if (quadTransfrom != null){
+                // llamamos al método PlaceShipMisile del GridStateController para que cambie el estado de los quads en donde se situó el barco
+                gridStateController.PlaceShipMisile(cardDetails, quadTransfrom);
+                // Llamamos al método GridState del GridStateController para que actualice el estado de la 
+                // cuadrícula (recuento de quads de cada tipo)
+                gridStateController.GridState();
+                // Debug.Log(cardDetails.LengthX);
+                // Debug.Log(cardDetails.LengthY);
 
-            // Si seguimos en la fase de preparación:
-            if (gameController.currentState == GameController.GameState.none){
-                // Actualizamos el conteo de cartas que hay en la mano
-                gameController.cardsInHand = gameController.playerHandPreparation.transform.childCount - 1;
-                // Activar el botón para poder pasar al modo combate
-                if(gameController.cardsInHand == 0){
-                    gameController.startCombatButton.interactable = true;
+                // Si seguimos en la fase de preparación:
+                if (gameController.currentState == GameController.GameState.none){
+                    // Actualizamos el conteo de cartas que hay en la mano
+                    gameController.cardsInHand = gameController.playerHandPreparation.transform.childCount - 1;
+                    // Activar el botón para poder pasar al modo combate
+                    if(gameController.cardsInHand == 0){
+                        gameController.startCombatButton.interactable = true;
+                    }
+                }
+
+                // Si se colocó una carta correctamente en la fase de combate
+                // (aquí solo se puede poner una carta, por eso inmediatamente cambiamos al main)
+                if (gameController.currentState == GameController.GameState.DefenseGrid){
+                    gameController.cardsInHand = gameController.canvasCombat.transform.Find("Cards").transform.childCount - 1;
+                    gameController.currentState = GameController.GameState.PCTurn;
                 }
             }
-
-            // Si se colocó una carta correctamente en la fase de combate
-            // (aquí solo se puede poner una carta, por eso inmediatamente cambiamos al main)
-            if (gameController.currentState == GameController.GameState.DefenseGrid){
-                gameController.cardsInHand = gameController.canvasCombat.transform.Find("Cards").transform.childCount - 1;
-                gameController.SetMainState();
-            }
+            isHovering = false;
         }
-        isHovering = false;
     }
 
     // Función para instanciar el barco en el tablero
