@@ -18,7 +18,7 @@ public class SceneConnection : MonoBehaviour
     // Función para iniciar el juego (llamando a la api para obtener las cartas disponibles)
     IEnumerator StartGame() {
         yield return StartCoroutine(API.GetCards());
-        SceneManager.LoadScene("Menu");  //Para pasar a la escena de menu
+        StartCoroutine(ChangeScene("Menu"));  //Para pasar a la escena de menu
     }
 
     // Función para ir a la escena del menu estando en la escena de inicio (¿Login talvez?)
@@ -28,31 +28,38 @@ public class SceneConnection : MonoBehaviour
 
     // Función para ir al menú principal del juego (una vez iniciado sesión)
     public void toMainMenu () {
-        SceneManager.LoadScene("Menu"); //Para pasar a la escena del menu
+        StartCoroutine(ChangeScene("Menu")); //Para pasar a la escena del menu
     }
 
     // Función para ir a la escena de juego
     public void toGame () {
-        SceneManager.LoadScene("SampleScene"); //Para pasar a la escena de juego
+        StartCoroutine(ChangeScene("SampleScene")); //Para pasar a la escena de juego
     }
 
     // Función para ir a la escena de juego
     public void toEndGame () {
-        SceneManager.LoadScene("EndGame"); //Para pasar a la escena de juego
+        StartCoroutine(ChangeScene("EndGame")); //Para pasar a la escena de juego
     }
 
     // Función para ir la escena de visualización de cartas
     public void toVisualizacionCartas () {
-        SceneManager.LoadScene("VisualizacionCartas"); //Para pasar a la escena de visualizacion de cartas
+        StartCoroutine(ChangeScene("VisualizacionCartas")); //Para pasar a la escena de visualizacion de cartas
     }
 
     // Función para ir a la escena de creditos
     public void toCreditos () {
-        SceneManager.LoadScene("Creditos"); //Para pasar a la escena de creditos
+        StartCoroutine(ChangeScene("Creditos")); //Para pasar a la escena de creditos
     }
     
     // Función para ir a la escena de seleccion de arenas
     public void toSeleccionArena () {
-        SceneManager.LoadScene("SeleccionArena"); //Para pasar a la escena de selección de arena
+        StartCoroutine(ChangeScene("SeleccionArena")); //Para pasar a la escena de selección de arena
+        
     }
+
+    IEnumerator ChangeScene(string scene){
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene(scene);
+    }
+
 }
