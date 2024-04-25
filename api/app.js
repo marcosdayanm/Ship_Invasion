@@ -260,14 +260,16 @@ app.route("/api/players/login").post(async (req, res) => {
       [username, password]
     );
     if (rows.length === 0) {
+      console.log("credencuiales incorrectas (API)");
       return res
-        .status(400)
+        .status(200)
         .json({ error: "Username or/and password incorrect" });
     } else {
       const [player] = await connection.execute(
         "SELECT * FROM view_playerdetails WHERE PlayerUsername = ?",
         [username]
       );
+      console.log(player);
       res.status(200).json(player[0]);
     }
   } catch (error) {
