@@ -74,8 +74,7 @@ public class BotCPU : MonoBehaviour
         textCardChoosen.SetActive(false);
         Destroy(cellCard);
     }
-
-
+    
     // Método para dar cartas al jugador (animación de repartir cartas)
     public void GiveCards(Cards cards, int amountCarts = 5)
     {
