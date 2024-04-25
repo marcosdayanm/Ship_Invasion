@@ -87,30 +87,58 @@ public class APIConnection : MonoBehaviour
 
 
     // Función para configurar el request POST para enviar las credenciales de inicio de sesión de un jugador
+    // public IEnumerator PostPlayerLogInCredentials(string username, string password)
+    // {
+    //     // Enpoint de la API para enviar las credenciales de inicio de sesión
+    //     endpoint = "/api/players/login";
+    //     // Se crea un objeto de la clase LoginData con las credenciales de inicio de sesión
+    //     LoginData loginData = new LoginData(username, password);
+    //     // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
+    //     string jsonData = JsonUtility.ToJson(loginData);
+
+    //     // Se envía el request POST
+    //     yield return StartCoroutine(SendPostRequest(jsonData,
+    //         // Se pasa una función anónima que se ejecutará si el request es exitoso
+    //         onSuccess: (responseData) => {
+    //             Debug.Log(responseData);
+    //             // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
+    //             PlayerPrefs.SetString("user", responseData);
+
+    //             // PlayerDetails playerDetails = JsonUtility.FromJson<PlayerDetails>(responseData);
+    //         },
+    //         // Se pasa una función anónima que se ejecutará si el request falla
+    //         onFailure: (error) => {
+    //             Debug.LogError($"Error: {error}");
+    //         }));
+    // }
+
+
     public IEnumerator PostPlayerLogInCredentials(string username, string password)
     {
-        // Enpoint de la API para enviar las credenciales de inicio de sesión
-        endpoint = "/api/players/login";
-        // Se crea un objeto de la clase LoginData con las credenciales de inicio de sesión
-        LoginData loginData = new LoginData(username, password);
-        // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
-        string jsonData = JsonUtility.ToJson(loginData);
+    endpoint = "/api/players/login";
+    LoginData loginData = new LoginData(username, password);
+    string jsonData = JsonUtility.ToJson(loginData);
 
-        // Se envía el request POST
-        yield return StartCoroutine(SendPostRequest(jsonData,
-            // Se pasa una función anónima que se ejecutará si el request es exitoso
-            onSuccess: (responseData) => {
-                Debug.Log(responseData);
-                // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
+    yield return StartCoroutine(SendPostRequest(jsonData,
+        onSuccess: (responseData) => {
+            Debug.Log(responseData);
+            // Verificar si la respuesta es un mensaje de error
+            if (responseData.Contains("error")) {
+                PlayerPrefs.DeleteKey("user");
+                PlayerPrefs.SetString("error", responseData);
+            } else {
                 PlayerPrefs.SetString("user", responseData);
-
-                // PlayerDetails playerDetails = JsonUtility.FromJson<PlayerDetails>(responseData);
-            },
-            // Se pasa una función anónima que se ejecutará si el request falla
-            onFailure: (error) => {
-                Debug.LogError($"Error: {error}");
-            }));
+                Debug.Log(" esto es de la funcion de postplayerapicredentials: " + PlayerPrefs.GetString("user"));
+                PlayerPrefs.DeleteKey("error");
+            }
+        },
+        onFailure: (error) => {
+            Debug.LogError($"Error: {error}");
+            PlayerPrefs.DeleteKey("user");
+            PlayerPrefs.SetString("error", error);
+        }));
     }
+
 
     // Función para configurar el request POST para enviar un Play
     IEnumerator PutPlay()
