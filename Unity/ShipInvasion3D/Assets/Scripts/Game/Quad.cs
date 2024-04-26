@@ -10,11 +10,11 @@ public class Quad : MonoBehaviour
     FireProjectile spawner;
 
     // Enumerador para controlar el estado de cada quad
-    [SerializeField] public enum quadState { 
-        none, 
-        miss, 
-        ship, 
-        hit 
+    [SerializeField] public enum quadState {
+        none,
+        miss,
+        ship,
+        hit
     };
 
     // Variable para controlar el estado actual del quad, que por defecto no tiene nada en él (none)
