@@ -7084,6 +7084,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyGrid: {fileID: 621334055}
   grid: {fileID: 1904715755}
+  ships: []
+  enemyShips: []
   audioPreparation: {fileID: 351811559}
   audioCombat: {fileID: 351811560}
   isCardDragging: 0
