@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -153,6 +155,13 @@ public class CardController :
                 gridStateController.GridState();
                 // Debug.Log(cardDetails.LengthX);
                 // Debug.Log(cardDetails.LengthY);
+
+                Ship ship = new Ship();
+                ship.Name = cardDetails.CardName;
+                ship.LengthX = cardDetails.LengthX;
+                ship.LengthY = cardDetails.LengthY;
+                ship.quads = gridStateController.getQuadsList(ship.LengthX, ship.LengthY, quadTransfrom);
+                gameController.ships.Add(ship);
 
                 // Si seguimos en la fase de preparación:
                 if (gameController.currentState == GameController.GameState.none){

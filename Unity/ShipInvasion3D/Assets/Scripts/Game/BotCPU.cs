@@ -110,8 +110,16 @@ public class BotCPU : MonoBehaviour
             Debug.Log($"card coordinates: {card.LengthX} {card.LengthY}");
             Debug.Log($"startingQuad coordinates: {startingQuad.name}");
 
-            if (gridStateControllerBot.ValidateShipPlacing(card, startingQuad))
+            if (gridStateControllerBot.ValidateShipPlacing(card, startingQuad)){
                 gridStateControllerBot.PlaceShipMisile(card, startingQuad);
+                Ship ship = new Ship();
+                ship.Name = card.CardName;
+                ship.LengthX = card.LengthX;
+                ship.LengthY = card.LengthY;
+                ship.quads = gridStateControllerBot.getQuadsList(ship.LengthX, ship.LengthY, startingQuad);
+                gameController.enemyShips.Add(ship);
+            }
+
         }
 
 
