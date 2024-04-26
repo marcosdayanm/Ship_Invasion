@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
 
     Timer timer;
 
+    public List<Ship> ships;
+    public List<Ship> enemyShips;
+
     [SerializeField] AudioSource audioPreparation;
     [SerializeField] AudioSource audioCombat;
 
