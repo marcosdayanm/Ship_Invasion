@@ -269,11 +269,11 @@ public class GameController : MonoBehaviour
             StartCoroutine(MoveGrid(true, 0.5f));
             // Mover el contenedor de la mano del jugador a la parte lateral de la pantalla
             RectTransform rectTransformPlayerHand = playerHandPreparation.GetComponent<RectTransform>();
-            rectTransformPlayerHand.sizeDelta = new Vector2(300, 300);
-            rectTransformPlayerHand.anchoredPosition = new Vector2(-800, 700);
+            rectTransformPlayerHand.sizeDelta = new Vector2(400, 1000);
+            rectTransformPlayerHand.anchoredPosition = new Vector2(-800, 0);
             // Reducir su espaciado para que las cartas se encimen y quepan en la pantalla
             GridLayoutGroup gridLayout = playerHandPreparation.GetComponent<GridLayoutGroup>();
-            gridLayout.spacing =  new Vector2(gridLayout.spacing.x, -100);
+            gridLayout.spacing =  new Vector2(gridLayout.spacing.x, -150);
             canvasPreparation.SetActive(true);
             startCombatButton.gameObject.SetActive(false);
             // Movemos la cámara a la posición de defensa
