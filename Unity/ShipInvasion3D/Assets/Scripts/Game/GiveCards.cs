@@ -105,7 +105,6 @@ public class GiveCards : MonoBehaviour
             gameController.DefenseMode();
             gameController.startCombatButton.gameObject.SetActive(true);
             gameController.playerHandPreparation.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Botones/18 copy");
-
         }
         // Indicamos que hemos terminado de dar cartas
         isGivingCards = false;

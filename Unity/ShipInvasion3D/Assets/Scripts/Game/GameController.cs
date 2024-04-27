@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour
 
     // Referencia al botón para empezar el combate
     public Button startCombatButton;
+    public GameObject preparationModeIndicator;
 
     // Variable para autorizar si las cartas de defensa pueden poner barcos
     public bool ableToPlaceShip = false;
@@ -276,6 +277,7 @@ public class GameController : MonoBehaviour
             gridLayout.spacing =  new Vector2(gridLayout.spacing.x, -150);
             canvasPreparation.SetActive(true);
             startCombatButton.gameObject.SetActive(false);
+            preparationModeIndicator.SetActive(false);
             // Movemos la cámara a la posición de defensa
             cameraController.MoveCameraToDefense();
             // Desactivamos el panel de selección de cartas (la mano del jugador)
