@@ -7874,6 +7874,7 @@ MonoBehaviour:
   playerHandPreparation: {fileID: 1367431069}
   cardsInHand: 0
   startCombatButton: {fileID: 905487248}
+  preparationModeIndicator: {fileID: 973104513}
   ableToPlaceShip: 0
   quadHoverActive: 0
   currentState: 4
