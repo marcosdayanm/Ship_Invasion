@@ -6,21 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/Creditos.unity
-    guid: 62611f060a6f34294b1b74bec3d87600
-  - enabled: 0
-    path: Assets/Scenes/LoginPruebaPost.unity
-    guid: ce93d9ef3015843e5ad937225df09d0e
+    path: Assets/Scenes/PreStart.unity
+    guid: fda0bab97dbca456888ad0d437628e23
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: ca1c8a96e83874ffdbfe25c9fefe0b4e
+  - enabled: 1
+    path: Assets/Scenes/Creditos.unity
+    guid: 62611f060a6f34294b1b74bec3d87600
   - enabled: 1
     path: Assets/Scenes/VisualizacionCartas.unity
     guid: d1b11a03fc07a4d0185dd9cef669c267
   - enabled: 1
     path: Assets/Scenes/SeleccionArena.unity
     guid: 13f67919a72ac4730b6b0ca881051d5f
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/LoginPruebaPost.unity
+    guid: ce93d9ef3015843e5ad937225df09d0e
   m_configObjects: {}
