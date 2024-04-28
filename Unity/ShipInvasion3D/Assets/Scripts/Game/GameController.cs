@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 // Este script sirve para controlar el flujo del juego y las diferentes fases del juego
 
@@ -99,6 +99,10 @@ public class GameController : MonoBehaviour
 
     public bool showQuadsAttacked = false;
 
+    public int quadsAttacked = 0;
+
+    public bool sunkenShip = false;
+
     // Esta función se ejecutará al inicio del juego
     void Start()
     {
@@ -169,13 +173,19 @@ public class GameController : MonoBehaviour
         // Mostrar el panel que anuncia que es turno de la PC
         canvasBot.SetActive(true);
         canvasBot.transform.Find("Quad Attacked").gameObject.SetActive(true);
+        canvasBot.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Quads Hit";
+        if(sunkenShip){
+            canvasBot.transform.Find("Barco Caído").gameObject.SetActive(true);
+            sunkenShip = false;
+        }
         yield return new WaitForSeconds(1);
         canvasBot.transform.Find("Quad Attacked").gameObject.SetActive(false);
+        quadsAttacked = 0;
+        canvasBot.transform.Find("Barco Caído").gameObject.SetActive(false);
         canvasBot.transform.Find("Titulo").gameObject.SetActive(true);
         yield return StartCoroutine(botCPU.ChooseCard(canvasBot.transform.Find("Carta Utilizada Texto").gameObject));
         currentState = GameState.Main;
         botCPU.isChoosingCard = false;
-        // TODO: Elegir una carta y jugarla
     }
 
     // Función que se ejecuta en el estado principal
@@ -205,8 +215,15 @@ public class GameController : MonoBehaviour
         }
         if(showQuadsAttacked){
             canvasCombat.transform.Find("Quad Attacked").gameObject.SetActive(true);
+            canvasCombat.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Quads Hit";
+            if(sunkenShip){
+                canvasCombat.transform.Find("Barco Caído").gameObject.SetActive(true);
+                sunkenShip = false;
+            }
             yield return new WaitForSeconds(1);
+            canvasCombat.transform.Find("Barco Caído").gameObject.SetActive(false);
             canvasCombat.transform.Find("Quad Attacked").gameObject.SetActive(false);
+            quadsAttacked = 0;
             showQuadsAttacked = false;
         }
         // Mostar el canvas de combate para que el jugador pueda seleccionar una carta
@@ -387,6 +404,27 @@ public class GameController : MonoBehaviour
         isCardDragging = false;
         if (!isCardInUse){
             playCardPanel.SetActive(false);
+        }
+    }
+
+    public void CheckSunkenShip(bool pcShips = false){
+        List<Ship> shipList = pcShips ? enemyShips : ships;
+        foreach(Ship ship in shipList){
+            bool sunken = false;
+            foreach(Transform quad in ship.quads){
+                if(quad.GetComponent<Quad>().state == Quad.quadState.hit){
+                    sunken = true;
+                }else{
+                    sunken = false;
+                    break;
+                }
+            }
+            if(sunken){
+                ship.sunken = true;
+                sunkenShip = true;
+            }else{
+                ship.sunken = false;
+            }
         }
     }
 }
