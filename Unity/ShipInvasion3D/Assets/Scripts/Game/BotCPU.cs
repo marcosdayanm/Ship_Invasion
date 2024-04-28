@@ -24,6 +24,8 @@ public class BotCPU : MonoBehaviour
 
     public bool isChoosingCard = false;
 
+    [SerializeField] ShipCounter shipCounter;
+
 
     // Start is called before the first frame update
     void Start()
@@ -129,13 +131,15 @@ public class BotCPU : MonoBehaviour
                     bool stop = false;
                     for(int k = 0; k < 12 && !stop; k++){
                         for(int j = 0; j < 12; j ++){
-                            startingQuad = grid.GetChild(k).GetChild(j);
-                            if(gridStateControllerBot.ValidateShipPlacing(card, startingQuad)){
-                                Debug.Log($"Ship placed on: {startingQuad.name}, {card.CardName}: {card.LengthX}x{card.LengthY}");
-                                Debug.Log("Brute Force");
-                                gridStateControllerBot.PlaceShipMisile(card, startingQuad);
-                                stop = true;
-                                break;
+                            if (grid.GetChild(k) != null && grid.GetChild(k).GetChild(j) != null) {
+                                startingQuad = grid.GetChild(k).GetChild(j);
+                                if(gridStateControllerBot.ValidateShipPlacing(card, startingQuad)){
+                                    Debug.Log($"Ship placed on: {startingQuad.name}, {card.CardName}: {card.LengthX}x{card.LengthY}");
+                                    Debug.Log("Brute Force");
+                                    gridStateControllerBot.PlaceShipMisile(card, startingQuad);
+                                    stop = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -146,7 +150,11 @@ public class BotCPU : MonoBehaviour
             ship.LengthX = card.LengthX;
             ship.LengthY = card.LengthY;
             ship.quads = gridStateControllerBot.getQuadsList(ship.LengthX, ship.LengthY, startingQuad);
+            ship.sunken = false;
             gameController.enemyShips.Add(ship);
+            if(!isPreparationMode){
+                shipCounter.CountShips();
+            }
         }
 
 

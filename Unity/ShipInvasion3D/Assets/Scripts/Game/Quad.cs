@@ -88,6 +88,7 @@ public class Quad : MonoBehaviour
                 }
             }
         }
+        gameController.CheckSunkenShip(true);
     }
 
     // Función para cambiar el estado del quad según sea el caso 
@@ -96,6 +97,7 @@ public class Quad : MonoBehaviour
         if (state == quadState.ship){
             // Si hay barco en el quad, se cambia el estado a hit (que se le dio al barco)
             state = quadState.hit;
+            gameController.quadsAttacked++;
             GetComponent<Renderer>().material = red;
             }
         else if (state == quadState.hit){
