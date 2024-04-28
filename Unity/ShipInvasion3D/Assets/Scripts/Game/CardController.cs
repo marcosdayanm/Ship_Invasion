@@ -161,6 +161,7 @@ public class CardController :
                 ship.LengthX = cardDetails.LengthX;
                 ship.LengthY = cardDetails.LengthY;
                 ship.quads = gridStateController.getQuadsList(ship.LengthX, ship.LengthY, quadTransfrom);
+                ship.sunken = false;
                 gameController.ships.Add(ship);
 
                 // Si seguimos en la fase de preparación:
