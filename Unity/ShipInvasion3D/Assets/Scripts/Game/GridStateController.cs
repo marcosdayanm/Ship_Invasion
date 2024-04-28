@@ -235,6 +235,35 @@ public class GridStateController : MonoBehaviour
         return false; 
     }
 
+    public List<Transform> getQuadsList(int LengthX, int LengthY, Transform startingQuad){
+        List<Transform> quadList = new List<Transform>();
+        int currentX = int.Parse(startingQuad.name.Split(',')[0]);
+        int currentY = int.Parse(startingQuad.name.Split(',')[1]);
+
+        // El misil es horizontal
+        if(LengthX > 1){
+            for(int i = currentX - LengthX; i < currentX; i++){
+                if(i >= 0 && i < startingQuad.parent.childCount){
+                    Transform loopedQuad = startingQuad.parent.GetChild(i);
+                    if(loopedQuad != null){
+                        quadList.Add(loopedQuad);
+                    }
+                }
+            }
+        // El misil es vertical
+        }else{
+            for(int i = currentY; i < currentY + LengthY; i++){
+                if(i-1 >= 0 && i-1 < startingQuad.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < startingQuad.parent.parent.GetChild(i-1).childCount){
+                    Transform loopedQuad = startingQuad.parent.parent.GetChild(i-1).GetChild(currentX-1);
+                    if(loopedQuad != null){
+                        quadList.Add(loopedQuad);
+                    }
+                }
+            }
+        }
+        return quadList;
+    }
+
     
 
 }

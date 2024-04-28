@@ -106,11 +106,47 @@ public class BotCPU : MonoBehaviour
             int randomY = Random.Range(0, 12);
             Transform startingQuad = grid.GetChild(randomX).GetChild(randomY);
 
-            Debug.Log($"card coordinates: {card.LengthX} {card.LengthY}");
-            Debug.Log($"startingQuad coordinates: {startingQuad.name}");
+            // Debug.Log($"card coordinates: {card.LengthX} {card.LengthY}");
 
-            if (gridStateControllerBot.ValidateShipPlacing(card, startingQuad))
+            if (gridStateControllerBot.ValidateShipPlacing(card, startingQuad)){
+                Debug.Log($"Ship placed on: {startingQuad.name}, {card.CardName}: {card.LengthX}x{card.LengthY}");
                 gridStateControllerBot.PlaceShipMisile(card, startingQuad);
+            }else{
+                bool shipPlaced = false;
+                for(int i = 0; i < 4; i++){
+                    randomX = Random.Range(0, 12);
+                    randomY = Random.Range(0, 12);
+                    startingQuad = grid.GetChild(randomX).GetChild(randomY);
+                    if(gridStateControllerBot.ValidateShipPlacing(card, startingQuad)){
+                        Debug.Log($"Ship placed on: {startingQuad.name}, {card.CardName}: {card.LengthX}x{card.LengthY}");
+                        Debug.Log("4 times chance");
+                        gridStateControllerBot.PlaceShipMisile(card, startingQuad);
+                        shipPlaced = true;
+                        break;
+                    }
+                }
+                if(!shipPlaced){
+                    bool stop = false;
+                    for(int k = 0; k < 12 && !stop; k++){
+                        for(int j = 0; j < 12; j ++){
+                            startingQuad = grid.GetChild(k).GetChild(j);
+                            if(gridStateControllerBot.ValidateShipPlacing(card, startingQuad)){
+                                Debug.Log($"Ship placed on: {startingQuad.name}, {card.CardName}: {card.LengthX}x{card.LengthY}");
+                                Debug.Log("Brute Force");
+                                gridStateControllerBot.PlaceShipMisile(card, startingQuad);
+                                stop = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            Ship ship = new Ship();
+            ship.Name = card.CardName;
+            ship.LengthX = card.LengthX;
+            ship.LengthY = card.LengthY;
+            ship.quads = gridStateControllerBot.getQuadsList(ship.LengthX, ship.LengthY, startingQuad);
+            gameController.enemyShips.Add(ship);
         }
 
 
