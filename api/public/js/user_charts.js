@@ -12,7 +12,7 @@ Chart.defaults.font.size = 16;
 // async function getPlaysByGame(gameId) {
 //   try {
 //     const playsByGame = await fetch(
-//       `http://localhost:3000/api/games/${gameId}`,
+//       `https://ship-invasion.onrender.com/api/games/${gameId}`,
 //       {
 //         method: "GET",
 //       }
@@ -25,7 +25,7 @@ Chart.defaults.font.size = 16;
 
 async function getGames(gameId) {
   try {
-    const games = await fetch("http://localhost:3000/api/games", {
+    const games = await fetch("https://ship-invasion.onrender.com/api/games", {
       method: "GET",
     });
     return games.json();
@@ -36,9 +36,12 @@ async function getGames(gameId) {
 
 async function getPlayers(gameId) {
   try {
-    const players = await fetch("http://localhost:3000/api/players", {
-      method: "GET",
-    });
+    const players = await fetch(
+      "https://ship-invasion.onrender.com/api/players",
+      {
+        method: "GET",
+      }
+    );
     return players.json();
   } catch (error) {
     console.log(error);
@@ -47,7 +50,7 @@ async function getPlayers(gameId) {
 
 async function getPlays(gameId) {
   try {
-    const plays = await fetch("http://localhost:3000/api/plays", {
+    const plays = await fetch("https://ship-invasion.onrender.com/api/plays", {
       method: "GET",
     });
     return plays.json();
@@ -59,7 +62,7 @@ async function getPlays(gameId) {
 async function getTotalGamesOnEachArena(gameId) {
   try {
     const total = await fetch(
-      "http://localhost:3000/api/games/total-games-by-arena",
+      "https://ship-invasion.onrender.com/api/games/total-games-by-arena",
       {
         method: "GET",
       }
@@ -73,7 +76,7 @@ async function getTotalGamesOnEachArena(gameId) {
 async function getTop5MostUsedCards(gameId) {
   try {
     const cards = await fetch(
-      "http://localhost:3000/api/cards/top5mostusedcards",
+      "https://ship-invasion.onrender.com/api/cards/top5mostusedcards",
       {
         method: "GET",
       }
@@ -86,9 +89,12 @@ async function getTop5MostUsedCards(gameId) {
 
 async function getPlaysRecord(gameId) {
   try {
-    const total = await fetch("http://localhost:3000/api/plays/playsrecord", {
-      method: "GET",
-    });
+    const total = await fetch(
+      "https://ship-invasion.onrender.com/api/plays/playsrecord",
+      {
+        method: "GET",
+      }
+    );
     return total.json();
   } catch (error) {
     console.log(error);
@@ -97,10 +103,13 @@ async function getPlaysRecord(gameId) {
 
 async function logIn(username, password) {
   try {
-    const player = await fetch("http://localhost:3000/api/players", {
-      method: "POST",
-      body: JSON.stringify({ username: username, password: password }),
-    });
+    const player = await fetch(
+      "https://ship-invasion.onrender.com/api/players",
+      {
+        method: "POST",
+        body: JSON.stringify({ username: username, password: password }),
+      }
+    );
     return player.json();
   } catch (error) {
     console.log(error);

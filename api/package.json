@@ -1,7 +1,7 @@
 {
   "name": "ship_invasion",
   "version": "1.0.0",
-  "description": "API for a TCG videogame",
+  "description": "Ship Invasion API",
   "main": "app.js",
   "type": "module",
   "scripts": {
