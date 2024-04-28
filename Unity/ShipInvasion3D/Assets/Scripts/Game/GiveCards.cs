@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Este script funciona para dar cartas al jugador en modo combate y en modo preparación
 
@@ -103,6 +104,7 @@ public class GiveCards : MonoBehaviour
             // Pasamos a modo de defensa para que el jugador pueda usar las cartas de defensa y colocar sus barcos en el tablero
             gameController.DefenseMode();
             gameController.startCombatButton.gameObject.SetActive(true);
+            gameController.playerHandPreparation.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Botones/18 copy");
         }
         // Indicamos que hemos terminado de dar cartas
         isGivingCards = false;
