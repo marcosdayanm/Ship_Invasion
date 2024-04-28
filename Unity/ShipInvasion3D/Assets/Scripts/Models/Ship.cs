@@ -9,4 +9,5 @@ using UnityEngine;
     public int LengthX;
     public int LengthY;
     public List<Transform> quads;
+    public bool sunken;
 }
