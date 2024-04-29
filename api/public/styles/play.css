@@ -30,6 +30,6 @@ main{
 }
 .videogame{
     background-color: var(--white);
-    min-width: 1000px;
-    min-height: 600px;
+    min-width: 920px;
+    min-height: 540px;
 }
