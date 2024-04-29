@@ -74,7 +74,7 @@ public class Quad : MonoBehaviour
         // Mandar los datos de la jugada a la base de datos
         // gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (gameController.currentAttackCard.LengthX * gameController.currentAttackCard.LengthY).ToString(), gameController.game.GameId.ToString(), gameController.currentAttackCard.CardId.ToString());
 
-        gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (gameController.currentAttackCard.LengthX * gameController.currentAttackCard.LengthY).ToString(), "1", gameController.currentAttackCard.CardId.ToString());
+        int fieldsCovered = 0;
 
         // El misil es horizontal
         if(gameController.attackCardLength[0] > 1){
@@ -82,6 +82,7 @@ public class Quad : MonoBehaviour
                 if(i >= 0 && i < transform.parent.childCount){
                     Quad loopedQuad = transform.parent.GetChild(i).GetComponent<Quad>();
                     loopedQuad.AdjustQuadState();
+                    if (loopedQuad.state == quadState.hit) fieldsCovered++;
                 }
             }
         // El misil es vertical
@@ -90,9 +91,14 @@ public class Quad : MonoBehaviour
                 if(i-1 >= 0 && i-1 < transform.parent.parent.childCount && currentX-1 >= 0 && currentX-1 < transform.parent.parent.GetChild(i-1).childCount){
                     Quad loopedQuad = transform.parent.parent.GetChild(i-1).GetChild(currentX-1).GetComponent<Quad>();
                     loopedQuad.AdjustQuadState();
+                    if (loopedQuad.state == quadState.hit) fieldsCovered++;
                 }
             }
         }
+
+        StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "1", fieldsCovered.ToString(), gameController.gameIdClass.GameId.ToString(), gameController.currentAttackCard.CardId.ToString()));
+        gameController.playNumber++;
+
         gameController.CheckSunkenShip(true);
     }
 

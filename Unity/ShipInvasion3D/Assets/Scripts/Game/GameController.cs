@@ -29,11 +29,11 @@ public class GameController : MonoBehaviour
 
     public APIConnection API = null;
 
-    public Game game;
+    public GameIdClass gameIdClass;
 
     public CardDetails currentAttackCard;
 
-    public int playNumber = 0;
+    public int playNumber = 1;
 
     public List<Ship> ships;
     public List<Ship> enemyShips;
@@ -138,11 +138,7 @@ public class GameController : MonoBehaviour
         }
 
         // mandar 
-        API.PutGame("0", user?.PlayerId.ToString(), "1");
-
-        game = JsonUtility.FromJson<Game>(PlayerPrefs.GetString("game"));
-
-
+        StartCoroutine(API.PutGame("0", user?.PlayerId.ToString(), "1"));
 
         // Inicializamos el estado del juego en el estado principal (fase de preparación)
         StartCoroutine(PreparationMode());
@@ -271,10 +267,13 @@ public class GameController : MonoBehaviour
         // Esperamos un poco antes de repartir las cartas
         yield return new WaitForSeconds(0.2f);
 
-        botCPU.PreparationMode();
-
         // Repartimos las cartas al jugador
         giveCards.GiveCardsInPreparationMode();
+
+        yield return new WaitForSeconds(2f);
+        gameIdClass = JsonUtility.FromJson<GameIdClass>(PlayerPrefs.GetString("gameId"));
+        Debug.Log($"Game Id: {gameIdClass.GameId}");
+        botCPU.PreparationMode();
     }
 
 

@@ -58,10 +58,12 @@ public class GridStateController : MonoBehaviour
     }
 
     // Función para colocar barcos o misiles en cuadrícula y cambiar el estado de todos los quads en donde se situ el barco o misil, a ésta función se le pasa un objeto de la carta jugada, y se le pasa el quad donde se situará el barco o misil
-    public void PlaceShipMisile(CardDetails cardDetails, Transform startingQuad)
+    public int PlaceShipMisile(CardDetails cardDetails, Transform startingQuad)
     {
         // checar si la carta es de ataque o de defensa
         bool isShip = cardDetails.CardType == "Defense";
+
+        int numFieldsCovered = 0;
 
         // se separa el nombre del quad en coordenadas x e y para poder hacer comparaciones
         string[] coordinatesToFind = startingQuad.name.Split(',');
@@ -132,6 +134,8 @@ public class GridStateController : MonoBehaviour
                     }
                 }
 
+                if (quadScript.state == Quad.quadState.hit) numFieldsCovered++;
+
                 // Terminar los loops si ya no hay más que buscar
                 if ((isHorizontal && xLength <= 0) || (isVertical && yLength <= 0))
                     break;
@@ -143,6 +147,8 @@ public class GridStateController : MonoBehaviour
             if ((isHorizontal && xLength <= 0) || (isVertical && yLength <= 0))
                 break;
         }
+
+        return numFieldsCovered;
     }
 
 
