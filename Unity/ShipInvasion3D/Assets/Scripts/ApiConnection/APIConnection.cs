@@ -112,7 +112,30 @@ public class APIConnection : MonoBehaviour
         }));
     }
 
+    public IEnumerator PostPlayerSignUpCredentials(string username, string password)
+    {
+    endpoint = "/api/players";
+    LoginData signupData = new LoginData(username, password);
+    string jsonData = JsonUtility.ToJson(signupData);
 
+    yield return StartCoroutine(SendPostRequest(jsonData,
+        onSuccess: (responseData) => {
+            Debug.Log(responseData);
+            // Verificar si la respuesta es un mensaje de error
+            if (responseData.Contains("error")) {
+                PlayerPrefs.DeleteKey("user");
+                PlayerPrefs.SetString("error", responseData);
+            } else {
+                PlayerPrefs.SetString("user", responseData);
+                PlayerPrefs.DeleteKey("error");
+            }
+        },
+        onFailure: (error) => {
+            Debug.LogError($"Error: {error}");
+            PlayerPrefs.DeleteKey("user");
+            PlayerPrefs.SetString("error", error);
+        }));
+    }
     // Función para configurar el request POST para enviar un Play
     public IEnumerator PutPlay(string PlayNumber, string IsPlayerPlay, string NumFieldsCovered, string GameId, string CardPlayedId)
     {

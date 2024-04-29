@@ -38,7 +38,7 @@ public class SceneConnection : MonoBehaviour
 
     // Función para ir a la escena de juego
     public void toEndGame () {
-        StartCoroutine(ChangeScene("EndGame")); //Para pasar a la escena de juego
+        StartCoroutine(ChangeScene("GameOver")); //Para pasar a la escena de juego
     }
 
     // Función para ir la escena de visualización de cartas

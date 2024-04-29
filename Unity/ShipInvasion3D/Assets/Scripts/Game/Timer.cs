@@ -67,7 +67,7 @@ public class Timer : MonoBehaviour
             StopAllCoroutines();
             
             // Cambiar de escena
-            sceneConnection.toSeleccionArena();
+            sceneConnection.toEndGame();
         }
 
         // Método opcional para detener el temporizador manualmente si es necesario
