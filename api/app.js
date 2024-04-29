@@ -148,24 +148,6 @@ app.get("/api/cards/:cardId", async (req, res) => {
   }
 });
 
-// Get all players with their details
-app.get("/api/players", async (req, res) => {
-  let connection = null;
-  try {
-    connection = await connectToDB();
-    const [players] = await connection.execute(
-      "SELECT * FROM view_playerdetails"
-    );
-    if (players.length === 0) {
-      return res.status(404).json({ error: "No players found" });
-    }
-    res.status(200).json(players);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  } finally {
-    if (connection) connection.end();
-  }
-});
 
 // Route to manage one player (get one player, update one player, delete one player)
 app
