@@ -45,6 +45,7 @@ public class CardController :
     private Vector3 fixPosition;
     private Quaternion fixRotation;
 
+    Game game;
     
 
     // Start is called before the first frame update
@@ -53,6 +54,8 @@ public class CardController :
         // Obtenemos la referencia al GameController
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         gridStateController = GameObject.FindWithTag("Grid").GetComponent<GridStateController>();
+
+        game = JsonUtility.FromJson<Game>(PlayerPrefs.GetString("game"));
     }
 
 
@@ -150,6 +153,12 @@ public class CardController :
             if (quadTransfrom != null){
                 // llamamos al método PlaceShipMisile del GridStateController para que cambie el estado de los quads en donde se situó el barco
                 gridStateController.PlaceShipMisile(cardDetails, quadTransfrom);
+
+                // Mandar los datos de la jugada a la base de datos
+                // gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), gameController.game.GameId.ToString(), cardDetails.CardId.ToString());
+
+                gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), "1", cardDetails.CardId.ToString());
+
                 // Llamamos al método GridState del GridStateController para que actualice el estado de la 
                 // cuadrícula (recuento de quads de cada tipo)
                 gridStateController.GridState();

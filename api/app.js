@@ -362,10 +362,7 @@ app
         "INSERT INTO Game (IsPlayerWon, PlayerId, ArenaId) VALUES (?, ?, ?)",
         [IsPlayerWon, PlayerId, ArenaId]
       );
-      res.status(201).json({
-        msg: "Game created successfully",
-        GameId: result.insertId,
-      });
+      res.status(201).json(result);
     } catch (error) {
       res.status(500).json({ error: error.message });
     } finally {

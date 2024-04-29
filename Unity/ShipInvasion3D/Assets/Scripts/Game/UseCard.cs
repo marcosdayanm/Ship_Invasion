@@ -45,6 +45,7 @@ public class UseCard : MonoBehaviour, IDropHandler
         if(cardController.cardDetails.CardType == "Attack"){
             gameController.attackCardLength[0] = cardController.cardDetails.LengthX;
             gameController.attackCardLength[1] = cardController.cardDetails.LengthY;
+            gameController.currentAttackCard = cardController.cardDetails;
             // Destuir la carta actual
             Destroy(card.gameObject);
             // Pasar a modo ataque
