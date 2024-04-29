@@ -1432,9 +1432,9 @@ MonoBehaviour:
   signupForm: {fileID: 21094848}
   loginInputUser: {fileID: 343610263}
   loginInputPassword: {fileID: 1558256751}
-  signupInputUser: {fileID: 0}
-  signupInputPassword: {fileID: 0}
-  signupInputConfirmPassword: {fileID: 0}
+  signupInputUser: {fileID: 1647418980}
+  signupInputPassword: {fileID: 1289324895}
+  signupInputConfirmPassword: {fileID: 1953691859}
 --- !u!4 &682035482
 Transform:
   m_ObjectHideFlags: 0
@@ -2387,7 +2387,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 682035481}
         m_TargetAssemblyTypeName: AuthController, Assembly-CSharp
-        m_MethodName: SwitchFormToSignUp
+        m_MethodName: OnSignUpButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

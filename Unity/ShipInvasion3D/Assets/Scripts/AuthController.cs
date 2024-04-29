@@ -57,7 +57,6 @@ public class AuthController : MonoBehaviour
         signupForm.SetActive(true);
     }
 
-
     public void OnLoginButtonClicked()
     {
         string username = loginInputUser.text;
@@ -100,10 +99,47 @@ public class AuthController : MonoBehaviour
         }
     }
 
-
     public void OnSignUpButtonClicked() {
         string username = signupInputUser.text;
-        string email = signupInputPassword.text;
-        string password = signupInputConfirmPassword.text;
+        string password = signupInputPassword.text;
+        string confirmPassword = signupInputConfirmPassword.text;
+
+        PlayerPrefs.DeleteKey("user");
+        PlayerPrefs.DeleteKey("error");
+
+        if (password == confirmPassword){
+            StartCoroutine(PostPlayerSignUpCredentials(username, password));
+        }
+    }
+
+    private IEnumerator PostPlayerSignUpCredentials(string username, string password)
+    {
+        // Llama a la API para enviar las credenciales
+        yield return StartCoroutine(API.PostPlayerSignUpCredentials(username, password));
+
+        // Espera un segundo antes de acceder a los PlayerPrefs
+        yield return new WaitForSeconds(1.0f);
+
+        string error = PlayerPrefs.GetString("error");
+        if (!string.IsNullOrEmpty(error))
+        {
+            Debug.LogError("Sigup failed: " + error);
+            // Aquí puedes mostrar un mensaje al usuario sobre el error
+            yield break; // Salir de la corrutina si hay un error
+        }
+
+        string userData = PlayerPrefs.GetString("user");
+        Debug.Log($"This is the userData: {userData}");
+        player = JsonUtility.FromJson<PlayerDetails>(userData);
+        Debug.Log($"This is the player: {player}");
+        if (player != null)
+        {
+            sceneConnection.toMenu();
+        }
+        else
+        {
+            Debug.LogError("Failed to parse player data");
+            // Manejar el caso de datos de usuario incorrectos o nulos
+        }
     }
 }
