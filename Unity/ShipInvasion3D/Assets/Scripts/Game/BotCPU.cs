@@ -151,6 +151,10 @@ public class BotCPU : MonoBehaviour
             ship.LengthY = card.LengthY;
             ship.quads = gridStateControllerBot.getQuadsList(ship.LengthX, ship.LengthY, startingQuad);
             ship.sunken = false;
+
+            StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "0", (card.LengthX * card.LengthY).ToString(), gameController.gameIdClass.GameId.ToString(), card.CardId.ToString()));
+            gameController.playNumber++;
+
             gameController.enemyShips.Add(ship);
             if(!isPreparationMode){
                 shipCounter.CountShips();
@@ -208,8 +212,10 @@ public class BotCPU : MonoBehaviour
             }
         }
 
-        // LaunchProjectiles();
-        gridStateControllerPlayer.PlaceShipMisile(card, startingQuad);
+        int fieldsCovered = gridStateControllerPlayer.PlaceShipMisile(card, startingQuad);
+
+        StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "0", fieldsCovered.ToString(), gameController.gameIdClass.GameId.ToString(), card.CardId.ToString()));
+        gameController.playNumber++;
     }
 
     public IEnumerator LaunchProjectiles()

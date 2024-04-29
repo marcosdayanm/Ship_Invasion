@@ -28,3 +28,7 @@ public class EditIsPlayerWon
     public string IsPlayerWon = "1";
 }
 
+public class GameIdClass
+{
+    public string GameId;
+}

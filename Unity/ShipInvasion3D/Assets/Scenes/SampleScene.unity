@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35424337, g: 0.72345495, b: 0.9621212, a: 1}
+  m_IndirectSpecularColor: {r: 0.3539856, g: 0.7230318, b: 0.9620714, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7877,6 +7877,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyGrid: {fileID: 621334055}
   grid: {fileID: 1904715755}
+  API: {fileID: 0}
+  currentAttackCard:
+    CardId: 0
+    CardName: 
+    CardType: 
+    CardQuality: 
+    LengthX: 0
+    LengthY: 0
+  playNumber: 1
   ships: []
   enemyShips: []
   audioPreparation: {fileID: 351811559}
@@ -35553,7 +35562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be45d7e099c204edf8d7837e8838886b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiURL: http://localhost:3000
+  apiURL: https://ship-invasion.onrender.com
   endpoint: 
   idParameter: 
 --- !u!4 &1387585516
