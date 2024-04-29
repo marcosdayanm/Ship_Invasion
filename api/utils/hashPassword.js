@@ -1,3 +1,4 @@
+
 import bcrypt from "bcrypt";
 
 const hashPassword = async (password) => {

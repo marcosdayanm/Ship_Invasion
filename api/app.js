@@ -3,7 +3,7 @@ import mysql from "mysql2/promise";
 import dotenv from "dotenv/config";
 import fs from "fs";
 import { marked } from "marked";
-import { hashPassword, comparePassword } from "./utils/hashPassword.js";
+import { hashPassword } from "./utils/hashPassword.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -148,7 +148,24 @@ app.get("/api/cards/:cardId", async (req, res) => {
   }
 });
 
-
+// Get all players with their details
+app.get("/api/players", async (req, res) => {
+  let connection = null;
+  try {
+    connection = await connectToDB();
+    const [players] = await connection.execute(
+      "SELECT * FROM view_playerdetails"
+    );
+    if (players.length === 0) {
+      return res.status(404).json({ error: "No players found" });
+    }
+    res.status(200).json(players);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (connection) connection.end();
+  }
+});
 
 // Route to manage one player (get one player, update one player, delete one player)
 app
@@ -238,15 +255,11 @@ app.route("/api/players/login").post(async (req, res) => {
     return res.status(400).json({ error: "Invalid request" });
   }
   try {
-
     connection = await connectToDB();
     const [rows] = await connection.execute(
-      "SELECT * FROM Player WHERE Username = ?",
-      [username]
+      "SELECT * FROM Player WHERE Username = ? AND Password = ?",
+      [username, password]
     );
-    if (!comparePassword(password, rows.Password)){
-      return res.status(400).json({ error: "Credenciales incorrectas" });
-    }
     if (rows.length === 0) {
       console.log("credencuiales incorrectas (API)");
       return res
