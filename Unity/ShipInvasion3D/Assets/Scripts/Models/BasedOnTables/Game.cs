@@ -4,6 +4,7 @@ using System;
 [Serializable]
 public class Game
 {
+    public string GameId;
     public string IsPlayerWon;
     public string PlayerId;
     public string ArenaId;

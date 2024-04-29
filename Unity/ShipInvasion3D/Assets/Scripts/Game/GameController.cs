@@ -27,6 +27,14 @@ public class GameController : MonoBehaviour
 
     Timer timer;
 
+    public APIConnection API = null;
+
+    public Game game;
+
+    public CardDetails currentAttackCard;
+
+    public int playNumber = 0;
+
     public List<Ship> ships;
     public List<Ship> enemyShips;
 
@@ -123,6 +131,18 @@ public class GameController : MonoBehaviour
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
         user = JsonUtility.FromJson<PlayerDetails>(PlayerPrefs.GetString("user"));
+
+        API = GameObject.FindWithTag("APIConnection").GetComponent<APIConnection>();
+        if (API == null) {
+            Debug.LogError("APIConnection component not found on the object.");
+        }
+
+        // mandar 
+        API.PutGame("0", user?.PlayerId.ToString(), "1");
+
+        game = JsonUtility.FromJson<Game>(PlayerPrefs.GetString("game"));
+
+
 
         // Inicializamos el estado del juego en el estado principal (fase de preparación)
         StartCoroutine(PreparationMode());
@@ -300,8 +320,6 @@ public class GameController : MonoBehaviour
             // Desactivamos el panel de selección de cartas (la mano del jugador)
             canvasCombat.SetActive(false);
 
-            // botCPU.Attack();
-            // botCPU.Defense();
         }
     }
 

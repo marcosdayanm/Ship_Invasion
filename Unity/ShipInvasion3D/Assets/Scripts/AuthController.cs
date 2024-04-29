@@ -87,7 +87,7 @@ public class AuthController : MonoBehaviour
 
         string userData = PlayerPrefs.GetString("user");
         Debug.Log($"This is the userData: {userData}");
-        PlayerDetails player = JsonUtility.FromJson<PlayerDetails>(userData);
+        player = JsonUtility.FromJson<PlayerDetails>(userData);
         Debug.Log($"This is the player: {player}");
         if (player != null)
         {

@@ -32,7 +32,8 @@ public class Serialization<TK, TV>
 public class APIConnection : MonoBehaviour
 {
     // Variable para almacenar la URL de la API
-    [SerializeField] string apiURL = "http://localhost:3000";
+    // [SerializeField] string apiURL = "http://localhost:3000";
+    [SerializeField] string apiURL = "https://ship-invasion.onrender.com";
     // Variables para almacenar el endpoint y el parámetro de ID
     [SerializeField] string endpoint;
     [SerializeField] string idParameter;
@@ -86,33 +87,6 @@ public class APIConnection : MonoBehaviour
     }
 
 
-    // Función para configurar el request POST para enviar las credenciales de inicio de sesión de un jugador
-    // public IEnumerator PostPlayerLogInCredentials(string username, string password)
-    // {
-    //     // Enpoint de la API para enviar las credenciales de inicio de sesión
-    //     endpoint = "/api/players/login";
-    //     // Se crea un objeto de la clase LoginData con las credenciales de inicio de sesión
-    //     LoginData loginData = new LoginData(username, password);
-    //     // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
-    //     string jsonData = JsonUtility.ToJson(loginData);
-
-    //     // Se envía el request POST
-    //     yield return StartCoroutine(SendPostRequest(jsonData,
-    //         // Se pasa una función anónima que se ejecutará si el request es exitoso
-    //         onSuccess: (responseData) => {
-    //             Debug.Log(responseData);
-    //             // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
-    //             PlayerPrefs.SetString("user", responseData);
-
-    //             // PlayerDetails playerDetails = JsonUtility.FromJson<PlayerDetails>(responseData);
-    //         },
-    //         // Se pasa una función anónima que se ejecutará si el request falla
-    //         onFailure: (error) => {
-    //             Debug.LogError($"Error: {error}");
-    //         }));
-    // }
-
-
     public IEnumerator PostPlayerLogInCredentials(string username, string password)
     {
     endpoint = "/api/players/login";
@@ -128,7 +102,6 @@ public class APIConnection : MonoBehaviour
                 PlayerPrefs.SetString("error", responseData);
             } else {
                 PlayerPrefs.SetString("user", responseData);
-                Debug.Log(" esto es de la funcion de postplayerapicredentials: " + PlayerPrefs.GetString("user"));
                 PlayerPrefs.DeleteKey("error");
             }
         },
@@ -141,13 +114,13 @@ public class APIConnection : MonoBehaviour
 
 
     // Función para configurar el request POST para enviar un Play
-    IEnumerator PutPlay()
+    public IEnumerator PutPlay(string PlayNumber, string IsPlayerPlay, string NumFieldsCovered, string GameId, string CardPlayedId)
     {
         // Endpoint de la API para enviar un Play
         endpoint = "/api/plays";
 
         // Se crea un objeto de la clase Play con la información del Play
-        Play play = new Play("1", "1", "1", "1", "1");
+        Play play = new Play(PlayNumber, IsPlayerPlay, NumFieldsCovered, GameId, CardPlayedId);
 
         // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
         string jsonData = JsonUtility.ToJson(play);
@@ -164,19 +137,19 @@ public class APIConnection : MonoBehaviour
     }
 
     // Función para configurar el request POST para enviar un Game
-    IEnumerator PutGame()
+    public IEnumerator PutGame(string IsPlayerWon, string PlayerId, string ArenaId)
     {
         // Endpoint de la API para enviar un Game
         endpoint = "/api/games";
         // Se crea un objeto de la clase Game con la información del Game
-        Game game = new Game("0", "3", "1");
+        Game game = new Game(IsPlayerWon, PlayerId, ArenaId);
         // Se convierte el objeto en un JSON en string para que pueda ser enviado en el request
         string jsonData = JsonUtility.ToJson(game);
 
 // Se envía el request POST y se espera a que termine, dependiedno de la respuesta, se ejecuta una función anónima en caso de exito o fracaso
         yield return StartCoroutine(SendPostRequest(jsonData,
             onSuccess: (responseData) => {
-
+                PlayerPrefs.SetString("game", responseData);
                 Debug.Log(responseData);
             },
             onFailure: (error) => {
