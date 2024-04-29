@@ -32,8 +32,8 @@ public class Serialization<TK, TV>
 public class APIConnection : MonoBehaviour
 {
     // Variable para almacenar la URL de la API
-    [SerializeField] string apiURL = "http://localhost:3000";
-    // [SerializeField] string apiURL = "https://ship-invasion.onrender.com";
+    // [SerializeField] string apiURL = "http://localhost:3000";
+    [SerializeField] string apiURL = "https://ship-invasion.onrender.com";
     // Variables para almacenar el endpoint y el parámetro de ID
     [SerializeField] string endpoint;
     [SerializeField] string idParameter;
@@ -51,8 +51,8 @@ public class APIConnection : MonoBehaviour
         // StartCoroutine(GetCards());
         // StartCoroutine(GetCard());
         // StartCoroutine(PostPlayerLogInCredentials());
-        // StartCoroutine(PutPlay());
-        // StartCoroutine(PutGame());
+        // StartCoroutine(PutPlay("1", "1", "3", "5", "19"));
+        // StartCoroutine(PutGame("1", "3", "1"));
         // StartCoroutine(GameEditIsPlayerWon(16));
     }
 
@@ -149,7 +149,7 @@ public class APIConnection : MonoBehaviour
 // Se envía el request POST y se espera a que termine, dependiedno de la respuesta, se ejecuta una función anónima en caso de exito o fracaso
         yield return StartCoroutine(SendPostRequest(jsonData,
             onSuccess: (responseData) => {
-                PlayerPrefs.SetString("game", responseData);
+                PlayerPrefs.SetString("gameId", responseData);
                 Debug.Log(responseData);
             },
             onFailure: (error) => {

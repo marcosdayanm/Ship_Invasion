@@ -157,7 +157,9 @@ public class CardController :
                 // Mandar los datos de la jugada a la base de datos
                 // gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), gameController.game.GameId.ToString(), cardDetails.CardId.ToString());
 
-                gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), "1", cardDetails.CardId.ToString());
+                StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), gameController.gameIdClass.GameId.ToString(), cardDetails.CardId.ToString()));
+
+                gameController.playNumber++;
 
                 // Llamamos al método GridState del GridStateController para que actualice el estado de la 
                 // cuadrícula (recuento de quads de cada tipo)
