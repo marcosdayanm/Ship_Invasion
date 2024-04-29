@@ -3,7 +3,7 @@ import mysql from "mysql2/promise";
 import dotenv from "dotenv/config";
 import fs from "fs";
 import { marked } from "marked";
-import { hashPassword } from "./utils/hashPassword.js";
+import { comparePassword, hashPassword } from "./utils/hashPassword.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -239,9 +239,13 @@ app.route("/api/players/login").post(async (req, res) => {
   try {
     connection = await connectToDB();
     const [rows] = await connection.execute(
-      "SELECT * FROM Player WHERE Username = ? AND Password = ?",
-      [username, password]
+      "SELECT * FROM Player WHERE Username = ?",
+      [username]
     );
+    const validPassword = await comparePassword(password, rows[0].Password);
+    if (!validPassword){
+      return res.status(400).json({ error: "Credenciales incorrectas" });
+    }
     if (rows.length === 0) {
       console.log("credencuiales incorrectas (API)");
       return res
