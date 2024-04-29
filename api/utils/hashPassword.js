@@ -1,16 +1,3 @@
-
-import bcrypt from "bcrypt";
-
-const hashPassword = async (password) => {
-    const salt = await bcrypt.genSalt(10);
-    return await bcrypt.hash(password, salt);
-}
-
-const comparePassword = async (password, hashPwd) => {
-    return bcrypt.compareSync(password, hashPwd);
-}
-
-export {
-    hashPassword,
-    comparePassword
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:6258ab7791ccb13d2ba2911e6ac5e2b390f8eca6648bbb154031951dcb153fcc
+size 323
