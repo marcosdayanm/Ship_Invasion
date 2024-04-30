@@ -23,6 +23,9 @@ public class ShipCounter :
     }
 
     public void CountShips(){
+        vertical = new int[5];
+        horizontal = new int[5];
+        one = 0;
         for(int i = 0; i < gameController.enemyShips.Count; i++){
             // Barco horizontal
             if(gameController.enemyShips[i].LengthX > 1 && gameController.enemyShips[i].LengthY == 1 && !gameController.enemyShips[i].sunken){
