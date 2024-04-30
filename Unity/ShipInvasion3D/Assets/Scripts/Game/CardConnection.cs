@@ -10,6 +10,7 @@ public class CardConnection : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
    void Start() {
     cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards")); //Convertir las cartas de string a json (objetos)
+    cards = cards.SortCards();
     ShowCards();
    } 
 

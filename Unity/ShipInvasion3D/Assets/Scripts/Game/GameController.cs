@@ -111,6 +111,8 @@ public class GameController : MonoBehaviour
 
     public bool sunkenShip = false;
 
+    SceneConnection sceneConnection = null;
+
     // Esta función se ejecutará al inicio del juego
     void Start()
     {
@@ -127,6 +129,8 @@ public class GameController : MonoBehaviour
         botCPU = GameObject.FindWithTag("BotCPU").GetComponent<BotCPU>();
         // Script que controlla el timer del juego
         timer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
+        // Script que sirve para cargar otras escenas
+        sceneConnection = GameObject.FindWithTag("SceneConnection").GetComponent<SceneConnection>();
 
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
@@ -199,6 +203,7 @@ public class GameController : MonoBehaviour
         quadsAttacked = 0;
         canvasBot.transform.Find("Barco Caído").gameObject.SetActive(false);
         canvasBot.transform.Find("Titulo").gameObject.SetActive(true);
+        StartCoroutine(ValidateEndGame());
         yield return StartCoroutine(botCPU.ChooseCard(canvasBot.transform.Find("Carta Utilizada Texto").gameObject));
         currentState = GameState.Main;
         botCPU.isChoosingCard = false;
@@ -244,6 +249,7 @@ public class GameController : MonoBehaviour
         }
         // Mostar el canvas de combate para que el jugador pueda seleccionar una carta
         canvasCombat.SetActive(true);
+        StartCoroutine(ValidateEndGame());
         // Dar cartas al jugador
         // Si tiene 0 cartas, se reparten 5 cartas (al inicio del juego)
         if(cardsInHand == 0){
@@ -442,6 +448,41 @@ public class GameController : MonoBehaviour
             }else{
                 ship.sunken = false;
             }
+        }
+    }
+
+    public IEnumerator ValidateEndGame(){
+        int activeShips = 0;
+        int sunkenShips = 0;
+        int activeEnemyShips = 0;
+        int sunkenEnemyShips = 0;
+        foreach(Ship ship in enemyShips){
+            if(ship.sunken){
+                sunkenEnemyShips++;
+            }else{
+                activeEnemyShips++;
+            }
+        }
+        foreach(Ship ship in ships){
+            if(ship.sunken){
+                sunkenShips++;
+            }else{
+                activeShips++;
+            }
+        }
+        if(activeShips == 0 || activeEnemyShips == 0){
+            Debug.Log(activeShips);
+            Debug.Log(sunkenShips);
+            Debug.Log(activeEnemyShips);
+            Debug.Log(sunkenEnemyShips);
+
+            PlayerPrefs.SetInt("activeShips", activeShips);
+            PlayerPrefs.SetInt("sunkenShips", sunkenShips);
+            PlayerPrefs.SetInt("activeEnemyShips", activeEnemyShips);
+            PlayerPrefs.SetInt("sunkenEnemyShips", sunkenEnemyShips);
+            yield return new WaitForSeconds(1);
+            // Cambiar de escena
+            sceneConnection.toEndGame();
         }
     }
 }
