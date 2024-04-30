@@ -72,7 +72,6 @@ public class Quad : MonoBehaviour
         int currentY = int.Parse(gameObject.name.Split(',')[1]);
 
         // Mandar los datos de la jugada a la base de datos
-        // gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (gameController.currentAttackCard.LengthX * gameController.currentAttackCard.LengthY).ToString(), gameController.game.GameId.ToString(), gameController.currentAttackCard.CardId.ToString());
 
         int fieldsCovered = 0;
 

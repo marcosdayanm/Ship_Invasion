@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     private bool isCameraOnAttack = false;
     private bool isCameraOnDefense = false;
 
+    public bool isPreparationMode = true;
+
     // Referencia al controlador de la cámara
     MoveCamera cameraController;
 
@@ -324,6 +326,8 @@ public class GameController : MonoBehaviour
 
     // Función para cambiar el modo de preparación a modo de combate
     public void StartCombatMode(){
+
+        isPreparationMode = false;
         // Movemos la cámara a la posición original
         cameraController.MoveCameraToOrigin();
         // Ocultar canvas de la fase de preparación
