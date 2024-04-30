@@ -61,10 +61,10 @@ public class ShipCounter :
     }
 
     public void OnPointerEnter(PointerEventData eventData){
-        transform.localPosition = new Vector3(738, transform.localPosition.y, transform.localPosition.z);
+        transform.localPosition = new Vector3(728, transform.localPosition.y, transform.localPosition.z);
     }
 
     public void OnPointerExit(PointerEventData eventData){
-        transform.localPosition = new Vector3(1158, transform.localPosition.y, transform.localPosition.z);
+        transform.localPosition = new Vector3(1135, transform.localPosition.y, transform.localPosition.z);
     }
 }
