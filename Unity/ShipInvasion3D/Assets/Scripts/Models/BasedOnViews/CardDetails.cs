@@ -33,4 +33,11 @@ using System.Linq;
         attackCards.Items = this.Items.Where(card => card.CardType == "Attack").ToList();
         return attackCards;
     }
+
+    // Este es un método que sirve para ordenar las cartas por tipo de ataque
+    public Cards SortCards(){
+        Cards sortedCards = new Cards();
+        sortedCards.Items = this.Items.OrderBy(obj => obj.CardId).ToList();
+        return sortedCards;
+    }
 }
