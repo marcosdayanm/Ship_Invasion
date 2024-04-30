@@ -155,11 +155,13 @@ public class CardController :
                 gridStateController.PlaceShipMisile(cardDetails, quadTransfrom);
 
                 // Mandar los datos de la jugada a la base de datos
-                // gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), gameController.game.GameId.ToString(), cardDetails.CardId.ToString());
 
-                StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), gameController.gameIdClass.GameId.ToString(), cardDetails.CardId.ToString()));
+                if (!gameController.isPreparationMode)
+                {
+                    StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "1", (cardDetails.LengthX * cardDetails.LengthY).ToString(), gameController.gameIdClass.GameId.ToString(), cardDetails.CardId.ToString()));
+                    gameController.playNumber++;
+                }
 
-                gameController.playNumber++;
 
                 // Llamamos al método GridState del GridStateController para que actualice el estado de la 
                 // cuadrícula (recuento de quads de cada tipo)

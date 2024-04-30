@@ -152,8 +152,11 @@ public class BotCPU : MonoBehaviour
             ship.quads = gridStateControllerBot.getQuadsList(ship.LengthX, ship.LengthY, startingQuad);
             ship.sunken = false;
 
-            StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "0", (card.LengthX * card.LengthY).ToString(), gameController.gameIdClass.GameId.ToString(), card.CardId.ToString()));
-            gameController.playNumber++;
+            if (!gameController.isPreparationMode)
+            {
+                StartCoroutine(gameController.API.PutPlay(gameController.playNumber.ToString(), "0", (card.LengthX * card.LengthY).ToString(), gameController.gameIdClass.GameId.ToString(), card.CardId.ToString()));
+                gameController.playNumber++;
+            }
 
             gameController.enemyShips.Add(ship);
             if(!isPreparationMode){
