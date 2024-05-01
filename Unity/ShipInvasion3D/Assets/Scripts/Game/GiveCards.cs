@@ -74,7 +74,7 @@ public class GiveCards : MonoBehaviour
         // Indicamos que se están dando cartas
         isGivingCards = true;
         // Esperamos un segundo antes de empezar a repartir cartas (para que no sea instantáneo)
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         // Repartimos 5 cartas
         for(int i = 0; i < amountCarts; i++){
             // Obtenemos un índice aleatorio para obtener una carta aleatoria de todas las disponibles
@@ -94,7 +94,7 @@ public class GiveCards : MonoBehaviour
                 cardObject.GetComponent<CardController>().image.sprite = Resources.Load<Sprite>("Images/CartasAtaque/" + currentCard.CardId.ToString());
             }
             // Esperamos medio segundo antes de repartir la siguiente carta (para que se vea un buen efecto)
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
         gameController.cardsInHand = playerHand.transform.childCount;
         // Esperamos un segundo antes de terminar de repartir cartas

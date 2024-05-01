@@ -114,6 +114,7 @@ public class GameController : MonoBehaviour
     public bool sunkenShip = false;
 
     public SceneConnection sceneConnection = null;
+    bool resetTimerPosition = true;
 
     // Esta función se ejecutará al inicio del juego
     void Start()
@@ -195,7 +196,7 @@ public class GameController : MonoBehaviour
         // Mostrar el panel que anuncia que es turno de la PC
         canvasBot.SetActive(true);
         canvasBot.transform.Find("Quad Attacked").gameObject.SetActive(true);
-        canvasBot.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Quads Hit";
+        canvasBot.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Celdas Atacadas";
         if(sunkenShip){
             canvasBot.transform.Find("Barco Caído").gameObject.SetActive(true);
             sunkenShip = false;
@@ -238,7 +239,7 @@ public class GameController : MonoBehaviour
         }
         if(showQuadsAttacked){
             canvasCombat.transform.Find("Quad Attacked").gameObject.SetActive(true);
-            canvasCombat.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Quads Hit";
+            canvasCombat.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Celdas Atacadas";
             if(sunkenShip){
                 canvasCombat.transform.Find("Barco Caído").gameObject.SetActive(true);
                 sunkenShip = false;
@@ -251,6 +252,14 @@ public class GameController : MonoBehaviour
         }
         // Mostar el canvas de combate para que el jugador pueda seleccionar una carta
         canvasCombat.SetActive(true);
+        canvasCombat.transform.Find("Ships Couter").gameObject.SetActive(true);
+        canvasCombat.transform.Find("Attack Indicator").gameObject.SetActive(false);
+        canvasCombat.transform.Find("Defense Indicator").gameObject.SetActive(false);
+        if(!resetTimerPosition){
+            Transform timerTransform = canvasCombat.transform.Find("MatchTime");
+            canvasCombat.transform.Find("MatchTime").localPosition = new Vector3(0, 510, 0);
+            resetTimerPosition = true;
+        }
         StartCoroutine(ValidateEndGame());
         // Dar cartas al jugador
         // Si tiene 0 cartas, se reparten 5 cartas (al inicio del juego)
@@ -282,6 +291,8 @@ public class GameController : MonoBehaviour
         gameIdClass = JsonUtility.FromJson<GameIdClass>(PlayerPrefs.GetString("gameId"));
         Debug.Log($"Game Id: {gameIdClass.GameId}");
         botCPU.PreparationMode();
+        yield return new WaitForSeconds(2f);
+        canvasPreparation.transform.Find("Mensaje de Preparacion").gameObject.SetActive(false);
     }
 
 
@@ -296,8 +307,19 @@ public class GameController : MonoBehaviour
             StartCoroutine(MoveGridEnemy(true, 0.5f));
             // Movemos la cámara a la posición de ataque
             cameraController.MoveCameraToAttack();
-            // Desactivamos el panel de selección de cartas (la mano del jugador)
-            canvasCombat.SetActive(false);
+
+
+            // Desactivamos el panel de selección de cartas (la mano del jugador) exepcto el timer y el indicador de modo
+            // canvasCombat.SetActive(false);
+            canvasCombat.transform.Find("Cards").gameObject.SetActive(false);
+            canvasCombat.transform.Find("Attack Indicator").gameObject.SetActive(true);
+            canvasCombat.transform.Find("Defense Indicator").gameObject.SetActive(false);
+            canvasCombat.transform.Find("UseCardPanel").gameObject.SetActive(false);
+            if(resetTimerPosition){
+                Transform timerTransform = canvasCombat.transform.Find("MatchTime");
+                canvasCombat.transform.Find("MatchTime").localPosition = new Vector3(734, 350, 0);
+                resetTimerPosition = false;
+            }
         }
     }
 
@@ -314,8 +336,8 @@ public class GameController : MonoBehaviour
             StartCoroutine(MoveGrid(true, 0.5f));
             // Mover el contenedor de la mano del jugador a la parte lateral de la pantalla
             RectTransform rectTransformPlayerHand = playerHandPreparation.GetComponent<RectTransform>();
-            rectTransformPlayerHand.sizeDelta = new Vector2(400, 1000);
-            rectTransformPlayerHand.anchoredPosition = new Vector2(-800, 0);
+            rectTransformPlayerHand.sizeDelta = new Vector2(400, 950);
+            rectTransformPlayerHand.anchoredPosition = new Vector2(-800, -60);
             // Reducir su espaciado para que las cartas se encimen y quepan en la pantalla
             GridLayoutGroup gridLayout = playerHandPreparation.GetComponent<GridLayoutGroup>();
             gridLayout.spacing =  new Vector2(gridLayout.spacing.x, -150);
@@ -324,8 +346,20 @@ public class GameController : MonoBehaviour
             preparationModeIndicator.SetActive(false);
             // Movemos la cámara a la posición de defensa
             cameraController.MoveCameraToDefense();
-            // Desactivamos el panel de selección de cartas (la mano del jugador)
-            canvasCombat.SetActive(false);
+
+
+            // Desactivamos el panel de selección de cartas (la mano del jugador) exepcto el timer y el indicador de modo
+            // canvasCombat.SetActive(false);
+            canvasCombat.transform.Find("Cards").gameObject.SetActive(false);
+            canvasCombat.transform.Find("Ships Couter").gameObject.SetActive(false);
+            canvasCombat.transform.Find("Attack Indicator").gameObject.SetActive(false);
+            canvasCombat.transform.Find("Defense Indicator").gameObject.SetActive(true);
+            canvasCombat.transform.Find("UseCardPanel").gameObject.SetActive(false);
+            if(!isPreparationMode && resetTimerPosition){
+                Transform timerTransform = canvasCombat.transform.Find("MatchTime");
+                canvasCombat.transform.Find("MatchTime").localPosition = new Vector3(734, 350, 0);
+                resetTimerPosition = false;
+            }
 
         }
     }
@@ -340,6 +374,7 @@ public class GameController : MonoBehaviour
         canvasPreparation.SetActive(false);
         // Mostrar canvas de la fase de combate
         canvasCombat.SetActive(true);
+        canvasCombat.transform.Find("Cards").gameObject.SetActive(true);
         // Cambiar estado a main para empezar fase de combate
         currentState = GameState.Main;
         audioPreparation.Stop();
@@ -418,12 +453,18 @@ public class GameController : MonoBehaviour
         quadOnAttack.Clear();
         isLaunching = false;
         launchingActive = false;
+        if(currentState == GameState.Main){
+            yield return new WaitForSeconds(1);yield return new WaitForSeconds(1);
+            canvasCombat.transform.Find("Cards").gameObject.SetActive(true);
+        }
     }
 
     // Función para avisar que se está arrastrando una carta
     public void OnCardDrag(){
         isCardDragging = true;
-        playCardPanel.SetActive(true);
+        if(currentState == GameState.Main){
+            playCardPanel.SetActive(true);
+        }
     }
 
     // Función para avisar que se soltó una carta
