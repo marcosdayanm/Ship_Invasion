@@ -43,6 +43,9 @@ public class APIConnection : MonoBehaviour
     CardDetails card;
     // Variable que almacena la información de todas las cartas (de tipo Cards)
     Cards cards;
+
+    ArenasList arenas;
+
     // Variable que almacena la información de un jugador (de tipo PlayerDetails)
     PlayerDetails player;
 
@@ -54,6 +57,8 @@ public class APIConnection : MonoBehaviour
         // StartCoroutine(PutPlay("1", "1", "3", "5", "19"));
         // StartCoroutine(PutGame("1", "3", "1"));
         // StartCoroutine(GameEditIsPlayerWon(16));
+        // StartCoroutine(GetArenas());
+        // StartCoroutine(EditPlayerData(1, 300, 100, 55));
     }
 
     // Función para configurar el request GET para obtener TODAS las Cartas
@@ -84,6 +89,19 @@ public class APIConnection : MonoBehaviour
         card = JsonUtility.FromJson<CardDetails>(data);
         // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
         PlayerPrefs.SetString(card.CardName, data);
+    }
+
+    public IEnumerator GetArenas()
+    {
+        // Enpoint de la API para obtener una carta específica
+        endpoint = $"/api/arenas";
+        // Parámetro de ID para obtener la carta con ID 1 (ejemplo)
+        idParameter = "";
+        // Se envía el request GET
+        yield return StartCoroutine(SendGetRequest());
+        // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
+        PlayerPrefs.SetString("arenas", data);
+        Debug.Log($"This are the arenas: {data} ");
     }
 
 
@@ -200,6 +218,26 @@ public class APIConnection : MonoBehaviour
                 Debug.LogError($"Error: {error}");
             }));
     }
+
+
+        public IEnumerator EditPlayerData(int PlayerId, int PlayerCoins, int PlayerWins, int PlayerLosses)
+        {
+            // Endpoint de la API para modificar el atributo isPlayerWon de un Game
+            endpoint = $"/api/player/edit-data";
+
+            EditPlayerDetails player = new EditPlayerDetails(PlayerId, PlayerCoins, PlayerWins, PlayerLosses);
+            string jsonData = JsonUtility.ToJson(player);
+
+    // Se envía el request POST y se espera a que termine, dependiendo de la respuesta, se ejecuta una función anónima en caso de exito o fracaso
+            yield return StartCoroutine(SendPostRequest(jsonData,
+                onSuccess: (responseData) => {
+
+                    Debug.Log(responseData);
+                },
+                onFailure: (error) => {
+                    Debug.LogError($"Error: {error}");
+                }));
+        }
 
 
     

@@ -21,3 +21,24 @@ using System.Collections.Generic;
     public List<PlayerDetails> Items;
 }
 
+public class EditIsPlayerWon
+{
+    public string IsPlayerWon = "1";
+}
+
+
+public class EditPlayerDetails 
+{
+    public int PlayerId; 
+    public int PlayerCoins;
+    public int PlayerWins;
+    public int PlayerLosses;
+
+    public EditPlayerDetails(int PlayerId, int PlayerCoins, int PlayerWins, int PlayerLosses)
+    {
+        this.PlayerId = PlayerId;
+        this.PlayerCoins = PlayerCoins;
+        this.PlayerWins = PlayerWins;
+        this.PlayerLosses = PlayerLosses;
+    }
+}
