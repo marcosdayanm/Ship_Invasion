@@ -41,7 +41,6 @@ public class ArenaSelectionController: MonoBehaviour
         arenas = JsonUtility.FromJson<ArenasList>(PlayerPrefs.GetString("arenas"));
 
         Debug.Log(arenas.items);
-        Debug.Log(arenas.items[0]);
 
         arena = arenas.items[arenaId];
 
