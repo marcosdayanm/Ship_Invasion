@@ -281,7 +281,10 @@ public class APIConnection : MonoBehaviour
 
             // Si el request fue exitoso, se ejecuta la función onSuccess, si no se ejecuta la función onFailure
             if (www.result == UnityWebRequest.Result.Success) onSuccess?.Invoke(www.downloadHandler.text); 
-            else onFailure?.Invoke(www.error); 
+            else {
+                PlayerPrefs.SetString("errorMsg", www.downloadHandler.text);
+                onFailure?.Invoke(www.error); 
+            }
 
         }
     }

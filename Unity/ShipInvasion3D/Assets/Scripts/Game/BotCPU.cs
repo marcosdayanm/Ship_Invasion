@@ -171,6 +171,7 @@ public class BotCPU : MonoBehaviour
     public void Defense(CardDetails card)
     {
         PlaceShips(randomCard: card);
+        gameController.canvasCombat.transform.Find("Cards").gameObject.SetActive(true);
     }
 
     public void Attack(CardDetails card)

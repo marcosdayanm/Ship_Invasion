@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 
@@ -20,6 +21,8 @@ public class AuthController : MonoBehaviour
     [SerializeField] TMP_InputField signupInputUser;
     [SerializeField] TMP_InputField signupInputPassword;
     [SerializeField] TMP_InputField signupInputConfirmPassword;
+    [SerializeField] GameObject alert;
+    Button submitButton;
 
     // Start is called before the first frame update
     // void Start()
@@ -50,15 +53,21 @@ public class AuthController : MonoBehaviour
     public void SwitchFormToLogIn(){
         loginForm.SetActive(true);
         signupForm.SetActive(false);
+        loginSet.GetComponent<Image>().color = new Color(0.003921569f, 0.05490196f, 0.9568628f, 0.4392157f);
+        signupSet.GetComponent<Image>().color = new Color(0.007843138f, 0.05490196f, 0.9607844f, 0.09803922f);
     }
 
     public void SwitchFormToSignUp(){
         loginForm.SetActive(false);
         signupForm.SetActive(true);
+        signupSet.GetComponent<Image>().color = new Color(0.003921569f, 0.05490196f, 0.9568628f, 0.4392157f);
+        loginSet.GetComponent<Image>().color = new Color(0.007843138f, 0.05490196f, 0.9607844f, 0.09803922f);
     }
 
-    public void OnLoginButtonClicked()
+    public void OnLoginButtonClicked(Button clickedButton)
     {
+        submitButton = clickedButton;
+        clickedButton.interactable = false;
         string username = loginInputUser.text;
         string password = loginInputPassword.text;
 
@@ -80,7 +89,13 @@ public class AuthController : MonoBehaviour
         if (!string.IsNullOrEmpty(error))
         {
             Debug.LogError("Login failed: " + error);
-            // Aquí puedes mostrar un mensaje al usuario sobre el error
+            string errorMsg = PlayerPrefs.GetString("errorMsg");
+            Response response = JsonUtility.FromJson<Response>(errorMsg);
+            alert.SetActive(true);
+            alert.transform.Find("Message").GetComponent<TMP_Text>().text = response.error;
+            submitButton.interactable = true;
+            yield return new WaitForSeconds(2.0f);
+            alert.SetActive(false);
             yield break; // Salir de la corrutina si hay un error
         }
 
@@ -99,7 +114,9 @@ public class AuthController : MonoBehaviour
         }
     }
 
-    public void OnSignUpButtonClicked() {
+    public void OnSignUpButtonClicked(Button clickedButton) {
+        submitButton = clickedButton;
+        clickedButton.interactable = false;
         string username = signupInputUser.text;
         string password = signupInputPassword.text;
         string confirmPassword = signupInputConfirmPassword.text;
@@ -124,7 +141,13 @@ public class AuthController : MonoBehaviour
         if (!string.IsNullOrEmpty(error))
         {
             Debug.LogError("Sigup failed: " + error);
-            // Aquí puedes mostrar un mensaje al usuario sobre el error
+            string errorMsg = PlayerPrefs.GetString("errorMsg");
+            Response response = JsonUtility.FromJson<Response>(errorMsg);
+            alert.SetActive(true);
+            alert.transform.Find("Message").GetComponent<TMP_Text>().text = response.error;
+            submitButton.interactable = true;
+            yield return new WaitForSeconds(2.0f);
+            alert.SetActive(false);
             yield break; // Salir de la corrutina si hay un error
         }
 
@@ -142,4 +165,10 @@ public class AuthController : MonoBehaviour
             // Manejar el caso de datos de usuario incorrectos o nulos
         }
     }
+}
+
+
+[System.Serializable] public class Response{
+    public string error;
+    public string status;
 }
