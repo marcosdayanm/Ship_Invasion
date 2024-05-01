@@ -1,4 +1,0 @@
-*.js filter=lfs diff=lfs merge=lfs -text
-*.data filter=lfs diff=lfs merge=lfs -text
-api/app.js filter=lfs diff=lfs merge=lfs -text
-api/utils/hashPassword.js filter=lfs diff=lfs merge=lfs -text

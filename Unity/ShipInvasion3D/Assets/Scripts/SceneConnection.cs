@@ -18,6 +18,7 @@ public class SceneConnection : MonoBehaviour
     // Función para iniciar el juego (llamando a la api para obtener las cartas disponibles)
     IEnumerator StartGame() {
         yield return StartCoroutine(API.GetCards());
+        yield return StartCoroutine(API.GetArenas());
         StartCoroutine(ChangeScene("Menu"));  //Para pasar a la escena de menu
     }
 
