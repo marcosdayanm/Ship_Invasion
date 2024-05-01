@@ -38,21 +38,21 @@ public class ArenaSelectionController: MonoBehaviour
 
     public IEnumerator ValidateEnterArena(int arenaId)
     {
-        arenas = JsonUtility.FromJson<ArenasList>(PlayerPrefs.GetString("arenas"));
+        // arenas = JsonUtility.FromJson<ArenasList>(PlayerPrefs.GetString("arenas"));
 
-        Debug.Log(arenas.items);
+        // Debug.Log(arenas.items);
 
-        arena = arenas.items[arenaId];
+        // arena = arenas.items[arenaId];
 
-        if (user.PlayerCoins < arena.Cost)
-        {
-            // gestionar lógica de que no se puede jugar
-        }
-        else
-        {
-            StartCoroutine(sceneConnection.API.EditPlayerData(user.PlayerId, user.PlayerCoins - arena.Cost, user.PlayerWins, user.PlayerLosses));
+        // if (user.PlayerCoins < arena.Cost)
+        // {
+        //     // gestionar lógica de que no se puede jugar
+        // }
+        // else
+        // {
+            // StartCoroutine(sceneConnection.API.EditPlayerData(user.PlayerId, user.PlayerCoins - arena.Cost, user.PlayerWins, user.PlayerLosses));
             sceneConnection.toGame();
-        }
+        // }
 
 
         yield return null;
