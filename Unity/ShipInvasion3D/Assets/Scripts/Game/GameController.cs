@@ -30,8 +30,6 @@ public class GameController : MonoBehaviour
     Timer timer;
 
     public APIConnection API = null;
-    public GridStateController gridState = null;
-    public GridStateController gridStateEnemy = null;
 
     public GameIdClass gameIdClass;
 
@@ -115,7 +113,7 @@ public class GameController : MonoBehaviour
 
     public bool sunkenShip = false;
 
-    SceneConnection sceneConnection = null;
+    public SceneConnection sceneConnection = null;
 
     // Esta función se ejecutará al inicio del juego
     void Start()
@@ -139,9 +137,6 @@ public class GameController : MonoBehaviour
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
         cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
         user = JsonUtility.FromJson<PlayerDetails>(PlayerPrefs.GetString("user"));
-
-        gridState = GameObject.FindWithTag("Grid").GetComponent<GridStateController>();
-        gridStateEnemy = GameObject.FindWithTag("EnemyGrid").GetComponent<GridStateController>();
 
         API = GameObject.FindWithTag("APIConnection").GetComponent<APIConnection>();
         if (API == null) {
