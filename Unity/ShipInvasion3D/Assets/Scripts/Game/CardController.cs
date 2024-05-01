@@ -59,7 +59,7 @@ public class CardController :
     }
 
 
-    // Esta función se ejectura cuando se hace hover sobre una carta
+    // Esta función se ejecutará cuando se hace hover sobre una carta
     public void OnPointerEnter(PointerEventData eventData){
         // Si no hay ninguna carta en uso y no se está arrastrando ninguna carta
         if(!gameController.isCardInUse){
