@@ -43,6 +43,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] AudioSource audioPreparation;
     [SerializeField] AudioSource audioCombat;
+    public AudioSource audioDefenseCard;
+    [SerializeField] AudioSource audioStartCombat;
 
     // Variables para controlar si se está arrastrando una carta y
     // si se está usando una carta
@@ -394,6 +396,7 @@ public class GameController : MonoBehaviour
         // Cambiar estado a main para empezar fase de combate
         currentState = GameState.Main;
         audioPreparation.Stop();
+        audioStartCombat.Play();
         audioCombat.Play();
 
         timer.StartTimer(timer.matchTime);
