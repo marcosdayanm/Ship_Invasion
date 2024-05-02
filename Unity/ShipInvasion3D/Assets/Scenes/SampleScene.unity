@@ -9080,7 +9080,6 @@ MonoBehaviour:
   launchingActive: 0
   showQuadsAttacked: 0
   quadsAttacked: 0
-  sunkenShip: 0
   sceneConnection: {fileID: 0}
   waterMaterials:
   - {fileID: 2100000, guid: cf2f5ac03c01b4ccea055c1b3e970c4d, type: 2}
@@ -47907,7 +47906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27fd6a2ea35c246bd839d0dca2d99450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 300
+  timeLimit: 240
   isTimerActive: 0
   matchTimerText: {fileID: 841454324}
   playTimerText: {fileID: 0}
@@ -53353,7 +53352,7 @@ PrefabInstance:
     - target: {fileID: 1507636620937791777, guid: 7097ba7ba649e1f41bba232312bdcbd8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.8
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 1507636620937791777, guid: 7097ba7ba649e1f41bba232312bdcbd8,
         type: 3}
