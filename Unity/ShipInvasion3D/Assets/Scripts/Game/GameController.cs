@@ -116,9 +116,19 @@ public class GameController : MonoBehaviour
     public SceneConnection sceneConnection = null;
     bool resetTimerPosition = true;
 
+    Arena arenaLoaded;
+
+    [SerializeField] List<Material> waterMaterials;
+
+    [SerializeField] MeshRenderer water;
+
+    [SerializeField] List<Material> skyboxMaterials;
+
     // Esta función se ejecutará al inicio del juego
     void Start()
     {
+        arenaLoaded = JsonUtility.FromJson<Arena>(PlayerPrefs.GetString("gameArena"));
+        SetearArena(arenaLoaded.Id);
         audioPreparation.Play();
         // Obtenemos las referencias a los componentes necesarios
         // Controlador de la cámara para poderla mover dependiendo del estado del juego
@@ -136,9 +146,9 @@ public class GameController : MonoBehaviour
         sceneConnection = GameObject.FindWithTag("SceneConnection").GetComponent<SceneConnection>();
 
         // Deserializamos las cartas disponibles en el juego (las cuardamos en una lista de cartas de manera que los datos estén disponibles en cualquier parte del juego)
-        cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards"));
+        cards = JsonUtility.FromJson<Cards>(PlayerPrefs.GetString("cards")).SortCards();
+        cards.BalanceCards();
         user = JsonUtility.FromJson<PlayerDetails>(PlayerPrefs.GetString("user"));
-
         API = GameObject.FindWithTag("APIConnection").GetComponent<APIConnection>();
         if (API == null) {
             Debug.LogError("APIConnection component not found on the object.");
@@ -556,6 +566,32 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(1);
             // Cambiar de escena
             sceneConnection.toEndGame();
+        }
+    }
+
+    void SetearArena(int id){
+        if(id == 1){
+            Debug.Log("Mar Abierto");
+            water.materials = new Material[] { waterMaterials[0] };
+            RenderSettings.skybox = skyboxMaterials[0];
+            DynamicGI.UpdateEnvironment();
+        }else if(id == 2){
+            Debug.Log("Tormenta Eléctrica");
+            water.materials = new Material[] { waterMaterials[1] };
+            RenderSettings.skybox = skyboxMaterials[1];
+            DynamicGI.UpdateEnvironment();
+        }else if(id == 3){
+            Debug.Log("Río de Fuego");
+            water.materials = new Material[] { waterMaterials[2] };
+            RenderSettings.skybox = skyboxMaterials[2];
+            DynamicGI.UpdateEnvironment();
+        }else if(id == 4){
+            Debug.Log("Pantano tóxico");
+            water.materials = new Material[] { waterMaterials[3] };
+            RenderSettings.skybox = skyboxMaterials[3];
+            DynamicGI.UpdateEnvironment();
+        }else{
+            Debug.LogError("Error al cargar arena");
         }
     }
 }
