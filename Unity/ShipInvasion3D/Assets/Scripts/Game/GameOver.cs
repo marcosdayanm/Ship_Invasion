@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 
@@ -35,6 +36,12 @@ public class GameOver : MonoBehaviour
         StartCoroutine(WhoWon());
     }
 
+    public void toMenu()
+    {
+        StartCoroutine(ChangeScene("Menu"));
+    }
+
+
     IEnumerator WhoWon()
     {
         yield return new WaitForSeconds(0.4f);
@@ -64,7 +71,7 @@ public class GameOver : MonoBehaviour
 
         if (activeShips > activeEnemyShips)
         {
-            Winner.text = "Winner: Player";
+            Winner.text = $"Winner: {user.PlayerUsername}";
             StartCoroutine(API.EditPlayerData(user.PlayerId, Mathf.RoundToInt(user.PlayerCoins + arena.Cost + arena.Cost * ((arena.Level / 4.0f) + 1)), user.PlayerWins + 1, user.PlayerLosses - 1));
             yield return new WaitForSeconds(0.2f);
             StartCoroutine(API.GameEditIsPlayerWon(user.PlayerId));
@@ -78,7 +85,7 @@ public class GameOver : MonoBehaviour
         {
             if (damageByUser > damageByEnemy)
             {
-                Winner.text = "Winner: Player";
+                Winner.text = $"Winner: {user.PlayerUsername}";
                 StartCoroutine(API.EditPlayerData(user.PlayerId, Mathf.RoundToInt(user.PlayerCoins + arena.Cost + arena.Cost * ((arena.Level / 4.0f) + 1)), user.PlayerWins + 1, user.PlayerLosses - 1));
                 yield return new WaitForSeconds(0.2f);
                 StartCoroutine(API.GameEditIsPlayerWon(user.PlayerId));
@@ -98,6 +105,11 @@ public class GameOver : MonoBehaviour
             }
 
         }
+    }
+
+    IEnumerator ChangeScene(string scene){
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene(scene);
     }
 
 }
