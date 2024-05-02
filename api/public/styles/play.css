@@ -14,7 +14,7 @@ main{
     background-size: cover;
 }
 .how-to-play{
-    min-height: 100vh;
+    min-height: 120vh;
     background-image: url("/img/fig4.png");
     background-position: center top;
     background-repeat: no-repeat;
@@ -28,6 +28,48 @@ main{
 .how-to-play img{
     width: 70%;
 }
+
+.cardsAtaque{
+    min-height: 40vh;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.cardsAtaque figure{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cardsAtaque img{
+    width: 10%;
+}
+
+.cardsDefensa{
+    min-height: 40vh;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.cardsDefensa figure{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cardsDefensa img{
+    width: 10%;
+}
+
+img.top-image {
+    position: absolute;
+    top: -75%; 
+    width: 880px; 
+    height: auto;
+    z-index: 10;
+    
+}
+
 .videogame{
     background-color: var(--white);
     min-width: 920px;
