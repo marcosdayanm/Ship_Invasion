@@ -33,7 +33,8 @@ public class APIConnection : MonoBehaviour
 {
     // Variable para almacenar la URL de la API
     // [SerializeField] string apiURL = "http://localhost:3000";
-    [SerializeField] string apiURL = "https://ship-invasion.onrender.com";
+    // [SerializeField] string apiURL = "https://ship-invasion.onrender.com";
+    [SerializeField] string apiURL = "https://ship-invasion-rem.onrender.com";
     // Variables para almacenar el endpoint y el parámetro de ID
     [SerializeField] string endpoint;
     [SerializeField] string idParameter;
