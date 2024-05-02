@@ -8,9 +8,11 @@ public class Explosion : MonoBehaviour
     // nearby rigidbodies within a specified radius.
     public float radius = 4;
     public float force = 8;
+    [SerializeField] AudioSource audioExplosion;
 
     void Start()
     {
+        audioExplosion.Play();
         // Explosion applies force to all nearby objects as soon as it is instantiated.
         Collider[] affected = Physics.OverlapSphere(transform.position,5);
 
