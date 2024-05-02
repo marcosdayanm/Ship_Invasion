@@ -21,12 +21,14 @@ main{
 }
 .title{
     position: absolute;
-    width: 300px;
+    width: 250px;
     margin: 0;
     top: 0;
     left: 0;
     transform: translate(30%, -40%);
+    padding-top: 70px;
 }
+
 .title img{
     transform: rotate(-5deg);
 }
