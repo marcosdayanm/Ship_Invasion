@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour
     GiveCards giveCards;
 
     BotCPU botCPU;
+    Arena arena;
 
     Timer timer;
 
@@ -144,8 +145,13 @@ public class GameController : MonoBehaviour
             Debug.LogError("APIConnection component not found on the object.");
         }
 
+        arena = JsonUtility.FromJson<Arena>(PlayerPrefs.GetString("gameArena"));
+        Debug.Log(PlayerPrefs.GetString("gameArena"));
+        if (arena == null)
+            Debug.LogError("Failed to deserialize arena data.");
+
         // mandar 
-        StartCoroutine(API.PutGame("0", user?.PlayerId.ToString(), "1"));
+        StartCoroutine(API.PutGame("0", user?.PlayerId.ToString(), arena.Id.ToString()));
 
         // Inicializamos el estado del juego en el estado principal (fase de preparación)
         StartCoroutine(PreparationMode());
