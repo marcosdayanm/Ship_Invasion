@@ -176,6 +176,7 @@ public class CardController :
                 ship.quads = gridStateController.getQuadsList(ship.LengthX, ship.LengthY, quadTransfrom);
                 ship.sunken = false;
                 gameController.ships.Add(ship);
+                gameController.audioDefenseCard.Play();
 
                 // Si seguimos en la fase de preparación:
                 if (gameController.currentState == GameController.GameState.none){
