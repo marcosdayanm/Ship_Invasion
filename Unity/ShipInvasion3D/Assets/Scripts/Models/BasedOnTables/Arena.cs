@@ -11,10 +11,10 @@ public class Arena
     public int Cost;
     public int MatchesRequired;
     public int? MusicIdUnity; // Nullable
-    public int SpriteId;
+    public int? SpriteId;
 }
 
 public class ArenasList
 {
-    public List<Arena> items;
+    public List<Arena> arenas;
 }

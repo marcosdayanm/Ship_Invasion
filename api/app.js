@@ -403,6 +403,9 @@ app
 
 app.route("/api/player/edit-data").post(async (req, res) => {
   const { PlayerId, PlayerCoins, PlayerWins, PlayerLosses } = req.body;
+  if (!PlayerId || !PlayerCoins) {
+    return res.status(400).json({ error: "Invalid request" });
+  }
   let connection = null;
   try {
     connection = await connectToDB();
@@ -415,9 +418,6 @@ app.route("/api/player/edit-data").post(async (req, res) => {
     if (connection) connection.end();
   }
 
-  if (!PlayerId || !PlayerCoins || !PlayerWins || !PlayerLosses) {
-    return res.status(400).json({ error: "Invalid request" });
-  }
   try {
     connection = await connectToDB();
     const [result] = await connection.execute(

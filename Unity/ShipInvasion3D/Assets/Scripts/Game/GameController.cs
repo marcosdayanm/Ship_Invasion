@@ -501,30 +501,58 @@ public class GameController : MonoBehaviour
         int sunkenShips = 0;
         int activeEnemyShips = 0;
         int sunkenEnemyShips = 0;
+
+        int damageByUser = 0;
+        int damageByEnemy = 0;
+
         foreach(Ship ship in enemyShips){
-            if(ship.sunken){
+            if(ship.sunken)
+            {
                 sunkenEnemyShips++;
-            }else{
+                damageByUser = damageByUser + ship.quads.Count;
+            }
+            else
+            {
                 activeEnemyShips++;
+                for (int i = 0; i < ship.quads.Count; i++)
+                {
+                    if (ship.quads[i].GetComponent<Quad>().state == Quad.quadState.hit)
+                        damageByUser++;
+                }
             }
         }
         foreach(Ship ship in ships){
-            if(ship.sunken){
+            if(ship.sunken)
+            {
                 sunkenShips++;
-            }else{
+                damageByEnemy = damageByEnemy + ship.quads.Count;
+            }
+            else
+            {
                 activeShips++;
+                for (int i = 0; i < ship.quads.Count; i++)
+                {
+                    if (ship.quads[i].GetComponent<Quad>().state == Quad.quadState.hit)
+                        damageByEnemy++;
+                }
             }
         }
-        if(activeShips == 0 || activeEnemyShips == 0){
+
+        if (sunkenShips == ships.Count || sunkenEnemyShips == enemyShips.Count || timer.isTimerActive == false)
+        {
             Debug.Log(activeShips);
             Debug.Log(sunkenShips);
             Debug.Log(activeEnemyShips);
             Debug.Log(sunkenEnemyShips);
+            Debug.Log(damageByUser);
+            Debug.Log(damageByEnemy);
 
             PlayerPrefs.SetInt("activeShips", activeShips);
             PlayerPrefs.SetInt("sunkenShips", sunkenShips);
             PlayerPrefs.SetInt("activeEnemyShips", activeEnemyShips);
             PlayerPrefs.SetInt("sunkenEnemyShips", sunkenEnemyShips);
+            PlayerPrefs.SetInt("damageByUser", damageByUser);
+            PlayerPrefs.SetInt("damageByEnemy", damageByEnemy);
             yield return new WaitForSeconds(1);
             // Cambiar de escena
             sceneConnection.toEndGame();
