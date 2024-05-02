@@ -8,22 +8,20 @@ using TMPro;
 public class InfoDisplay : MonoBehaviour
 {
     PlayerDetails user;
-    public TextMeshProUGUI monedasText;
     public TextMeshProUGUI usuarioText;
+    public TextMeshProUGUI monedasText;
+    public TextMeshProUGUI ganadasText;
+    public TextMeshProUGUI perdidasText;
 
     void Start()
     {
         user = JsonUtility.FromJson<PlayerDetails>(PlayerPrefs.GetString("user"));
-        
-        if (monedasText != null)
-        {
-            monedasText.text = "Monedas: " + user.PlayerCoins;
-        }
 
-        if (usuarioText != null)
-        {
-            usuarioText.text = "Usuario: " + user.PlayerUsername;
-        }
+        usuarioText.text = "Usuario: " + user.PlayerUsername;
+        monedasText.text = "Monedas: " + user.PlayerCoins;
+        ganadasText.text = "Ganadas: " + user.PlayerWins;
+        perdidasText.text = "Perdidas: " + user.PlayerLosses;
+
     }
 
 
