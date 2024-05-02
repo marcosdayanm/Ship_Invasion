@@ -37,7 +37,7 @@ public class GameOver : MonoBehaviour
 
     IEnumerator WhoWon()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.4f);
 
         int sunkenShips = PlayerPrefs.GetInt("sunkenShips", 0);
         int sunkenEnemyShips = PlayerPrefs.GetInt("sunkenEnemyShips", 0);
@@ -46,7 +46,14 @@ public class GameOver : MonoBehaviour
         int damageByUser = PlayerPrefs.GetInt("damageByUser", 0);
         int damageByEnemy = PlayerPrefs.GetInt("damageByEnemy", 0);
 
-        arena = JsonUtility.FromJson<Arena>(PlayerPrefs.GetString("arena"));
+        arena = JsonUtility.FromJson<Arena>(PlayerPrefs.GetString("gameArena"));
+
+        Debug.Log(PlayerPrefs.GetString("gameArena"));
+        if (arena == null)
+        {
+            Debug.LogError("Failed to deserialize arena data.");
+            yield break;
+        }
 
         BarcosDestruidosPlayer.text = "Barcos Destruidos: " + sunkenShips.ToString();
         BarcosRestantesPlayer.text = "Barcos Restantes: " + activeShips.ToString();
@@ -55,23 +62,29 @@ public class GameOver : MonoBehaviour
         DamageByUser.text = "Daño causado: " + damageByUser.ToString();
         DamageByEnemy.text = "Daño Causado: " + damageByEnemy.ToString();
 
-        if (sunkenShips > sunkenEnemyShips)
+        if (activeShips > activeEnemyShips)
         {
             Winner.text = "Winner: Player";
-            StartCoroutine(API.EditPlayerData(user.PlayerId, user.PlayerCoins + arena.Cost + (arena.Cost * ((arena.Level / 4) + 1)), user.PlayerWins + 1, user.PlayerLosses - 1));
-            yield return new WaitForSeconds(0.4f);
+            StartCoroutine(API.EditPlayerData(user.PlayerId, Mathf.RoundToInt(user.PlayerCoins + arena.Cost + arena.Cost * ((arena.Level / 4.0f) + 1)), user.PlayerWins + 1, user.PlayerLosses - 1));
+            yield return new WaitForSeconds(0.2f);
+            StartCoroutine(API.GameEditIsPlayerWon(user.PlayerId));
+            yield return new WaitForSeconds(0.2f);
             StartCoroutine(API.GetPlayer(user.PlayerId));
+            yield return new WaitForSeconds(0.2f);
         }
-        if (sunkenShips < sunkenEnemyShips)
+        else if (activeShips < activeEnemyShips)
             Winner.text = "Winner: CPU";
         else
         {
             if (damageByUser > damageByEnemy)
             {
                 Winner.text = "Winner: Player";
-                StartCoroutine(API.EditPlayerData(user.PlayerId, user.PlayerCoins + arena.Cost + (arena.Cost * ((arena.Level / 4) + 1)), user.PlayerWins + 1, user.PlayerLosses - 1));
-                yield return new WaitForSeconds(0.4f);
+                StartCoroutine(API.EditPlayerData(user.PlayerId, Mathf.RoundToInt(user.PlayerCoins + arena.Cost + arena.Cost * ((arena.Level / 4.0f) + 1)), user.PlayerWins + 1, user.PlayerLosses - 1));
+                yield return new WaitForSeconds(0.2f);
+                StartCoroutine(API.GameEditIsPlayerWon(user.PlayerId));
+                yield return new WaitForSeconds(0.2f);
                 StartCoroutine(API.GetPlayer(user.PlayerId));
+                yield return new WaitForSeconds(0.2f);
             }
             else if (damageByUser < damageByEnemy)
                 Winner.text = "Winner: CPU";
@@ -80,7 +93,7 @@ public class GameOver : MonoBehaviour
             {
                 Winner.text = "¡Es un empate!";
                 StartCoroutine(API.EditPlayerData(user.PlayerId, user.PlayerCoins, user.PlayerWins, user.PlayerLosses - 1));
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.2f);
                 StartCoroutine(API.GetPlayer(user.PlayerId));
             }
 

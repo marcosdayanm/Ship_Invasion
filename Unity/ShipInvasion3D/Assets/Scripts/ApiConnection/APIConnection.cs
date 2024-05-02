@@ -211,7 +211,7 @@ public class APIConnection : MonoBehaviour
     }
 
     // Función para configurar el request POST para modificar el atributo isPlayerWon de un Game en caso de que el jugador lo haya ganado
-    IEnumerator GameEditIsPlayerWon(int GameId)
+    public IEnumerator GameEditIsPlayerWon(int GameId)
     {
         // Endpoint de la API para modificar el atributo isPlayerWon de un Game
         endpoint = $"/api/games/{GameId}";
