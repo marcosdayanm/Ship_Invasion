@@ -8,7 +8,7 @@ Equipo: REM Cycle
 
 ## Videojuego Hosteado
 
-EL videojuego puede tardar 50 segundo o más en abrir debido al plan del servicio de hosting, tener paciencia  
+El videojuego puede tardar 50 segundo o más en abrir debido al plan del servicio de hosting, tener paciencia  
 https://ship-invasion-rem.onrender.com/
 
 ## _Índice_
