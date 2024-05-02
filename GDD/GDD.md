@@ -2,13 +2,14 @@
 
 ## _Game Design Document_
 
----
-
 ##### Autores: Emily Rosenfeld, A01198339 / Marcos Dayan, A01782876/ Remy Patgher, A01784177
 
 Equipo: REM Cycle
 
-##
+## Videojuego Hosteado
+
+EL videojuego puede tardar 50 segundo o más en abrir debido al plan del servicio de hosting, tener paciencia  
+https://ship-invasion-rem.onrender.com/
 
 ## _Índice_
 
