@@ -58,7 +58,7 @@ public class APIConnection : MonoBehaviour
         // StartCoroutine(PutGame("1", "3", "1"));
         // StartCoroutine(GameEditIsPlayerWon(16));
         // StartCoroutine(GetArenas());
-        // StartCoroutine(EditPlayerData(1, 300, 100, 55));
+        // StartCoroutine(EditPlayerData(5, 300, 100, 55));
     }
 
     // Función para configurar el request GET para obtener TODAS las Cartas
@@ -94,7 +94,7 @@ public class APIConnection : MonoBehaviour
     public IEnumerator GetArenas()
     {
         // Enpoint de la API para obtener una carta específica
-        endpoint = $"/api/arenas";
+        endpoint = $"/api/arenas/";
         // Parámetro de ID para obtener la carta con ID 1 (ejemplo)
         idParameter = "";
         // Se envía el request GET
@@ -102,6 +102,18 @@ public class APIConnection : MonoBehaviour
         // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
         PlayerPrefs.SetString("arenas", data);
         Debug.Log($"This are the arenas: {data} ");
+    }
+
+    public IEnumerator GetPlayer(int playerId)
+    {
+        // Enpoint de la API para obtener una carta específica
+        endpoint = $"/api/players/";
+        // Parámetro de ID para obtener la carta con ID 1 (ejemplo)
+        idParameter = $"{playerId}";
+        // Se envía el request GET
+        yield return StartCoroutine(SendGetRequest());
+        // Se almacena la data en el PlayerPrefs para que esté disponible en toda la aplicación
+        PlayerPrefs.SetString("user", data);
     }
 
 
@@ -227,6 +239,7 @@ public class APIConnection : MonoBehaviour
 
             EditPlayerDetails player = new EditPlayerDetails(PlayerId, PlayerCoins, PlayerWins, PlayerLosses);
             string jsonData = JsonUtility.ToJson(player);
+            Debug.Log("JSON being sent: " + jsonData);
 
     // Se envía el request POST y se espera a que termine, dependiendo de la respuesta, se ejecuta una función anónima en caso de exito o fracaso
             yield return StartCoroutine(SendPostRequest(jsonData,
@@ -234,7 +247,7 @@ public class APIConnection : MonoBehaviour
 
                     Debug.Log(responseData);
                 },
-                onFailure: (error) => {
+                onFailure: (error) => {  
                     Debug.LogError($"Error: {error}");
                 }));
         }
@@ -283,6 +296,8 @@ public class APIConnection : MonoBehaviour
             if (www.result == UnityWebRequest.Result.Success) onSuccess?.Invoke(www.downloadHandler.text); 
             else {
                 PlayerPrefs.SetString("errorMsg", www.downloadHandler.text);
+                Debug.Log("Failed: " + www.error);
+                Debug.Log("Response: " + www.downloadHandler.text); 
                 onFailure?.Invoke(www.error); 
             }
 

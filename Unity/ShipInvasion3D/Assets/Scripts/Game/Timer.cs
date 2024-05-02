@@ -5,7 +5,7 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     public float timeLimit; // Tiempo límite en segundos, ajustable desde el Inspector
-    private bool isTimerActive = false; 
+    public bool isTimerActive = false; 
     private Coroutine timerCoroutine;
 
     [SerializeField] TMP_Text matchTimerText;
@@ -63,11 +63,6 @@ public class Timer : MonoBehaviour
             OnTimeUpdate?.Invoke(0);
             isTimerActive = false;
             
-            // Detener todas las corrutinas
-            StopAllCoroutines();
-            
-            // Cambiar de escena
-            sceneConnection.toEndGame();
         }
 
         // Método opcional para detener el temporizador manualmente si es necesario
