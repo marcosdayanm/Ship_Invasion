@@ -114,8 +114,6 @@ public class GameController : MonoBehaviour
 
     public int quadsAttacked = 0;
 
-    public bool sunkenShip = false;
-
     public SceneConnection sceneConnection = null;
     bool resetTimerPosition = true;
 
@@ -215,10 +213,6 @@ public class GameController : MonoBehaviour
         canvasBot.SetActive(true);
         canvasBot.transform.Find("Quad Attacked").gameObject.SetActive(true);
         canvasBot.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Celdas Atacadas";
-        if(sunkenShip){
-            canvasBot.transform.Find("Barco Caído").gameObject.SetActive(true);
-            sunkenShip = false;
-        }
         yield return new WaitForSeconds(1);
         canvasBot.transform.Find("Quad Attacked").gameObject.SetActive(false);
         quadsAttacked = 0;
@@ -258,10 +252,6 @@ public class GameController : MonoBehaviour
         if(showQuadsAttacked){
             canvasCombat.transform.Find("Quad Attacked").gameObject.SetActive(true);
             canvasCombat.transform.Find("Quad Attacked").GetComponent<TMP_Text>().text = $"{quadsAttacked} Celdas Atacadas";
-            if(sunkenShip){
-                canvasCombat.transform.Find("Barco Caído").gameObject.SetActive(true);
-                sunkenShip = false;
-            }
             yield return new WaitForSeconds(1);
             canvasCombat.transform.Find("Barco Caído").gameObject.SetActive(false);
             canvasCombat.transform.Find("Quad Attacked").gameObject.SetActive(false);
@@ -323,7 +313,7 @@ public class GameController : MonoBehaviour
             isCameraOnAttack = true;
             // Movemos el grid del enemigo para que sea visible
             StartCoroutine(MoveGridEnemy(true, 0.5f));
-            // Movemos la cámara a la posición de ataque
+            // Movemos la cámara a la posicion de ataque
             cameraController.MoveCameraToAttack();
 
 
@@ -508,7 +498,6 @@ public class GameController : MonoBehaviour
             }
             if(sunken){
                 ship.sunken = true;
-                sunkenShip = true;
             }else{
                 ship.sunken = false;
             }
