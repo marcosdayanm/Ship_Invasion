@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1125872, g: 0.41739172, b: 0.72308147, a: 1}
+  m_IndirectSpecularColor: {r: 0.11227387, g: 0.4194654, b: 0.72486234, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -39508,7 +39508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be45d7e099c204edf8d7837e8838886b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiURL: https://ship-invasion.onrender.com
+  apiURL: https://ship-invasion-rem.onrender.com
   endpoint: 
   idParameter: 
 --- !u!4 &1387585516
