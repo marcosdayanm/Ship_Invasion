@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.112566516, g: 0.41732323, b: 0.72272295, a: 1}
+  m_IndirectSpecularColor: {r: 0.1125872, g: 0.41739172, b: 0.72308147, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9078,6 +9078,17 @@ MonoBehaviour:
   quadsAttacked: 0
   sunkenShip: 0
   sceneConnection: {fileID: 0}
+  waterMaterials:
+  - {fileID: 2100000, guid: cf2f5ac03c01b4ccea055c1b3e970c4d, type: 2}
+  - {fileID: 2100000, guid: 141d9d6ca43b6c843965491604c6deff, type: 2}
+  - {fileID: 2100000, guid: bb6e8a4ee76d94efd90dca24ccc98b1b, type: 2}
+  - {fileID: 2100000, guid: 80bc07be701d2467f9ab33dd129eb610, type: 2}
+  water: {fileID: 1990300824}
+  skyboxMaterials:
+  - {fileID: 2100000, guid: 8f2c8ef98c47442d4b0e1896539bf7f1, type: 2}
+  - {fileID: 2100000, guid: 7a8675eb396637d43b4ba0a69cc715a5, type: 2}
+  - {fileID: 2100000, guid: 6eecb3bb77b3f7a43a504fceda3b0b5f, type: 2}
+  - {fileID: 2100000, guid: 8426cf3d3939a7d419671f3d5c269c0b, type: 2}
 --- !u!4 &351811558
 Transform:
   m_ObjectHideFlags: 0
@@ -47700,7 +47711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27fd6a2ea35c246bd839d0dca2d99450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 180
+  timeLimit: 300
+  isTimerActive: 0
   matchTimerText: {fileID: 841454324}
   playTimerText: {fileID: 0}
   matchTime: 0
@@ -53207,6 +53219,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7097ba7ba649e1f41bba232312bdcbd8, type: 3}
+--- !u!23 &1990300824 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1507636620937791839, guid: 7097ba7ba649e1f41bba232312bdcbd8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1990300823}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1991813794
 GameObject:
   m_ObjectHideFlags: 0
